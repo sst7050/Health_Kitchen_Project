@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter.font import Font
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -11,12 +12,13 @@ class Application(tk.Frame):
     def create_widgets(self):
         for widget in self.winfo_children():
             widget.destroy()
-        self.gender_label = tk.Label(self, text="당신의 성별은 무엇입니까?")
+        self.customFont = Font(family="Helvetica", size=12)  # 폰트 설정
+        self.gender_label = tk.Label(self, text="당신의 성별은 무엇입니까?", font=self.customFont)
         self.gender_label.pack()
         self.gender_var = tk.StringVar()
         self.gender_entry = tk.OptionMenu(self, self.gender_var, "남성", "여성")
         self.gender_entry.pack()
-        self.next_button = tk.Button(self, text="다음", command=self.next_height)
+        self.next_button = tk.Button(self, text="다음", command=self.next_height, bg="lightblue", fg="black")  # 버튼 색상 변경
         self.next_button.pack()
 
     def next_height(self):
@@ -26,13 +28,13 @@ class Application(tk.Frame):
         self.gender = self.gender_var.get()
         for widget in self.winfo_children():
             widget.destroy()
-        self.height_label = tk.Label(self, text="당신의 키는 몇 cm입니까? 소수점을 제외하고 입력해 주세요.")
+        self.height_label = tk.Label(self, text="당신의 키는 몇 cm입니까? 소수점을 제외하고 입력해 주세요.", font=self.customFont)
         self.height_label.pack()
-        self.height_entry = tk.Entry(self)
+        self.height_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
         self.height_entry.pack()
-        self.prev_button = tk.Button(self, text="이전", command=self.create_widgets)
+        self.prev_button = tk.Button(self, text="이전", command=self.create_widgets, bg="lightgray", fg="black")  # 버튼 색상 변경
         self.prev_button.pack()
-        self.next_button = tk.Button(self, text="다음", command=self.next_weight)
+        self.next_button = tk.Button(self, text="다음", command=self.next_weight, bg="lightblue", fg="black")  # 버튼 색상 변경
         self.next_button.pack()
 
     def next_weight(self):
@@ -42,13 +44,13 @@ class Application(tk.Frame):
         self.height = self.height_entry.get()
         for widget in self.winfo_children():
             widget.destroy()
-        self.weight_label = tk.Label(self, text="당신의 몸무게는 몇 kg입니까? 소수점을 제외하고 입력해 주세요.")
+        self.weight_label = tk.Label(self, text="당신의 몸무게는 몇 kg입니까? 소수점을 제외하고 입력해 주세요.", font=self.customFont)
         self.weight_label.pack()
-        self.weight_entry = tk.Entry(self)
+        self.weight_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
         self.weight_entry.pack()
-        self.prev_button = tk.Button(self, text="이전", command=self.next_height)
+        self.prev_button = tk.Button(self, text="이전", command=self.next_height, bg="lightgray", fg="black")  # 버튼 색상 변경
         self.prev_button.pack()
-        self.next_button = tk.Button(self, text="다음", command=self.next_age)
+        self.next_button = tk.Button(self, text="다음", command=self.next_age, bg="lightblue", fg="black")  # 버튼 색상 변경
         self.next_button.pack()
 
     def next_age(self):
@@ -58,13 +60,13 @@ class Application(tk.Frame):
         self.weight = self.weight_entry.get()
         for widget in self.winfo_children():
             widget.destroy()
-        self.age_label = tk.Label(self, text="당신의 연령은 어떻게 되십니까? 만 나이를 입력해 주세요")
+        self.age_label = tk.Label(self, text="당신의 연령은 어떻게 되십니까? 만 나이를 입력해 주세요", font=self.customFont)
         self.age_label.pack()
-        self.age_entry = tk.Entry(self)
+        self.age_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
         self.age_entry.pack()
-        self.prev_button = tk.Button(self, text="이전", command=self.next_weight)
+        self.prev_button = tk.Button(self, text="이전", command=self.next_weight, bg="lightgray", fg="black")  # 버튼 색상 변경
         self.prev_button.pack()
-        self.next_button = tk.Button(self, text="다음", command=self.show_info)
+        self.next_button = tk.Button(self, text="다음", command=self.show_info, bg="lightblue", fg="black")  # 버튼 색상 변경
         self.next_button.pack()
 
     def show_info(self):
