@@ -55,6 +55,11 @@ class Application(tk.Frame):
         self.height = self.height_entry.get()
         for widget in self.winfo_children():
             widget.destroy()
+        self.next_weight_again()
+    
+    def next_weight_again(self):
+        for widget in self.winfo_children():
+            widget.destroy()
         self.weight_label = tk.Label(self, text="당신의 몸무게는 몇 kg입니까? 소수점을 제외하고 입력해 주세요.", font=self.customFont)
         self.weight_label.pack()
         self.weight_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
@@ -75,7 +80,7 @@ class Application(tk.Frame):
         self.age_label.pack()
         self.age_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
         self.age_entry.pack()
-        self.prev_button = tk.Button(self, text="이전", command=self.next_weight, bg="lightgray", fg="black")  # 버튼 색상 변경
+        self.prev_button = tk.Button(self, text="이전", command=self.next_weight_again, bg="lightgray", fg="black")  # 버튼 색상 변경
         self.prev_button.pack()
         self.next_button = tk.Button(self, text="다음", command=self.save_and_show_info, bg="lightblue", fg="black")  # 버튼 색상 변경
         self.next_button.pack()
