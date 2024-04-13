@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.font import Font
 import userInfo
+import os
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -102,7 +103,8 @@ class Application(tk.Frame):
             }
             userInfo.save_user_info(user_info)
             messagebox.showinfo("성공", "정보가 성공적으로 저장되었습니다.")
-            self.master.after(self.master.quit)
+            self.master.destroy()  # Close the current window
+            os.system('python GUI_Main.py')  # Open the main menu
         else:
             self.create_widgets()
 
