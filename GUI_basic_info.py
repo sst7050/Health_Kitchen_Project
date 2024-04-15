@@ -16,7 +16,8 @@ class Application(tk.Frame):
         if exists:
             messagebox.showinfo("정보 확인", "사용자 정보가 이미 존재합니다.")
             messagebox.showinfo("사용자 정보\n", f"성별: {user_info['gender']}\n키: {user_info['height']}\n몸무게: {user_info['weight']}\n나이: {user_info['age']}\n")
-            # 사용자 정보를 표시하는 코드를 여기에 추가합니다.
+            self.master.destroy()  # Close the current window
+            os.system('python GUI_Main.py')  # Open the main menu
         else:
             self.create_widgets()  # 사용자 정보 입력 위젯 생성
             
