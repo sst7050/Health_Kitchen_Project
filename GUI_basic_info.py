@@ -4,22 +4,11 @@ from tkinter.font import Font
 import userInfo
 import os
 
-class Application(tk.Frame):
+class User_input(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
         self.pack()
-        # self.check_and_display_user_info()
-
-    # def check_and_display_user_info(self):
-    #     exists, user_info = userInfo.read_user_info()
-    #     if exists:
-    #         messagebox.showinfo("정보 확인", "사용자 정보가 이미 존재합니다.")
-    #         messagebox.showinfo("사용자 정보\n", f"성별: {user_info['gender']}\n인바디 점수: {user_info['inbody_score']}\n적정 체중: {user_info['ideal_weight']}\n지방 조절 수치: {user_info['fat_control']}\n근육 조절 수치: {user_info['muscle_control']}\n나이: {user_info['age']}\n")
-    #         self.master.destroy()  # Close the current window
-    #         os.system('python GUI_Main.py')  # Open the main menu
-    #     else:
-    #         messagebox.showinfo("알림", "이 프로그램은 당신의 인바디 '분석 평가'(결과지의 우측 부분)의 일부 항목값을 입력받아 그 값을 토대로 적정 체중이 되도록 돕거나 유지시켜주는 프로그램 입니다. 따라서 다음 질문에 답 하기 전에 먼저 인바디 검사를 받고, 해당 검사지를 출력하여 준비해 주시기 바랍니다. 만약 인바디 검사지가 준비되셨다면, 질문에 솔직하게 답변 해 주세요.")
         self.create_widgets()  # 사용자 정보 입력 위젯 생성
             
     def create_widgets(self):
@@ -100,6 +89,6 @@ class Application(tk.Frame):
 root = tk.Tk()
 root.geometry("800x600")  # 화면 크기를 조정하는 코드를 추가합니다.
 root.title("Health Kitchen")
-app = Application(master=root)
+app = User_input(master=root)
 app.mainloop()
 
