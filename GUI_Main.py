@@ -39,7 +39,7 @@ class MainScreen(tk.Frame):
         self.quit_button.grid(row=1, column=3, padx=10, pady=10, ipadx=50, ipady=30, sticky="S")
 
     def start_info_input(self):
-        messagebox.showinfo("버튼1", "버튼1")
+        messagebox.showinfo("알림", "이 프로그램은 당신의 인바디 '분석 평가'(결과지의 우측 부분)의 일부 항목값을 입력받아 그 값을 토대로 적정 체중이 되도록 돕거나 유지시켜주는 프로그램 입니다. 따라서 다음 질문에 답 하기 전에 먼저 인바디 검사를 받고, 해당 검사지를 출력하여 준비해 주시기 바랍니다. 만약 인바디 검사지가 준비되셨다면, 질문에 솔직하게 답변 해 주세요.")
 
     def query_info(self):
         messagebox.showinfo("버튼2", "버튼2")
@@ -47,7 +47,7 @@ class MainScreen(tk.Frame):
     def show_about(self):
         user_info = self.read_user_info()
         if user_info:
-            info_str = f"성별: {user_info['gender']}\n키: {user_info['height']} cm\n몸무게: {user_info['weight']} kg\n나이: {user_info['age']} 세"
+            info_str = f"성별: {user_info['gender']}\n인바디 점수: {user_info['inbody_score']}\n적정 체중: {user_info['ideal_weight']} kg\n지방 조절 수치: {user_info['fat_control']} kg\n근육 조절 수치: {user_info['muscle_control']} kg\n나이: {user_info['age']} 세"
             messagebox.showinfo("사용자 정보", info_str)
 
 class Application(tk.Frame):
