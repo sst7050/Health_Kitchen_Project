@@ -9,13 +9,13 @@ class FoodSelectionFrame(tk.Frame):
 
     def create_widgets(self):
         food_list = {
-            "빵": {"image": "img/Bread.png", "calories": 250, "duration": "한 달", "price": "20000원", "detail_name": "뚜레쥬르 2만원권"},
-            "햄버거": {"image": "img/Burger.png", "calories": 300, "duration": "한 달", "price": "20000원", "detail_name": "맥도날드 2만원권"},
-            "치킨": {"image": "img/Chicken.png", "calories": 450, "duration": "한 달", "price": "20000원", "detail_name": " 교촌치킨 반반 오리지날"},
-            "커피": {"image": "img/Coffee.png", "calories": 800, "duration": "한 달", "price": "19000원", "detail_name": "스타벅스 피스타치오 크림 콜드 브루 T\n라이트 핑크 자몽 피지오 T\n치킨 & 머쉬룸 멜팅 치즈 샌드위치"},
-            "편의점음식": {"image": "img/CU.png", "calories": 550, "duration": "한 달", "price": "20000원", "detail_name": "CU 모바일 상품권 2만원권"},
-            "아이스크림": {"image": "img/Icecream.png", "calories": 500, "duration": "한 달", "price": "18000원", "detail_name": "베스킨라빈스 쿼터(네가지 맛)"},
-            "피자": {"image": "img/Pizza.png", "calories": 900, "duration": "한 달", "price": "19000원", "detail_name": "반올림피자R + 콜라500ml"}
+            "빵": {"image": "img/Bread.png", "duration": "2개월", "price": "20000원", "detail_name": "뚜레쥬르 2만원권"},
+            "햄버거": {"image": "img/Burger.png", "duration": "2개월", "price": "20000원", "detail_name": "맥도날드 2만원권"},
+            "치킨": {"image": "img/Chicken.png", "duration": "2개월", "price": "20000원", "detail_name": "교촌치킨 반반 오리지날"},
+            "커피": {"image": "img/Coffee.png", "duration": "2개월", "price": "19000원", "detail_name": "스타벅스 피스타치오 크림 콜드 브루 T\n라이트 핑크 자몽 피지오 T\n치킨 & 머쉬룸 멜팅 치즈 샌드위치"},
+            "편의점음식": {"image": "img/CU.png", "duration": "2개월", "price": "20000원", "detail_name": "CU 모바일 상품권 2만원권"},
+            "아이스크림": {"image": "img/Icecream.png", "duration": "2개월", "price": "18000원", "detail_name": "베스킨라빈스 쿼터(네가지 맛)"},
+            "피자": {"image": "img/Pizza.png", "duration": "2개월", "price": "19000원", "detail_name": "반올림피자R + 콜라500ml"}
         }
 
         row = 0
@@ -50,7 +50,7 @@ class FoodDetailFrame(tk.Frame):
         img_label.image = img  # Keep a reference.
         img_label.pack(side=tk.TOP, pady=20)
 
-        info_text = f"이름: {detail_name}\n칼로리: {details['calories']} Kcal\n예상 기간: {details['duration']}\n가격: {details['price']}"
+        info_text = f"이름: {detail_name}\n예상 기간: {details['duration']}\n가격: {details['price']}"
         info_label = tk.Label(self, text=info_text)
         info_label.pack(side=tk.TOP, pady=20)
 
