@@ -72,10 +72,16 @@ class User_input(tk.Frame):
             "muscle_control": self.muscle_control,
             "age": self.age
             }
+            #저장하는 함수
             userInfo.save_user_info(user_info)
             messagebox.showinfo("성공", "정보가 성공적으로 저장되었습니다.")
-            self.master.destroy()  # Close the current window
-            os.system('python GUI_Main.py')  # Open the main menu
+            #분석하여 status를 json파일에 저장 후 출력
+            status = userInfo.update_inbody_status()
+            messagebox.showinfo("분석결과", f"당신의 상태는 {status} 입니다")
+            # 최근의 창 닫기
+            self.master.destroy()  
+            # 메인메뉴 열기
+            os.system('python GUI_Main.py')  
         else:
             self.create_widgets()
 
