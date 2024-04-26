@@ -81,7 +81,7 @@ class User_input(tk.Frame):
             # 최근의 창 닫기
             self.master.destroy()  
             # 메인메뉴 열기
-            os.system('python GUI_Main.py')  
+            os.system('python GUI_Sel_Food.py')  
         else:
             self.create_widgets()
 
