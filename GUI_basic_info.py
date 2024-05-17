@@ -31,7 +31,7 @@ class User_input(tk.Frame):
         self.body_fat_label = tk.Label(self, text="당신의 체지방률은 어떻게 되십니까?", font=self.customFont)
         self.body_fat_label.pack()
         self.body_fat_var = tk.StringVar()
-        self.body_fat_entry = tk.OptionMenu(self, self.body_fat_var, "표준", "경도비만", "비만")
+        self.body_fat_entry = tk.OptionMenu(self, self.body_fat_var, "표준", "경도비만", "비만", "해당없음")
         self.body_fat_entry.pack()
 
         self.inbody_label = tk.Label(self, text="당신의 인바디 점수는 몇 점입니까?", font=self.customFont)
@@ -93,8 +93,7 @@ class User_input(tk.Frame):
             userInfo.save_user_info(user_info)
             messagebox.showinfo("성공", "정보가 성공적으로 저장되었습니다.")
             #분석하여 status를 json파일에 저장 후 출력
-            status = userInfo.update_inbody_status()
-            exercise_recommendation = self.get_exercise_recommendation(status)
+            status, exercise_recommendation = userInfo.update_inbody_status()
             messagebox.showinfo("분석결과", f"당신의 상태는 {status} 입니다. {exercise_recommendation}")
             # 최근의 창 닫기
             self.master.destroy()  
@@ -110,21 +109,6 @@ class User_input(tk.Frame):
         except ValueError:
             return False
 
-    def get_exercise_recommendation(self, status):
-        if status == "지방 감량, 근육 증량, 과체중, 경도비만":
-            return '추천 유산소 운동: 러닝(하루에 30분) 추천 무산소 운동: 고강도(하루에 30분)'
-        elif status == "지방 감량, 근육 증량, 심한 과체중, 비만(고도비만)":
-            return '추천 유산소 운동: 걷기(하루에 60분) 추천 무산소 운동: 고강도(하루에 30분)'
-        elif status == "지방 감량, 근육 유지, 과체중, 경도비만":
-            return '추천 유산소 운동: 러닝(하루에 30분) 추천 무산소 운동: 중강도(하루에 45분)'
-        elif status == "지방 감량, 근육 유지, 심한 과체중, 비만(고도비만)":
-            return '추천 유산소 운동: 걷기(하루에 60분) 추천 무산소 운동: 저강도(하루에 45분)'
-        elif status == "지방 유지, 근육 유지, 표준, 표준":
-            return '추천 유산소 운동: 걷기(하루에 30분) 추천 무산소 운동: 저강도(하루에 45분)'
-        elif status == "지방 증량, 근육 증량, 저체중":
-            return '추천 유산소 운동: 계단 오르기(하루에 30분) 추천 무산소 운동: 고강도 (하루에 30분)'
-        else:
-            return ''
 root = tk.Tk()
 root.geometry("800x600")  # 화면 크기를 조정하는 코드를 추가합니다.
 root.title("Health Kitchen")

@@ -16,7 +16,6 @@ def save_user_info(user_info):
         json.dump(user_info, file, indent=4)
 
 def update_inbody_status():
-    # JSON 파일을 읽기
     file_path = "user_info.json"
     with open(file_path, 'r') as file:
         data = json.load(file)
@@ -42,8 +41,19 @@ def update_inbody_status():
         elif fat_control < 0 and muscle_control == 0:
             status = '지방 감량, 근육 유지'
     
-# BMI와 체지방률에 따른 조건 분기
-    status += ', ' + bmi + ', ' + body_fat
+    # BMI와 체지방률에 따른 조건 분기
+    if bmi == "과체중" and status == '지방 감량, 근육 증량' and body_fat == "경도비만":
+        status += 5
+    elif bmi == "심한과체중" and status == '지방 감량, 근육 증량' and body_fat == "비만":
+        status += 6
+    elif bmi == "과체중" and status == '지방 감량, 근육 유지' and body_fat == "경도비만":
+        status += 3
+    elif bmi == "심한과체중" and status == '지방 감량, 근육 유지' and body_fat == "비만":
+        status += 4
+    elif bmi == "표준" and status == '지방 유지, 근육 유지' and body_fat == "표준":
+        status += 6
+    elif bmi == "저체중" and status == '지방 증량, 근육 증량' and body_fat == "해당없음":
+        status += 8
     
     # status 업데이트
     data['status'] = status
@@ -59,17 +69,17 @@ def update_inbody_status():
     return status, exercise_recommendation
 
 def get_exercise_recommendation(status):
-    if status == "지방 감량, 근육 증량, 과체중, 경도비만":
-        return '추천 유산소 운동: 러닝(하루에 30분) 추천 무산소 운동: 고강도(하루에 30분)'
-    elif status == "지방 감량, 근육 증량, 심한 과체중, 비만(고도비만)":
-        return '추천 유산소 운동: 걷기(하루에 60분) 추천 무산소 운동: 고강도(하루에 30분)'
-    elif status == "지방 감량, 근육 유지, 과체중, 경도비만":
-        return '추천 유산소 운동: 러닝(하루에 30분) 추천 무산소 운동: 중강도(하루에 45분)'
-    elif status == "지방 감량, 근육 유지, 심한 과체중, 비만(고도비만)":
-        return '추천 유산소 운동: 걷기(하루에 60분) 추천 무산소 운동: 저강도(하루에 45분)'
-    elif status == "지방 유지, 근육 유지, 표준, 표준":
-        return '추천 유산소 운동: 걷기(하루에 30분) 추천 무산소 운동: 저강도(하루에 45분)'
-    elif status == "지방 증량, 근육 증량, 저체중":
-        return '추천 유산소 운동: 계단 오르기(하루에 30분) 추천 무산소 운동: 고강도 (하루에 30분)'
+    if status == 7:      
+        return '현재 상태: 과체중, 경도비만 \n 추천 목표: 지방 감량 및 근육 증량 \n 추천 유산소 운동: 러닝(하루에 30분) 추천 무산소 운동: 고강도(하루에 30분)'
+    elif status == 8:
+        return '현재 상태: 심한과체중, 비만 \n 추천 목표: 지방 감량 및 근육 증량 \n 추천 유산소 운동: 걷기(하루에 60분) 추천 무산소 운동: 고강도(하루에 30분)'
+    elif status == 9:
+        return '현재 상태: 과체중, 경도비만 \n 추천 목표: 지방 감량, 근육 유지 \n 추천 유산소 운동: 러닝(하루에 30분) 추천 무산소 운동: 중강도(하루에 45분)'
+    elif status == 10:
+        return '현재 상태: 심한과체중, 비만 \n 추천 목표: 지방 감량, 근육 유지 \n 추천 유산소 운동: 걷기(하루에 60분) 추천 무산소 운동: 저강도(하루에 45분)'
+    elif status == 11:
+        return '현재 상태: 표준 \n 추천 목표: 지방 유지, 근육 유지 \n 추천 유산소 운동: 걷기(하루에 30분) 추천 무산소 운동: 저강도(하루에 45분)'
+    elif status == 12:
+        return '현재 상태: 저체중 \n 추천 목표: 지방 증량, 근육 증량 \n 추천 유산소 운동: 계단 오르기(하루에 30분) 추천 무산소 운동: 고강도 (하루에 30분)'
     else:
-        return ''
+        return '적절하지 않은 결과값입니다. 정보를 다시 입력해주세요.'
