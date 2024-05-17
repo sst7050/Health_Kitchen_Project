@@ -19,6 +19,5 @@ def check_user_info_and_launch():
         root.mainloop()
 
 if __name__ == "__main__":
-    check_user_info_and_launch() 
-
+    check_user_info_and_launch()
 

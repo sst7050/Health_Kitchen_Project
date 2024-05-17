@@ -1,0 +1,12 @@
+{
+    "gender": "남성",
+    "inbody_score": "75",
+    "ideal_weight": "80",
+    "fat_control": "-14",
+    "muscle_control": "8",
+    "age": "25",
+    "bmi": "심한과체중",
+    "body_fat": "비만",
+    "status": 8,
+    "exercise_recommendation": "현재 상태: 심한과체중, 비만 \n 추천 목표: 지방 감량 및 근육 증량 \n 추천 유산소 운동: 걷기(하루에 60분) 추천 무산소 운동: 고강도(하루에 30분)"
+}

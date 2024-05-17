@@ -1,3 +1,4 @@
+#GUI_basic_info.py
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.font import Font
@@ -10,7 +11,7 @@ class User_input(tk.Frame):
         self.master = master
         self.pack()
         self.create_widgets()  # 사용자 정보 입력 위젯 생성
-            
+           
     def create_widgets(self):
         for widget in self.winfo_children():
             widget.destroy()
@@ -94,7 +95,7 @@ class User_input(tk.Frame):
             messagebox.showinfo("성공", "정보가 성공적으로 저장되었습니다.")
             #분석하여 status를 json파일에 저장 후 출력
             status, exercise_recommendation = userInfo.update_inbody_status()
-            messagebox.showinfo("분석결과", f"당신의 상태는 {status} 입니다. {exercise_recommendation}")
+            messagebox.showinfo("분석결과", f"코드 번호 {status} \n {exercise_recommendation}")
             # 최근의 창 닫기
             self.master.destroy()  
             # 메인메뉴 열기

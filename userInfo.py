@@ -1,3 +1,4 @@
+#userInfo.py
 import json
 import os
 
@@ -19,45 +20,48 @@ def update_inbody_status():
     file_path = "user_info.json"
     with open(file_path, 'r') as file:
         data = json.load(file)
-    
+   
     inbody_score = float(data['inbody_score'])
     fat_control = float(data['fat_control'])
     muscle_control = float(data['muscle_control'])
     bmi = data['bmi']
     body_fat = data['body_fat']
-    
+   
     # inbody_score에 따른 조건 분기
     if inbody_score < 80:
         if fat_control < 0 and muscle_control < 0:
-            status = '지방 감량'
+            status = 1 #지방 감량
         elif fat_control < 0 and muscle_control > 0:
-            status = '지방 감량, 근육 증량'
+            status = 2 #지방 감량, 근육 증량
         elif fat_control > 0 and muscle_control < 0:
-            status = '지방 증량'
+            status = 3 #지방 증량
         elif fat_control > 0 and muscle_control > 0:
-            status = '지방 증량, 근육 증량'
+            status = 4 #지방 증량, 근육 증량
         elif fat_control == 0 and muscle_control == 0:
-            status = '지방 유지, 근육 유지'
+            status = 5 #지방 유지, 근육 유지
         elif fat_control < 0 and muscle_control == 0:
-            status = '지방 감량, 근육 유지'
-    
+            status = 6 #지방 감량, 근육 유지
+           
     # BMI와 체지방률에 따른 조건 분기
-    if bmi == "과체중" and status == '지방 감량, 근육 증량' and body_fat == "경도비만":
+    #status += ', ' + bmi + ', ' + body_fat
+ 
+    # BMI와 체지방률에 따른 조건 분기
+    if bmi == "과체중" and status == 2 and body_fat == "경도비만":
         status += 5
-    elif bmi == "심한과체중" and status == '지방 감량, 근육 증량' and body_fat == "비만":
+    elif bmi == "심한과체중" and status == 2 and body_fat == "비만":
         status += 6
-    elif bmi == "과체중" and status == '지방 감량, 근육 유지' and body_fat == "경도비만":
+    elif bmi == "과체중" and status == 6 and body_fat == "경도비만":
         status += 3
-    elif bmi == "심한과체중" and status == '지방 감량, 근육 유지' and body_fat == "비만":
+    elif bmi == "심한과체중" and status == 6 and body_fat == "비만":
         status += 4
-    elif bmi == "표준" and status == '지방 유지, 근육 유지' and body_fat == "표준":
+    elif bmi == "표준" and status == 5 and body_fat == "표준":
         status += 6
-    elif bmi == "저체중" and status == '지방 증량, 근육 증량' and body_fat == "해당없음":
+    elif bmi == "저체중" and status == 4 and body_fat == "해당없음":
         status += 8
-    
+   
     # status 업데이트
     data['status'] = status
-    
+   
     # 운동 추천
     exercise_recommendation = get_exercise_recommendation(status)
     data['exercise_recommendation'] = exercise_recommendation
@@ -65,7 +69,7 @@ def update_inbody_status():
     # 업데이트 된 데이터를 JSON 파일에 쓰기
     with open(file_path, 'w') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
-    
+   
     return status, exercise_recommendation
 
 def get_exercise_recommendation(status):
