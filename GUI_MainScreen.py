@@ -61,3 +61,7 @@ class Application(tk.Frame):
     def create_widgets(self):
         self.main_menu = MainScreen(self.master) # 메인 화면 인스턴스 생성
         self.main_menu.grid(sticky="nsew") # 메인 화면을 그리드에 배치하여 확장
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = Application(master=root)
+    app.mainloop()
