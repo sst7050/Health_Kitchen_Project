@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.font import Font
 import userInfo
-import os
+import subprocess
 
 class User_input(tk.Frame):
     def __init__(self, master=None):
@@ -81,7 +81,7 @@ class User_input(tk.Frame):
             # 최근의 창 닫기
             self.master.destroy()  
             # 메인메뉴 열기
-            os.system('python GUI_Sel_Food.py')  
+            subprocess.run('python GUI_Sel_Food.py')  
         else:
             self.create_widgets()
 

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-import os
+import subprocess
 import userInfo
 
 class FoodSelectionFrame(tk.Frame):
@@ -82,7 +82,7 @@ class FoodDetailFrame(tk.Frame):
         if response:
             messagebox.showinfo("다음 단계", "다음 단계로 진행합니다.")
             self.master.destroy()  # 현재 창 닫기
-            os.system('python GUI_Main.py')  # 메인 GUI 실행
+            subprocess.run('python GUI_Main.py')  # 메인 GUI 실행
         else:
             self.go_back() # 선택을 취소하고 음식 리스트 화면으로 돌아가기
 
