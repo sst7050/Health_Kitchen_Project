@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
+import subprocess
 import tkinter.font as font
 import json
 
@@ -62,8 +63,7 @@ class MainScreen(tk.Frame):
         messagebox.showinfo("알림", "이 프로그램은 당신의 인바디 '분석 평가'(결과지의 우측 부분)의 일부 항목값을 입력받아 그 값을 토대로 적정 체중이 되도록 돕거나 유지시켜주는 프로그램 입니다. 따라서 다음 질문에 답 하기 전에 먼저 인바디 검사를 받고, 해당 검사지를 출력하여 준비해 주시기 바랍니다. 만약 인바디 검사지가 준비되셨다면, 질문에 솔직하게 답변 해 주세요.")
 
     def progress_info(self):
-        #TODO->버튼 현재 진행상황 보여주는 기능 연결하기
-        messagebox.showinfo("버튼2", "버튼2")
+        subprocess.run(["python", "GUI_Progress_info.py"]) # 버튼 클릭 시 GUI_Progress_info 실행
 
     def show_about(self):
         user_info = self.read_user_info()

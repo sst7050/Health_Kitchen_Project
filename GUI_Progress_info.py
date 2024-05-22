@@ -46,12 +46,10 @@ class ExerciseTracker(tk.Frame):
         self.master.grid_columnconfigure(3, weight=0)
 
     def on_entry_click(self, event):
-        """Clear the entry field on focus if it contains the default text."""
         if self.entry.get() == "운동량을 입력하세요":
             self.entry.delete(0, tk.END)  # delete all the text in the entry
 
     def on_focusout(self, event):
-        """Put the default text if the field is empty."""
         if not self.entry.get():
             self.entry.insert(0, "운동량을 입력하세요")
 
@@ -69,6 +67,6 @@ class ExerciseTracker(tk.Frame):
 
 root = tk.Tk()
 root.geometry("800x600")
-root.title("운동량 트래커")
+root.title("운동진행상황")
 app = ExerciseTracker(master=root)
 root.mainloop()
