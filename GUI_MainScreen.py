@@ -14,7 +14,7 @@ class MainScreen(tk.Frame):
 
     def read_user_info(self):
         try:
-            with open('user_info.json', 'r') as file:
+            with open('user_info.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
         except FileNotFoundError:
             messagebox.showerror("오류", "사용자 정보 파일을 찾을 수 없습니다.")
