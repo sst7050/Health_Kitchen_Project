@@ -9,8 +9,10 @@ class ExerciseTracker(tk.Frame):
         super().__init__(master)
         self.master = master
         self.grid(sticky="nsew")
+        self.load_user_info()
         self.create_widgets()
         self.configure_grid()
+        self.update_progress_bars()  # 초기 로드 시 진척도 게이지 업데이트
 
     def load_user_info(self):
         if os.path.exists("user_info.json"):
@@ -72,30 +74,42 @@ class ExerciseTracker(tk.Frame):
     def configure_grid(self):
         self.master.grid_rowconfigure(0, weight=1)
         self.master.grid_rowconfigure(1, weight=1)
-        self.master.grid_rowconfigure(2, weight=1)  # 중간에 추가 공간을 만들기 위한 행
-        self.master.grid_rowconfigure(3, weight=1)  # 이미지를 보여줄 행
+        self.master.grid_rowconfigure(2, weight=1)
+        self.master.grid_rowconfigure(3, weight=1)
+        self.master.grid_rowconfigure(4, weight=1)  # 이미지를 보여줄 행
         self.master.grid_columnconfigure(0, weight=1)
         self.master.grid_columnconfigure(1, weight=1)
         self.master.grid_columnconfigure(2, weight=1)
         self.master.grid_columnconfigure(3, weight=0)
 
-    def on_entry_click(self, event):
-        if self.entry.get() == "운동량을 입력하세요":
-            self.entry.delete(0, tk.END)  # 엔트리의 모든 텍스트 삭제
+    def on_entry_click(self, event, default_text):
+        if event.widget.get() == default_text:
+            event.widget.delete(0, tk.END)
 
-    def on_focusout(self, event):
-        if not self.entry.get():
-            self.entry.insert(0, "운동량을 입력하세요")
+    def on_focusout(self, event, default_text):
+        if not event.widget.get():
+            event.widget.insert(0, default_text)
 
-    def update_progress(self):
+    def update_progress(self, exercise_type):
         try:
-            # 입력된 운동량을 정수로 변환하고 게이지 바 업데이트
-            new_amount = int(self.entry.get())
-            current_value = self.progress['value']
-            new_value = min(current_value + new_amount, 100)  # 최대 100으로 제한
-            self.progress['value'] = new_value
-            self.progress_label.config(text=f"{new_value}/100")  # 레이블 업데이트
-            self.entry.delete(0, tk.END)  # 입력 필드 클리어
+            if exercise_type == "유산소":
+                entry_widget = self.entry_aerobic
+                progress_bar = self.progress_aerobic
+                label_widget = self.progress_label_aerobic
+            else:
+                entry_widget = self.entry_anaerobic
+                progress_bar = self.progress_anaerobic
+                label_widget = self.progress_label_anaerobic
+
+            new_amount = int(entry_widget.get())
+            self.user_info[exercise_type] += new_amount
+            self.user_info[exercise_type] = min(self.user_info[exercise_type], 100)  # 최대 100으로 제한
+
+            progress_bar['value'] = self.user_info[exercise_type]
+            label_widget.config(text=f"{exercise_type}: {self.user_info[exercise_type]}/100")
+            entry_widget.delete(0, tk.END)
+
+            self.save_user_info()  # 업데이트된 값 저장
         except ValueError:
             messagebox.showinfo("오류", "유효한 정수를 입력하세요.")
 
