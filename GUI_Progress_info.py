@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 from tkinter import PhotoImage
+import json
+import os
 
 class ExerciseTracker(tk.Frame):
     def __init__(self, master=None):
@@ -9,6 +11,23 @@ class ExerciseTracker(tk.Frame):
         self.grid(sticky="nsew")
         self.create_widgets()
         self.configure_grid()
+
+    def load_user_info(self):
+        if os.path.exists("user_info.json"):
+            with open("user_info.json", "r", encoding='utf-8') as file:
+                self.user_info = json.load(file)
+                # 유산소 무산소 값이 있는지 확인
+                if '유산소' not in self.user_info:
+                    self.user_info['유산소'] = 0
+                if '무산소' not in self.user_info:
+                    self.user_info['무산소'] = 0
+        else:
+            self.user_info = {"유산소": 0, "무산소": 0}
+        self.save_user_info()
+
+    def save_user_info(self):
+        with open("user_info.json", "w", encoding='utf-8') as file:
+            json.dump(self.user_info, file, ensure_ascii=False, indent=4)
 
     def create_widgets(self):
         # 유산소 운동량 입력 필드
@@ -62,7 +81,7 @@ class ExerciseTracker(tk.Frame):
 
     def on_entry_click(self, event):
         if self.entry.get() == "운동량을 입력하세요":
-            self.entry.delete(0, tk.END)  # delete all the text in the entry
+            self.entry.delete(0, tk.END)  # 엔트리의 모든 텍스트 삭제
 
     def on_focusout(self, event):
         if not self.entry.get():
