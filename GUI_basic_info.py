@@ -1,4 +1,3 @@
-#GUI_basic_info.py
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.font import Font
@@ -60,7 +59,6 @@ class User_input(tk.Frame):
         self.age_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
         self.age_entry.pack()
 
-
         self.save_button = tk.Button(self, text="저장", command=self.save_and_show_info, bg="lightblue", fg="black")  # 버튼 색상 변경
         self.save_button.pack()
 
@@ -81,25 +79,29 @@ class User_input(tk.Frame):
         result = messagebox.askyesno("입력 정보", f"성별: {self.gender}\n인바디 점수: {self.inbody_score}\n적정 체중: {self.ideal_weight}\n지방 조절 수치: {self.fat_control}\n근육 조절 수치: {self.muscle_control}\n나이: {self.age}\nBMI: {self.bmi}\n체지방률: {self.body_fat}\n해당 정보가 맞습니까?")
         if result:
             user_info = {
-            "gender": self.gender,
-            "inbody_score": self.inbody_score,
-            "ideal_weight": self.ideal_weight,
-            "fat_control": self.fat_control,
-            "muscle_control": self.muscle_control,
-            "age": self.age,
-            "bmi": self.bmi,
-            "body_fat": self.body_fat
+                "gender": self.gender,
+                "inbody_score": self.inbody_score,
+                "ideal_weight": self.ideal_weight,
+                "fat_control": self.fat_control,
+                "muscle_control": self.muscle_control,
+                "age": self.age,
+                "bmi": self.bmi,
+                "body_fat": self.body_fat
             }
-            #저장하는 함수
+            # 저장하는 함수
             userInfo.save_user_info(user_info)
             messagebox.showinfo("성공", "정보가 성공적으로 저장되었습니다.")
-            #분석하여 status를 json파일에 저장 후 출력
+            # 분석하여 status를 json파일에 저장 후 출력
             status, exercise_recommendation = userInfo.update_inbody_status()
-            messagebox.showinfo("분석결과", f"코드 번호 {status} \n {exercise_recommendation}")
-            # 최근의 창 닫기
-            self.master.destroy()  
-            # 메인메뉴 열기
-            os.system('python GUI_Sel_Food.py')  
+            if status == -1 or exercise_recommendation is None:
+                messagebox.showinfo("에러", "유효하지 않은 정보가 입력되었습니다. 다시 입력해주세요.")
+                self.create_widgets()
+            else:
+                messagebox.showinfo("분석결과", f"코드 번호 {status} \n {exercise_recommendation}")
+                # 최근의 창 닫기
+                self.master.destroy()
+                # 메인메뉴 열기
+                os.system('python GUI_Sel_Food.py')
         else:
             self.create_widgets()
 
