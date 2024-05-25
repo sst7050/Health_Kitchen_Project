@@ -11,29 +11,44 @@ class ExerciseTracker(tk.Frame):
         self.configure_grid()
 
     def create_widgets(self):
-        # 운동량 입력 필드 (확장된 크기)
-        self.entry = tk.Entry(self, width=40)
-        self.entry.insert(0, "운동량을 입력하세요")  # 초기 텍스트 설정
-        self.entry.bind("<FocusIn>", self.on_entry_click)
-        self.entry.bind("<FocusOut>", self.on_focusout)
-        self.entry.grid(row=0, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
+        # 유산소 운동량 입력 필드
+        self.entry_aerobic = tk.Entry(self, width=40)
+        self.entry_aerobic.insert(0, "유산소 운동량을 입력하세요")
+        self.entry_aerobic.bind("<FocusIn>", lambda event: self.on_entry_click(event, "유산소 운동량을 입력하세요"))
+        self.entry_aerobic.bind("<FocusOut>", lambda event: self.on_focusout(event, "유산소 운동량을 입력하세요"))
+        self.entry_aerobic.grid(row=0, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
 
-        # 운동량 추가 버튼 (중앙 정렬)
-        self.add_button = tk.Button(self, text="운동량 추가", command=self.update_progress)
-        self.add_button.grid(row=0, column=2, padx=10, pady=10, sticky="ew")
+        # 유산소 운동량 추가 버튼
+        self.add_button_aerobic = tk.Button(self, text="유산소 추가", command=lambda: self.update_progress("유산소"))
+        self.add_button_aerobic.grid(row=0, column=2, padx=10, pady=10, sticky="ew")
 
-        # 진척도 게이지 바 (길이 조절)
-        self.progress = ttk.Progressbar(self, length=700, mode='determinate')
-        self.progress.grid(row=1, column=0, columnspan=3, pady=20, sticky="ew")
+        # 무산소 운동량 입력 필드
+        self.entry_anaerobic = tk.Entry(self, width=40)
+        self.entry_anaerobic.insert(0, "무산소 운동량을 입력하세요")
+        self.entry_anaerobic.bind("<FocusIn>", lambda event: self.on_entry_click(event, "무산소 운동량을 입력하세요"))
+        self.entry_anaerobic.bind("<FocusOut>", lambda event: self.on_focusout(event, "무산소 운동량을 입력하세요"))
+        self.entry_anaerobic.grid(row=1, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
 
-        # 진척도 표시 레이블
-        self.progress_label = tk.Label(self, text="0/100")
-        self.progress_label.grid(row=1, column=3, padx=10, sticky="w")
+        # 무산소 운동량 추가 버튼
+        self.add_button_anaerobic = tk.Button(self, text="무산소 추가", command=lambda: self.update_progress("무산소"))
+        self.add_button_anaerobic.grid(row=1, column=2, padx=10, pady=10, sticky="ew")
+
+        # 유산소 진척도 게이지 바
+        self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate')
+        self.progress_aerobic.grid(row=2, column=0, columnspan=3, pady=20, sticky="ew")
+        self.progress_label_aerobic = tk.Label(self, text=f"유산소: {self.user_info['유산소']}/100")
+        self.progress_label_aerobic.grid(row=2, column=3, padx=10, sticky="w")
+
+        # 무산소 진척도 게이지 바
+        self.progress_anaerobic = ttk.Progressbar(self, length=700, mode='determinate')
+        self.progress_anaerobic.grid(row=3, column=0, columnspan=3, pady=20, sticky="ew")
+        self.progress_label_anaerobic = tk.Label(self, text=f"무산소: {self.user_info['무산소']}/100")
+        self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
         # 이미지 표시 (하단에 위치 조정)
         self.image = PhotoImage(file="img/chicken.png")  # 적절한 이미지 파일 경로로 변경하세요
         self.image_label = tk.Label(self, image=self.image)
-        self.image_label.grid(row=3, column=0, columnspan=4, pady=20, sticky="nsew")  # 위치를 row=3으로 변경
+        self.image_label.grid(row=4, column=0, columnspan=4, pady=20, sticky="nsew")  # 위치를 row=4으로 변경
 
     def configure_grid(self):
         self.master.grid_rowconfigure(0, weight=1)
