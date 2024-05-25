@@ -113,6 +113,12 @@ class ExerciseTracker(tk.Frame):
         except ValueError:
             messagebox.showinfo("오류", "유효한 정수를 입력하세요.")
 
+    def update_progress_bars(self):
+        self.progress_aerobic['value'] = self.user_info['유산소']
+        self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/100")
+        self.progress_anaerobic['value'] = self.user_info['무산소']
+        self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/100")
+
 root = tk.Tk()
 root.geometry("800x600")
 root.title("운동진행상황")
