@@ -11,13 +11,13 @@ class FoodSelectionFrame(tk.Frame):
 
     def create_widgets(self):  # 음식 리스트 및 위젯 생성
         food_list = {
-            "빵": {"image": "img/Bread.png", "duration": "2개월", "price": "20000원", "detail_name": "뚜레쥬르 2만원권"},
-            "햄버거": {"image": "img/Burger.png", "duration": "2개월", "price": "20000원", "detail_name": "맥도날드 2만원권"},
-            "치킨": {"image": "img/Chicken.png", "duration": "2개월", "price": "20000원", "detail_name": "교촌치킨 반반 오리지날"},
-            "커피": {"image": "img/Coffee.png", "duration": "2개월", "price": "19000원", "detail_name": "스타벅스 피스타치오 크림 콜드 브루 T\n라이트 핑크 자몽 피지오 T\n치킨 & 머쉬룸 멜팅 치즈 샌드위치"},
-            "편의점음식": {"image": "img/CU.png", "duration": "2개월", "price": "20000원", "detail_name": "CU 모바일 상품권 2만원권"},
-            "아이스크림": {"image": "img/Icecream.png", "duration": "2개월", "price": "18000원", "detail_name": "베스킨라빈스 쿼터(네가지 맛)"},
-            "피자": {"image": "img/Pizza.png", "duration": "2개월", "price": "19000원", "detail_name": "반올림피자R + 콜라500ml"}
+            "햄버거": {"image": "img/food/Burger/Burger.png", "duration": "2개월", "price": "20000원", "detail_name": "햄버거"},
+            "치킨": {"image": "img/food/Chicken/Chicken.png", "duration": "2개월", "price": "20000원", "detail_name": "치킨"},
+            "파스타": {"image": "img/food/Pasta/Pasta.png", "duration": "2개월", "price": "20000원", "detail_name": "파스타"},
+            "필라프": {"image": "img/food/Pilaf/Pilaf.png", "duration": "2개월", "price": "19000원", "detail_name": "필라프"},
+            "피자": {"image": "img/food/Pizza/Pizza.png", "duration": "2개월", "price": "20000원", "detail_name": "피자"},
+            "스테이크": {"image": "img/food/Steak/Steak.png", "duration": "2개월", "price": "18000원", "detail_name": "스테이크"},
+            "스튜": {"image": "img/food/Stew/Stew.png", "duration": "2개월", "price": "19000원", "detail_name": "스튜"}
         }
 
         row = 0
