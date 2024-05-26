@@ -45,7 +45,7 @@ def update_inbody_status():
         
    
     # BMI와 체지방률에 따른 조건 분기
-    def get_exercise_recommendation(status):
+    """def get_exercise_recommendation(status):
         if bmi == "과체중" and status == 2 and body_fat == "경도비만":
             return f'현재 상태: 과체중, 경도비만 \n 추천 목표: 지방 감량 및 근육 증량 \n 추천 유산소 운동: 러닝(하루에 {30}분) 추천 무산소 운동: 고강도(하루에 {30}분)'
         elif bmi == "심한과체중" and status == 2 and body_fat == "비만":
@@ -59,7 +59,56 @@ def update_inbody_status():
         elif bmi == "저체중" and status == 4 and body_fat == "해당없음":
             return f'현재 상태: 저체중 \n 추천 목표: 지방 증량, 근육 증량 \n 추천 유산소 운동: 계단 오르기(하루에 {30}분) 추천 무산소 운동: 고강도 (하루에 {30}분)'
         else:
-            status = -1  # 조건에 맞지 않으면 status를 -1으로 설정
+            status = -1  # 조건에 맞지 않으면 status를 -1으로 설정"""
+    def get_exercise_recommendation(status):
+        if bmi == "과체중" and status == 2 and body_fat == "경도비만":
+            return {
+            '현재 상태': '과체중, 경도비만',
+            '추천 목표': '지방 감량 및 근육 증량',
+            '추천 유산소 운동': {'종류': '러닝', '시간': 30},
+            '추천 무산소 운동': {'종류': '고강도', '시간': 30}
+        }
+        elif bmi == "심한과체중" and status == 2 and body_fat == "비만":
+            return {
+            '현재 상태': '심한과체중, 비만',
+            '추천 목표': '지방 감량 및 근육 증량',
+            '추천 유산소 운동': {'종류': '걷기', '시간': 60},
+            '추천 무산소 운동': {'종류': '고강도', '시간': 30}
+        }
+        elif bmi == "과체중" and status == 6 and body_fat == "경도비만":
+            return {
+            '현재 상태': '과체중, 경도비만',
+            '추천 목표': '지방 감량, 근육 유지',
+            '추천 유산소 운동': {'종류': '러닝', '시간': 30},
+            '추천 무산소 운동': {'종류': '중강도', '시간': 45}
+        }
+        elif bmi == "심한과체중" and status == 6 and body_fat == "비만":
+            return {
+            '현재 상태': '심한과체중, 비만',
+            '추천 목표': '지방 감량, 근육 유지',
+            '추천 유산소 운동': {'종류': '걷기', '시간': 60},
+            '추천 무산소 운동': {'종류': '저강도', '시간': 45}
+        }
+        elif bmi == "표준" and status == 5 and body_fat == "표준":
+            return {
+            '현재 상태': '표준',
+            '추천 목표': '지방 유지, 근육 유지',
+            '추천 유산소 운동': {'종류': '걷기', '시간': 30},
+            '추천 무산소 운동': {'종류': '저강도', '시간': 45}
+        }
+        elif bmi == "저체중" and status == 4 and body_fat == "해당없음":
+            return {
+            '현재 상태': '저체중',
+            '추천 목표': '지방 증량, 근육 증량',
+            '추천 유산소 운동': {'종류': '계단 오르기', '시간': 30},
+            '추천 무산소 운동': {'종류': '고강도', '시간': 30}
+        }
+        else:
+            return None  # 조건에 맞지 않으면 None 반환
+
+   
+ 
+
 
     # status가 0이거나 else 값인 경우 JSON 파일에 저장하지 않음
     if status != -1:
