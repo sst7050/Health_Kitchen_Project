@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import subprocess
 import tkinter.font as font
 import json
+from datetime import datetime
 
 class MainScreen(tk.Frame):
     def __init__(self, master=None):
@@ -11,6 +12,7 @@ class MainScreen(tk.Frame):
         self.master = master
         self.grid(sticky="nsew")
         self.create_main_menu()
+        self.check_time_limit()
 
     def read_user_info(self):
         try:
@@ -19,6 +21,21 @@ class MainScreen(tk.Frame):
         except FileNotFoundError:
             messagebox.showerror("오류", "사용자 정보 파일을 찾을 수 없습니다.")
             return None
+    #일주일 지났는지 확인
+    def check_time_limit(self):
+        user_info = self.read_user_info()
+        if user_info and 'limit_time' in user_info:
+            limit_time = datetime.strptime(user_info['limit_time'], "%Y-%m-%d %H:%M:%S")
+            current_time = datetime.now()
+        #지났으면
+        if current_time > limit_time:
+            messagebox.showinfo("알림", "일주일이 경과되었습니다. 음식을 다시 선택해 주세요.")
+            self.master.after(100, self.relaunch_food_selection)
+
+    def relaunch_food_selection(self):
+        self.master.destroy()
+        subprocess.run(['python', 'GUI_Sel_Food.py'])
+
         
     def create_main_menu(self):
         # 버튼 이미지 로드

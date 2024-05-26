@@ -52,9 +52,10 @@ class FoodSelectionFrame(tk.Frame):
             'food': food,
             'details': info
         }
+        #제한시간 추가
         timelimit = datetime.now() + timedelta(weeks= 1)
         timelimit = timelimit.strftime("%Y-%m-%d %H:%M:%S")
-        user_info['limit_time'] = timelimit  # 현재 시간 추가
+        user_info['limit_time'] = timelimit
 
         
         userInfo.save_user_info(user_info)  # 정보 저장
