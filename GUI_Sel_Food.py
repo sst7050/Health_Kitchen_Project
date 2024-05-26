@@ -93,9 +93,8 @@ class FoodDetailFrame(tk.Frame):
         # 선택 확인받기
         response = messagebox.askyesno("확인", "선택한 음식으로 진행하시겠습니까?")
         if response:
-            messagebox.showinfo("다음 단계", "다음 단계로 진행합니다.")
             self.master.destroy()  # 현재 창 닫기
-            subprocess.run('python GUI_Main.py')  # 메인 GUI 실행
+            subprocess.run('python GUI_MainScreen.py') # 메인 GUI 실행
         else:
             self.go_back() # 선택을 취소하고 음식 리스트 화면으로 돌아가기
 

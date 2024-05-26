@@ -3,6 +3,8 @@ from tkinter import messagebox, ttk
 from tkinter import PhotoImage
 import json
 import os
+from datetime import datetime
+import subprocess
 
 class ExerciseTracker(tk.Frame):
     def __init__(self, master=None):
@@ -67,7 +69,8 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
         # 이미지 표시 (하단에 위치 조정)
-        self.image = PhotoImage(file="img/chicken.png")  # 적절한 이미지 파일 경로로 변경하세요
+        self.filepath = self.user_info["selected_food"]["details"]["image"]
+        self.image = PhotoImage(file=self.filepath)  # 적절한 이미지 파일 경로로 변경하세요
         self.image_label = tk.Label(self, image=self.image)
         self.image_label.grid(row=4, column=0, columnspan=4, pady=20, sticky="nsew")  # 위치를 row=4으로 변경
 
@@ -90,7 +93,21 @@ class ExerciseTracker(tk.Frame):
         if not event.widget.get():
             event.widget.insert(0, default_text)
 
+    def relaunch_food_selection(self):
+        self.master.destroy()
+        subprocess.run(['python', 'GUI_Sel_Food.py'])
+
+                
     def update_progress(self, exercise_type):
+        limit_time = datetime.strptime(self.user_info['limit_time'], "%Y-%m-%d %H:%M:%S")
+        current_time  =datetime.now()
+        if(limit_time <= current_time):
+            messagebox.showinfo("알림", "재료의 유통기한이 만료되었습니다.\n냉장고의 재료가 모두 사라집니다. 음식을 다시 선택해 주세요.")
+            self.user_info['유산소'] = 0
+            self.user_info['무산소'] = 0
+            self.master.after(100, self.relaunch_food_selection)
+
+            #TODO: 냉장고의 재료 없애기(json 파일의 재료 초기화)
         try:
             if exercise_type == "유산소":
                 entry_widget = self.entry_aerobic
