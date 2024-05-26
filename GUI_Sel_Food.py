@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 import subprocess
+from datetime import datetime, timedelta
 import userInfo
+
 
 class FoodSelectionFrame(tk.Frame):
     def __init__(self, master, switch_frame_callback):
@@ -34,17 +36,27 @@ class FoodSelectionFrame(tk.Frame):
             if col > 3:  # 열이 3을 초과하면 다음 행으로
                 col = 0
                 row += 2
-
+                
+    def relaunch_Main(self):
+            self.master.destroy()
+            subprocess.run(['python', 'GUI_Main.py'])
+            
     def select_food(self, food, info):
         success, user_info = userInfo.read_user_info()  # 사용자 정보 읽기
         if not success:
-            messagebox.showinfo("Error", "사용자 정보를 불러오는데 실패했습니다.")
+            messagebox.showinfo("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.") #json파일이 없을 경우
+            self.master.after(100, self.relaunch_Main)
             return
         
         user_info['selected_food'] = { # 선택한 음식 정보 추가
             'food': food,
             'details': info
         }
+        timelimit = datetime.now() + timedelta(weeks= 1)
+        timelimit = timelimit.strftime("%Y-%m-%d %H:%M:%S")
+        user_info['limit_time'] = timelimit  # 현재 시간 추가
+
+        
         userInfo.save_user_info(user_info)  # 정보 저장
         self.switch_frame_callback(FoodDetailFrame, info["detail_name"], info)  # 상세 정보 화면으로 전환
 
