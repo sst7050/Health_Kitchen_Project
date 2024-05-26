@@ -1,12 +1,12 @@
 import tkinter as tk
 import tkinter.font as font
-from tkinter import ttk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import subprocess
 import json
 from datetime import datetime
 from GUI_Progress_info import ExerciseTracker
+import userInfo
 
 class MainScreen(tk.Frame):
     def __init__(self, master=None):
@@ -23,7 +23,7 @@ class MainScreen(tk.Frame):
         except FileNotFoundError:
             messagebox.showerror("오류", "사용자 정보 파일을 찾을 수 없습니다.")
             return None
-
+    
     def check_time_limit(self):
         user_info = self.read_user_info()
         if user_info and 'limit_time' in user_info:
@@ -31,6 +31,9 @@ class MainScreen(tk.Frame):
             current_time = datetime.now()
             if current_time >= limit_time:
                 messagebox.showinfo("알림", "재료의 유통기한이 만료되었습니다.\n냉장고의 재료가 모두 사라집니다. 음식을 다시 선택해 주세요.")
+                user_info["유산소"] = 0
+                user_info["무산소"] = 0
+                userInfo.save_user_info(user_info)
                 self.master.after(100, self.relaunch_food_selection)
                 #TODO: 냉장고의 재료 없애기(json 파일의 재료 초기화)
 

@@ -108,27 +108,28 @@ class ExerciseTracker(tk.Frame):
             self.master.after(100, self.relaunch_food_selection)
 
             #TODO: 냉장고의 재료 없애기(json 파일의 재료 초기화)
-        try:
-            if exercise_type == "유산소":
-                entry_widget = self.entry_aerobic
-                progress_bar = self.progress_aerobic
-                label_widget = self.progress_label_aerobic
-            else:
-                entry_widget = self.entry_anaerobic
-                progress_bar = self.progress_anaerobic
-                label_widget = self.progress_label_anaerobic
+        else:    
+            try:
+                if exercise_type == "유산소":
+                    entry_widget = self.entry_aerobic
+                    progress_bar = self.progress_aerobic
+                    label_widget = self.progress_label_aerobic
+                else:
+                    entry_widget = self.entry_anaerobic
+                    progress_bar = self.progress_anaerobic
+                    label_widget = self.progress_label_anaerobic
 
-            new_amount = int(entry_widget.get())
-            self.user_info[exercise_type] += new_amount
-            self.user_info[exercise_type] = min(self.user_info[exercise_type], 100)  # 최대 100으로 제한
+                new_amount = int(entry_widget.get())
+                self.user_info[exercise_type] += new_amount
+                self.user_info[exercise_type] = min(self.user_info[exercise_type], 100)  # 최대 100으로 제한
 
-            progress_bar['value'] = self.user_info[exercise_type]
-            label_widget.config(text=f"{exercise_type}: {self.user_info[exercise_type]}/100")
-            entry_widget.delete(0, tk.END)
+                progress_bar['value'] = self.user_info[exercise_type]
+                label_widget.config(text=f"{exercise_type}: {self.user_info[exercise_type]}/100")
+                entry_widget.delete(0, tk.END)
 
-            self.save_user_info()  # 업데이트된 값 저장
-        except ValueError:
-            messagebox.showinfo("오류", "유효한 정수를 입력하세요.")
+                self.save_user_info()  # 업데이트된 값 저장
+            except ValueError:
+                messagebox.showinfo("오류", "유효한 정수를 입력하세요.")
 
     def update_progress_bars(self):
         self.progress_aerobic['value'] = self.user_info['유산소']
