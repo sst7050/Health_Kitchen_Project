@@ -7,7 +7,8 @@ class MainScreen(tk.Frame):
         super().__init__(master)
         self.master = master
         self.grid(sticky="nsew")  # 부모 컨테이너를 채우도록 프레임 확장
-        self.create_main_menu()
+        self.create_main_menu() 
+        
 
     def read_user_info(self):
         try: # 사용자 정보를 JSON 파일에서 읽기 시도
