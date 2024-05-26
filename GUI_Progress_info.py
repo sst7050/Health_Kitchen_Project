@@ -1,15 +1,17 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
-from tkinter import PhotoImage
+from tkinter import ttk
+from tkinter import messagebox
+from PIL import Image, ImageTk
 import json
-import os
 from datetime import datetime
 import subprocess
 
+
 class ExerciseTracker(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, main_screen=None):
         super().__init__(master)
         self.master = master
+        self.main_screen = main_screen
         self.grid(sticky="nsew")
         self.load_user_info()
         self.create_widgets()
@@ -17,15 +19,14 @@ class ExerciseTracker(tk.Frame):
         self.update_progress_bars()  # 초기 로드 시 진척도 게이지 업데이트
 
     def load_user_info(self):
-        if os.path.exists("user_info.json"):
+        try:
             with open("user_info.json", "r", encoding='utf-8') as file:
                 self.user_info = json.load(file)
-                # 유산소 무산소 값이 있는지 확인
                 if '유산소' not in self.user_info:
                     self.user_info['유산소'] = 0
                 if '무산소' not in self.user_info:
                     self.user_info['무산소'] = 0
-        else:
+        except FileNotFoundError:
             self.user_info = {"유산소": 0, "무산소": 0}
         self.save_user_info()
 
@@ -69,8 +70,7 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
         # 이미지 표시 (하단에 위치 조정)
-        self.filepath = self.user_info["selected_food"]["details"]["image"]
-        self.image = PhotoImage(file=self.filepath)  # 적절한 이미지 파일 경로로 변경하세요
+        self.image = ImageTk.PhotoImage(Image.open("img/chicken.png"))  # 적절한 이미지 파일 경로로 변경하세요
         self.image_label = tk.Label(self, image=self.image)
         self.image_label.grid(row=4, column=0, columnspan=4, pady=20, sticky="nsew")  # 위치를 row=4으로 변경
 
@@ -95,12 +95,12 @@ class ExerciseTracker(tk.Frame):
 
     def relaunch_food_selection(self):
         self.master.destroy()
+        self.main_screen.master.destroy()  # Close the MainScreen window
         subprocess.run(['python', 'GUI_Sel_Food.py'])
 
-                
     def update_progress(self, exercise_type):
         limit_time = datetime.strptime(self.user_info['limit_time'], "%Y-%m-%d %H:%M:%S")
-        current_time  =datetime.now()
+        current_time = datetime.now()
         if(limit_time <= current_time):
             messagebox.showinfo("알림", "재료의 유통기한이 만료되었습니다.\n냉장고의 재료가 모두 사라집니다. 음식을 다시 선택해 주세요.")
             self.user_info['유산소'] = 0
@@ -135,9 +135,3 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/100")
         self.progress_anaerobic['value'] = self.user_info['무산소']
         self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/100")
-
-root = tk.Tk()
-root.geometry("800x600")
-root.title("운동진행상황")
-app = ExerciseTracker(master=root)
-root.mainloop()
