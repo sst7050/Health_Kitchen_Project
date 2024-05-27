@@ -23,13 +23,11 @@ def save_user_info(user_info):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(user_info, file, indent=4)
 
-
 def update_inbody_status():
-    # JSON 파일을 읽기
     file_path = "user_info.json"
     with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
-    
+   
     inbody_score = float(data['inbody_score'])
     fat_control = float(data['fat_control'])
     muscle_control = float(data['muscle_control'])
@@ -37,6 +35,7 @@ def update_inbody_status():
     body_fat = data['body_fat']
     
     # inbody_score에 따른 조건 분기
+    status = 0
     if inbody_score < 80:
         if fat_control < 0 and muscle_control <= 0:
             status = 1 # 지방 감량
