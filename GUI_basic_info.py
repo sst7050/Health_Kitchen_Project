@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.font import Font
 import userInfo
-import os
+import subprocess
 
 class User_input(tk.Frame):
     def __init__(self, master=None):
@@ -91,7 +91,7 @@ class User_input(tk.Frame):
             # 저장하는 함수
             userInfo.save_user_info(user_info)
             messagebox.showinfo("성공", "정보가 성공적으로 저장되었습니다.")
-            # 분석하여 status를 json파일에 저장 후 출력
+            #분석하여 status를 json파일에 저장 후 출력
             status, exercise_recommendation = userInfo.update_inbody_status()
             if status == -1 or exercise_recommendation is None:
                 messagebox.showinfo("에러", "유효하지 않은 정보가 입력되었습니다. 다시 입력해주세요.")
@@ -101,7 +101,7 @@ class User_input(tk.Frame):
                 # 최근의 창 닫기
                 self.master.destroy()
                 # 메인메뉴 열기
-                os.system('python GUI_Sel_Food.py')
+                subprocess.run('python GUI_Sel_Food.py')
         else:
             self.create_widgets()
 
