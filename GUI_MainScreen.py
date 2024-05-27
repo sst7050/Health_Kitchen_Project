@@ -20,8 +20,15 @@ class MainScreen(tk.Frame):
         try:
             with open('user_info.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
-        except FileNotFoundError:
-            messagebox.showerror("오류", "사용자 정보 파일을 찾을 수 없습니다.")
+        except UnicodeDecodeError:
+            try:
+                with open('user_info.json', 'r', encoding='cp949') as file: 
+                    return json.load(file)
+            except Exception as e:
+                print(f"Failed to read the user info file: {e}")
+                return None
+        except Exception as e:
+            print(f"An error occurred: {e}")
             return None
     
     def check_time_limit(self):
