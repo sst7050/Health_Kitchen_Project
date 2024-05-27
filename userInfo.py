@@ -4,7 +4,7 @@ import os
 def read_user_info():
     file_path = "user_info.json"
     if os.path.exists(file_path):
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             user_info = json.load(file)
         return True, user_info
     else:
@@ -12,12 +12,12 @@ def read_user_info():
 
 def save_user_info(user_info):
     file_path = "user_info.json"
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(user_info, file, indent=4)
 
 def update_inbody_status():
     file_path = "user_info.json"
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
    
     inbody_score = float(data['inbody_score'])
@@ -107,9 +107,6 @@ def update_inbody_status():
             return None  # 조건에 맞지 않으면 None 반환
 
    
- 
-
-
     # status가 0이거나 else 값인 경우 JSON 파일에 저장하지 않음
     if status != -1:
         # status 업데이트
