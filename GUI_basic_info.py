@@ -10,7 +10,7 @@ class User_input(tk.Frame):
         self.master = master
         self.pack()
         self.create_widgets()  # 사용자 정보 입력 위젯 생성
-            
+           
     def create_widgets(self):
         for widget in self.winfo_children():
             widget.destroy()
@@ -21,6 +21,18 @@ class User_input(tk.Frame):
         self.gender_var = tk.StringVar()
         self.gender_entry = tk.OptionMenu(self, self.gender_var, "남성", "여성")
         self.gender_entry.pack()
+
+        self.bmi_label = tk.Label(self, text="당신의 BMI는 어떻게 되십니까?", font=self.customFont)
+        self.bmi_label.pack()
+        self.bmi_var = tk.StringVar()
+        self.bmi_entry = tk.OptionMenu(self, self.bmi_var, "표준", "저체중", "과체중", "심한과체중")
+        self.bmi_entry.pack()
+
+        self.body_fat_label = tk.Label(self, text="당신의 체지방률은 어떻게 되십니까?", font=self.customFont)
+        self.body_fat_label.pack()
+        self.body_fat_var = tk.StringVar()
+        self.body_fat_entry = tk.OptionMenu(self, self.body_fat_var, "표준", "경도비만", "비만", "해당없음")
+        self.body_fat_entry.pack()
 
         self.inbody_label = tk.Label(self, text="당신의 인바디 점수는 몇 점입니까?", font=self.customFont)
         self.inbody_label.pack()
@@ -51,7 +63,7 @@ class User_input(tk.Frame):
         self.save_button.pack()
 
     def save_and_show_info(self):
-        if not self.gender_var.get() or not self.inbody_entry.get().isdigit() or not self.is_float(self.ideal_weight_entry.get()) or not self.is_float(self.fat_control_entry.get()) or not self.is_float(self.muscle_control_entry.get()) or not self.age_entry.get().isdigit():
+        if not self.gender_var.get() or not self.inbody_entry.get().isdigit() or not self.is_float(self.ideal_weight_entry.get()) or not self.is_float(self.fat_control_entry.get()) or not self.is_float(self.muscle_control_entry.get()) or not self.age_entry.get().isdigit() or not self.bmi_var.get() or not self.body_fat_var.get():
             messagebox.showinfo("에러", "모든 정보를 올바르게 입력해주세요.")
             return
         self.gender = self.gender_var.get()
@@ -60,28 +72,36 @@ class User_input(tk.Frame):
         self.fat_control = self.fat_control_entry.get()
         self.muscle_control = self.muscle_control_entry.get()
         self.age = self.age_entry.get()
+        self.bmi = self.bmi_var.get()
+        self.body_fat = self.body_fat_var.get()
         for widget in self.winfo_children():
             widget.destroy()
-        result = messagebox.askyesno("입력 정보", f"성별: {self.gender}\n인바디 점수: {self.inbody_score}\n적정 체중: {self.ideal_weight}\n지방 조절 수치: {self.fat_control}\n근육 조절 수치: {self.muscle_control}\n나이: {self.age}\n해당 정보가 맞습니까?")
+        result = messagebox.askyesno("입력 정보", f"성별: {self.gender}\n인바디 점수: {self.inbody_score}\n적정 체중: {self.ideal_weight}\n지방 조절 수치: {self.fat_control}\n근육 조절 수치: {self.muscle_control}\n나이: {self.age}\nBMI: {self.bmi}\n체지방률: {self.body_fat}\n해당 정보가 맞습니까?")
         if result:
             user_info = {
-            "gender": self.gender,
-            "inbody_score": self.inbody_score,
-            "ideal_weight": self.ideal_weight,
-            "fat_control": self.fat_control,
-            "muscle_control": self.muscle_control,
-            "age": self.age
+                "gender": self.gender,
+                "inbody_score": self.inbody_score,
+                "ideal_weight": self.ideal_weight,
+                "fat_control": self.fat_control,
+                "muscle_control": self.muscle_control,
+                "age": self.age,
+                "bmi": self.bmi,
+                "body_fat": self.body_fat
             }
-            #저장하는 함수
+            # 저장하는 함수
             userInfo.save_user_info(user_info)
             messagebox.showinfo("성공", "정보가 성공적으로 저장되었습니다.")
             #분석하여 status를 json파일에 저장 후 출력
-            status = userInfo.update_inbody_status()
-            messagebox.showinfo("분석결과", f"당신의 상태는 {status} 입니다")
-            # 최근의 창 닫기
-            self.master.destroy()  
-            # 메인메뉴 열기
-            subprocess.run('python GUI_Sel_Food.py')  
+            status, exercise_recommendation = userInfo.update_inbody_status()
+            if status == -1 or exercise_recommendation is None:
+                messagebox.showinfo("에러", "유효하지 않은 정보가 입력되었습니다. 다시 입력해주세요.")
+                self.create_widgets()
+            else:
+                messagebox.showinfo("분석결과", f"코드 번호 {status} \n {exercise_recommendation}")
+                # 최근의 창 닫기
+                self.master.destroy()
+                # 메인메뉴 열기
+                subprocess.run('python GUI_Sel_Food.py')
         else:
             self.create_widgets()
 
@@ -97,4 +117,3 @@ root.geometry("800x600")  # 화면 크기를 조정하는 코드를 추가합니
 root.title("Health Kitchen")
 app = User_input(master=root)
 app.mainloop()
-

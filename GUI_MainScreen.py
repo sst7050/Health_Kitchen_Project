@@ -9,7 +9,7 @@ class MainScreen(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.grid(sticky="nsew")
+        self.grid(sticky="nsew")  # 부모 컨테이너를 채우도록 프레임 확장
         self.create_main_menu()
 
     def read_user_info(self):
@@ -74,6 +74,8 @@ class MainScreen(tk.Frame):
                         f"지방 조절 수치: {user_info['fat_control']} kg\n"
                         f"근육 조절 수치: {user_info['muscle_control']} kg\n"
                         f"나이: {user_info['age']} 세\n"
+                        f"BMI: {user_info['bmi']}\n"
+                        f"체지방률: {user_info['body_fat']}\n"
                         f"현재상태: {user_info['status']}\n"
                         f"선택한 음식: {user_info['selected_food']['food']}")
             messagebox.showinfo("사용자 정보", info_str)
@@ -86,10 +88,5 @@ class Application(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.main_menu = MainScreen(self.master)
-        self.main_menu.grid(sticky="nsew")
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = Application(master=root)
-    app.mainloop()
+        self.main_menu = MainScreen(self.master) # 메인 화면 인스턴스 생성
+        self.main_menu.grid(sticky="nsew") # 메인 화면을 그리드에 배치하여 확장
