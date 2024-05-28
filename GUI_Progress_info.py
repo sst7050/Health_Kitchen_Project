@@ -26,8 +26,10 @@ class ExerciseTracker(tk.Frame):
                     self.user_info['유산소'] = 0
                 if '무산소' not in self.user_info:
                     self.user_info['무산소'] = 0
+                if 'ingredient' not in self.user_info:
+                    self.user_info['ingredient'] = []
         except FileNotFoundError:
-            self.user_info = {"유산소": 0, "무산소": 0}
+            self.user_info = {"유산소": 0, "무산소": 0, "ingredient": []}
         self.save_user_info()
 
     def save_user_info(self):
@@ -108,10 +110,10 @@ class ExerciseTracker(tk.Frame):
             messagebox.showinfo("알림", "재료의 유통기한이 만료되었습니다.\n냉장고의 재료가 모두 사라집니다. 음식을 다시 선택해 주세요.")
             self.user_info['유산소'] = 0
             self.user_info['무산소'] = 0
+            self.user_info['ingredient'] = []
             self.save_user_info()
             self.master.after(100, self.relaunch_food_selection)
 
-            # TODO: 냉장고의 재료 없애기(json 파일의 재료 초기화)
         else:    
             try:
                 if exercise_type == "유산소":
@@ -134,6 +136,7 @@ class ExerciseTracker(tk.Frame):
                 entry_widget.delete(0, tk.END)
 
                 self.save_user_info()  # 업데이트된 값 저장
+                self.check_ingredient_collection()  # 재료 수집 체크
             except ValueError:
                 messagebox.showinfo("오류", "유효한 정수를 입력하세요.")
 
@@ -142,3 +145,18 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
         self.progress_anaerobic['value'] = self.user_info['무산소']
         self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
+
+    def check_ingredient_collection(self):
+        if self.user_info['유산소'] >= self.recommended_aerobic_time and self.user_info['무산소'] >= self.recommended_anaerobic_time:
+            next_ingredient_index = len(self.user_info['ingredient']) + 1
+            self.user_info['유산소'] = 0
+            self.user_info['무산소'] = 0
+            self.save_user_info()
+            ingredient_index = next_ingredient_index
+            self.user_info['ingredient'].append(f"{ingredient_index}.png")
+            self.save_user_info()
+                
+
+                    
+    
+
