@@ -152,11 +152,28 @@ class ExerciseTracker(tk.Frame):
             self.user_info['유산소'] = 0
             self.user_info['무산소'] = 0
             self.save_user_info()
-            ingredient_index = next_ingredient_index
-            self.user_info['ingredient'].append(f"{ingredient_index}.png")
-            self.save_user_info()
+            if next_ingredient_index <= 4:
+                ingredient_index = next_ingredient_index
+                ingredient_image_path = f"{self.user_info['selected_food']['details']['ingredient_path']}{ingredient_index}.png"
+                self.user_info['ingredient'].append(f"{ingredient_index}.png")
+                self.save_user_info()
+                self.show_ingredient_notification(ingredient_image_path, "재료가 냉장고에 추가되었습니다.")
                 
-
                     
-    
+                    
+    def show_ingredient_notification(self, ingredient_image_path, message):
+        notification_window = tk.Toplevel(self.master)
+        notification_window.title("재료 추가 알림")
+        notification_window.resizable(False, False)
+        notification_window.geometry("300x250")
 
+        # 이미지 표시
+        ingredient_image = Image.open(ingredient_image_path)
+        ingredient_photo = ImageTk.PhotoImage(ingredient_image)
+        ingredient_label = tk.Label(notification_window, image=ingredient_photo)
+        ingredient_label.image = ingredient_photo  # Keep a reference to the image to prevent garbage collection
+        ingredient_label.pack()
+        
+        # 메시지 표시
+        message_label = tk.Label(notification_window, text=message)
+        message_label.pack()
