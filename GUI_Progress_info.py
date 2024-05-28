@@ -158,7 +158,16 @@ class ExerciseTracker(tk.Frame):
                 self.user_info['ingredient'].append(f"{ingredient_index}.png")
                 self.save_user_info()
                 self.show_ingredient_notification(ingredient_image_path, "재료가 냉장고에 추가되었습니다.")
-                
+                if len(self.user_info['ingredient']) >= 4:
+                    messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
+                    self.user_info['ingredient']= [] #재료초기화
+                    if 'made_food' not in self.user_info:
+                        self.user_info['made_food'] = []
+                        self.save_user_info()
+                    made_food = self.user_info["selected_food"]["details"]["image"]
+                    self.user_info['made_food'].append(f"{made_food}")
+                    self.save_user_info()
+                    self.master.after(100, self.relaunch_food_selection)
                     
                     
     def show_ingredient_notification(self, ingredient_image_path, message):
