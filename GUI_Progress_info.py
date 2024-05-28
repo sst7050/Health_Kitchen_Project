@@ -58,20 +58,22 @@ class ExerciseTracker(tk.Frame):
         self.add_button_anaerobic.grid(row=1, column=2, padx=10, pady=10, sticky="ew")
 
         # 유산소 진척도 게이지 바
-        self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate')
+        self.recommended_aerobic_time = self.user_info['exercise_recommendation']['추천 유산소 운동']['시간'] * 7
+        self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_aerobic_time)
         self.progress_aerobic.grid(row=2, column=0, columnspan=3, pady=20, sticky="ew")
-        self.progress_label_aerobic = tk.Label(self, text=f"유산소: {self.user_info['유산소']}/100")
+        self.progress_label_aerobic = tk.Label(self, text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
         self.progress_label_aerobic.grid(row=2, column=3, padx=10, sticky="w")
 
         # 무산소 진척도 게이지 바
-        self.progress_anaerobic = ttk.Progressbar(self, length=700, mode='determinate')
+        self.recommended_anaerobic_time = self.user_info['exercise_recommendation']['추천 무산소 운동']['시간'] * 7
+        self.progress_anaerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_anaerobic_time)
         self.progress_anaerobic.grid(row=3, column=0, columnspan=3, pady=20, sticky="ew")
-        self.progress_label_anaerobic = tk.Label(self, text=f"무산소: {self.user_info['무산소']}/100")
+        self.progress_label_anaerobic = tk.Label(self, text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
         self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
         # 이미지 표시 (하단에 위치 조정)
         self.filepath = self.user_info["selected_food"]["details"]["image"]
-        self.image = ImageTk.PhotoImage(Image.open(self.filepath))  # 적절한 이미지 파일 경로로 변경하세요
+        self.image = ImageTk.PhotoImage(Image.open(self.filepath))
         self.image_label = tk.Label(self, image=self.image)
         self.image_label.grid(row=4, column=0, columnspan=4, pady=20, sticky="nsew")  # 위치를 row=4으로 변경
 
@@ -102,31 +104,33 @@ class ExerciseTracker(tk.Frame):
     def update_progress(self, exercise_type):
         limit_time = datetime.strptime(self.user_info['limit_time'], "%Y-%m-%d %H:%M:%S")
         current_time = datetime.now()
-        if(limit_time <= current_time):
+        if limit_time <= current_time:
             messagebox.showinfo("알림", "재료의 유통기한이 만료되었습니다.\n냉장고의 재료가 모두 사라집니다. 음식을 다시 선택해 주세요.")
             self.user_info['유산소'] = 0
             self.user_info['무산소'] = 0
             self.save_user_info()
             self.master.after(100, self.relaunch_food_selection)
 
-            #TODO: 냉장고의 재료 없애기(json 파일의 재료 초기화)
+            # TODO: 냉장고의 재료 없애기(json 파일의 재료 초기화)
         else:    
             try:
                 if exercise_type == "유산소":
                     entry_widget = self.entry_aerobic
                     progress_bar = self.progress_aerobic
                     label_widget = self.progress_label_aerobic
+                    recommended_time = self.recommended_aerobic_time
                 else:
                     entry_widget = self.entry_anaerobic
                     progress_bar = self.progress_anaerobic
                     label_widget = self.progress_label_anaerobic
+                    recommended_time = self.recommended_anaerobic_time
 
                 new_amount = int(entry_widget.get())
                 self.user_info[exercise_type] += new_amount
-                self.user_info[exercise_type] = min(self.user_info[exercise_type], 100)  # 최대 100으로 제한
+                self.user_info[exercise_type] = min(self.user_info[exercise_type], recommended_time)  # 최대 추천 시간을 기준으로 제한
 
                 progress_bar['value'] = self.user_info[exercise_type]
-                label_widget.config(text=f"{exercise_type}: {self.user_info[exercise_type]}/100")
+                label_widget.config(text=f"{exercise_type}: {self.user_info[exercise_type]}/{recommended_time}")
                 entry_widget.delete(0, tk.END)
 
                 self.save_user_info()  # 업데이트된 값 저장
@@ -135,6 +139,6 @@ class ExerciseTracker(tk.Frame):
 
     def update_progress_bars(self):
         self.progress_aerobic['value'] = self.user_info['유산소']
-        self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/100")
+        self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
         self.progress_anaerobic['value'] = self.user_info['무산소']
-        self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/100")
+        self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
