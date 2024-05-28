@@ -3,8 +3,9 @@ from tkinter import ttk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import subprocess
+import time
 
 
 class ExerciseTracker(tk.Frame):
@@ -151,6 +152,10 @@ class ExerciseTracker(tk.Frame):
             next_ingredient_index = len(self.user_info['ingredient']) + 1
             self.user_info['유산소'] = 0
             self.user_info['무산소'] = 0
+            timelimit_str = self.user_info['limit_time']
+            timelimit = datetime.strptime(timelimit_str, "%Y-%m-%d %H:%M:%S")
+            timelimit = timelimit + timedelta(weeks=1)
+            self.user_info['limit_time'] = timelimit.strftime("%Y-%m-%d %H:%M:%S")
             self.save_user_info()
             if next_ingredient_index <= 4:
                 ingredient_index = next_ingredient_index
@@ -158,6 +163,8 @@ class ExerciseTracker(tk.Frame):
                 self.user_info['ingredient'].append(f"{ingredient_index}.png")
                 self.save_user_info()
                 self.show_ingredient_notification(ingredient_image_path, "재료가 냉장고에 추가되었습니다.")
+                self.update_progress_bars()
+                time.sleep(0.3)
                 if len(self.user_info['ingredient']) >= 4:
                     messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
                     self.user_info['ingredient']= [] #재료초기화
