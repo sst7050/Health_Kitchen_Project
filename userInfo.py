@@ -7,7 +7,7 @@ def read_user_info():
         with open(file_path, 'r', encoding='utf-8') as file:
             user_info = json.load(file)
             if 'level' not in user_info:
-                user_info['level'] = '아이언'
+                user_info['level'] = '주방 견습생'
                 user_info['made_food_count'] = 0
         return True, user_info
     except UnicodeDecodeError:
@@ -15,7 +15,7 @@ def read_user_info():
             with open(file_path, 'r', encoding='cp949') as file:
                 user_info = json.load(file)
                 if 'level' not in user_info:
-                    user_info['level'] = '아이언'
+                    user_info['level'] = '주방 견습생'
                 if 'made_food_count' not in user_info:
                     user_info['made_food_count'] = 0
             return True, user_info
@@ -32,23 +32,23 @@ def save_user_info(user_info):
         json.dump(user_info, file, ensure_ascii=False, indent=4)
 
 def update_level(user_info):
-    level = user_info.get('level', '아이언')
+    level = user_info.get('level', '주방 견습생')
     made_food_count = user_info.get('made_food_count', 0)
     
     new_level = None
 
-    if level == '아이언' and made_food_count == 1:
-        user_info['level'] = '브론즈'
-    elif level == '브론즈' and made_food_count == 3:
-        user_info['level'] = '실버'
-    elif level == '실버' and made_food_count == 5:
-        user_info['level'] = '골드'
-    elif level == '골드' and made_food_count == 8:
-        user_info['level'] = '플래티넘'
-    elif level == '플래티넘' and made_food_count == 12:
-        user_info['level'] = '다이아몬드'
-    elif level == '다이아몬드' and made_food_count == 17:
-        user_info['level'] = '마스터'
+    if level == '주방 견습생' and made_food_count == 1:
+        user_info['level'] = '초급 요리사'
+    elif level == '초급 요리사' and made_food_count == 3:
+        user_info['level'] = '중급 요리사'
+    elif level == '중급 요리사' and made_food_count == 5:
+        user_info['level'] = '주방장'
+    elif level == '주방장' and made_food_count == 8:
+        user_info['level'] = '요리의 달인'
+    elif level == '요리의 달인' and made_food_count == 12:
+        user_info['level'] = '요리왕 비룡'
+    elif level == '요리왕 비룡' and made_food_count == 17:
+        user_info['level'] = '고든 램지'
 
     return user_info['level']
 
