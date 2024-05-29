@@ -14,4 +14,3 @@ def check_user_info_and_launch():
 
 if __name__ == "__main__":
     check_user_info_and_launch()
-
