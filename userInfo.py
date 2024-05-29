@@ -28,7 +28,10 @@ def save_user_info(user_info):
     file_path = "user_info.json"
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(user_info, file, ensure_ascii=False, indent=4)
-
+def update_level(user_info): #랭크 분류 함수
+    level = user_info.get('level', '브론즈')
+    made_food_count = user_info.get('made_food_count', 0)
+    
 def update_inbody_status():
     file_path = "user_info.json"
     with open(file_path, 'r', encoding='utf-8') as file:
