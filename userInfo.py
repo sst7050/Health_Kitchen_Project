@@ -13,6 +13,9 @@ def read_user_info():
         try:
             with open(file_path, 'r', encoding='cp949') as file:
                 user_info = json.load(file)
+                if 'level' not in user_info:
+                    user_info['level'] = '브론즈'
+                    user_info['made_food_count'] = 0
             return True, user_info
         except Exception as e:
             print(f"Failed to read the user info file: {e}")
