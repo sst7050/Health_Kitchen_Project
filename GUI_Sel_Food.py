@@ -42,23 +42,23 @@ class FoodSelectionFrame(tk.Frame):
             subprocess.run(['python', 'GUI_Main.py'])
             
     def select_food(self, food, info):
-        success, user_info = userInfo.read_user_info()  # 사용자 정보 읽기
+        success, user_info = userInfo.read_user_info()
         if not success:
-            messagebox.showinfo("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.") #json파일이 없을 경우
+            messagebox.showinfo("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.")
             self.master.after(100, self.relaunch_Main)
             return
-        
-        user_info['selected_food'] = { # 선택한 음식 정보 추가
+
+        user_info['selected_food'] = {
             'food': food,
             'details': info
         }
-        #제한시간 추가
-        timelimit = datetime.now() + timedelta(weeks= 1)
+    # 제한시간 추가
+        timelimit = datetime.now() + timedelta(weeks=1)
         timelimit = timelimit.strftime("%Y-%m-%d %H:%M:%S")
         user_info['limit_time'] = timelimit
-        user_info['ingredient'] = []
-        userInfo.save_user_info(user_info)  # 정보 저장
-        self.switch_frame_callback(FoodDetailFrame, info["detail_name"], info)  # 상세 정보 화면으로 전환
+        user_info['ingredient'] = []  # 재료 초기화
+        userInfo.save_user_info(user_info)
+        self.switch_frame_callback(FoodDetailFrame, info["detail_name"], info) # 상세 정보 화면으로 전환
 
 class FoodDetailFrame(tk.Frame):
     def __init__(self, master, go_back_callback):

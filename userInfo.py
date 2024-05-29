@@ -1,5 +1,6 @@
 import json
 
+
 def read_user_info():
     file_path = "user_info.json"
     try:
@@ -75,7 +76,8 @@ def update_inbody_status():
             status = 5 # 지방 유지, 근육 유지
         
    
-  
+    # BMI와 체지방률에 따른 조건 분기
+
     def get_exercise_recommendation(status):
         if bmi == "과체중" and status == 2 and body_fat == "경도비만":
             return {

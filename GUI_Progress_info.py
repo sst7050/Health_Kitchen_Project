@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 import subprocess
 import time
 import GUI_Rank
-from userInfo import update_level
 
 
 class ExerciseTracker(tk.Frame):
