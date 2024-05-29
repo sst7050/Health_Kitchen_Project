@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import subprocess
 import time
 import GUI_Rank
+from userInfo import update_level
 
 
 class ExerciseTracker(tk.Frame):
@@ -147,7 +148,8 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
         self.progress_anaerobic['value'] = self.user_info['무산소']
         self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
-
+    from userInfo import update_level
+    
     def check_ingredient_collection(self):
         if self.user_info['유산소'] >= self.recommended_aerobic_time and self.user_info['무산소'] >= self.recommended_anaerobic_time:
             next_ingredient_index = len(self.user_info['ingredient']) + 1
@@ -174,8 +176,10 @@ class ExerciseTracker(tk.Frame):
                         self.save_user_info()
                     made_food = self.user_info["selected_food"]["details"]["image"]
                     self.user_info['made_food'].append(f"{made_food}")
+                    self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
+                    new_level = update_level(self.user_info)  # 레벨 업데이트
                     self.save_user_info()
-                    GUI_Rank.show_rank_up_message()  # 레벨 업 메시지 호출
+                    GUI_Rank.show_rank_up_message(new_level)  # 레벨 업 메시지 호출
                     self.master.after(100, self.relaunch_food_selection)
                     
     def show_ingredient_notification(self, ingredient_image_path, message):
