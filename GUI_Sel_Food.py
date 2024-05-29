@@ -56,6 +56,7 @@ class FoodSelectionFrame(tk.Frame):
         timelimit = datetime.now() + timedelta(weeks= 1)
         timelimit = timelimit.strftime("%Y-%m-%d %H:%M:%S")
         user_info['limit_time'] = timelimit
+        user_info['ingredient'] = []
         userInfo.save_user_info(user_info)  # 정보 저장
         self.switch_frame_callback(FoodDetailFrame, info["detail_name"], info)  # 상세 정보 화면으로 전환
 
