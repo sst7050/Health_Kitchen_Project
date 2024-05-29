@@ -148,39 +148,39 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
         self.progress_anaerobic['value'] = self.user_info['무산소']
         self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
-    from userInfo import update_level
-    
-    def check_ingredient_collection(self):
-        if self.user_info['유산소'] >= self.recommended_aerobic_time and self.user_info['무산소'] >= self.recommended_anaerobic_time:
-            next_ingredient_index = len(self.user_info['ingredient']) + 1
-            self.user_info['유산소'] = 0
-            self.user_info['무산소'] = 0
-            timelimit_str = self.user_info['limit_time']
-            timelimit = datetime.strptime(timelimit_str, "%Y-%m-%d %H:%M:%S")
-            timelimit = timelimit + timedelta(weeks=1)
-            self.user_info['limit_time'] = timelimit.strftime("%Y-%m-%d %H:%M:%S")
+from userInfo import update_level
+
+def check_ingredient_collection(self):
+    if self.user_info['유산소'] >= self.recommended_aerobic_time and self.user_info['무산소'] >= self.recommended_anaerobic_time:
+        next_ingredient_index = len(self.user_info['ingredient']) + 1
+        self.user_info['유산소'] = 0
+        self.user_info['무산소'] = 0
+        timelimit_str = self.user_info['limit_time']
+        timelimit = datetime.strptime(timelimit_str, "%Y-%m-%d %H:%M:%S")
+        timelimit = timelimit + timedelta(weeks=1)
+        self.user_info['limit_time'] = timelimit.strftime("%Y-%m-%d %H:%M:%S")
+        self.save_user_info()
+        if next_ingredient_index <= 4:
+            ingredient_index = next_ingredient_index
+            ingredient_image_path = f"{self.user_info['selected_food']['details']['ingredient_path']}{ingredient_index}.png"
+            self.user_info['ingredient'].append(f"{ingredient_index}.png")
             self.save_user_info()
-            if next_ingredient_index <= 4:
-                ingredient_index = next_ingredient_index
-                ingredient_image_path = f"{self.user_info['selected_food']['details']['ingredient_path']}{ingredient_index}.png"
-                self.user_info['ingredient'].append(f"{ingredient_index}.png")
+            self.show_ingredient_notification(ingredient_image_path, "재료가 냉장고에 추가되었습니다.")
+            self.update_progress_bars()
+            time.sleep(0.3)
+            if len(self.user_info['ingredient']) >= 4:
+                messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
+                self.user_info['ingredient'] = []  # 재료 초기화
+                if 'made_food' not in self.user_info:
+                    self.user_info['made_food'] = []
+                made_food = self.user_info["selected_food"]["details"]["image"]
+                self.user_info['made_food'].append(f"{made_food}")
+                self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
+                new_level, level_changed = update_level(self.user_info)  # 레벨 업데이트
                 self.save_user_info()
-                self.show_ingredient_notification(ingredient_image_path, "재료가 냉장고에 추가되었습니다.")
-                self.update_progress_bars()
-                time.sleep(0.3)
-                if len(self.user_info['ingredient']) >= 4:
-                    messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
-                    self.user_info['ingredient'] = []  # 재료 초기화
-                    if 'made_food' not in self.user_info:
-                        self.user_info['made_food'] = []
-                        self.save_user_info()
-                    made_food = self.user_info["selected_food"]["details"]["image"]
-                    self.user_info['made_food'].append(f"{made_food}")
-                    self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
-                    new_level = update_level(self.user_info)  # 레벨 업데이트
-                    self.save_user_info()
+                if level_changed:
                     GUI_Rank.show_rank_up_message(new_level)  # 레벨 업 메시지 호출
-                    self.master.after(100, self.relaunch_food_selection)
+                self.master.after(100, self.relaunch_food_selection)
                     
     def show_ingredient_notification(self, ingredient_image_path, message):
         notification_window = tk.Toplevel(self.master)

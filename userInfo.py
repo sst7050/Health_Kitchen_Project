@@ -28,12 +28,15 @@ def save_user_info(user_info):
     file_path = "user_info.json"
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(user_info, file, ensure_ascii=False, indent=4)
-def update_level(user_info):
-    current_level = user_info.get('level', '브론즈')
+        
+def update_level(user_info): #랭크 시스템 함수
+    current_level = user_info.get('level', None)
     made_food_count = user_info.get('made_food_count', 0)
     new_level = current_level
 
-    if current_level == '브론즈' and made_food_count >= 3:
+    if current_level is None and made_food_count >= 1:
+        new_level = '브론즈'
+    elif current_level == '브론즈' and made_food_count >= 3:
         new_level = '실버'
     elif current_level == '실버' and made_food_count >= 5:
         new_level = '골드'
