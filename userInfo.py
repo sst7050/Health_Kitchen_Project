@@ -5,6 +5,9 @@ def read_user_info():
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             user_info = json.load(file)
+            if 'level' not in user_info:
+                user_info['level'] = '브론즈'
+                user_info['made_food_count'] = 0
         return True, user_info
     except UnicodeDecodeError:
         try:

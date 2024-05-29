@@ -6,6 +6,7 @@ import json
 from datetime import datetime, timedelta
 import subprocess
 import time
+import GUI_Rank
 
 
 class ExerciseTracker(tk.Frame):
@@ -167,15 +168,15 @@ class ExerciseTracker(tk.Frame):
                 time.sleep(0.3)
                 if len(self.user_info['ingredient']) >= 4:
                     messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
-                    self.user_info['ingredient']= [] #재료초기화
+                    self.user_info['ingredient'] = []  # 재료 초기화
                     if 'made_food' not in self.user_info:
                         self.user_info['made_food'] = []
                         self.save_user_info()
                     made_food = self.user_info["selected_food"]["details"]["image"]
                     self.user_info['made_food'].append(f"{made_food}")
                     self.save_user_info()
+                    GUI_Rank.show_rank_up_message()  # 레벨 업 메시지 호출
                     self.master.after(100, self.relaunch_food_selection)
-                    
                     
     def show_ingredient_notification(self, ingredient_image_path, message):
         notification_window = tk.Toplevel(self.master)
