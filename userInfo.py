@@ -31,7 +31,19 @@ def save_user_info(user_info):
 def update_level(user_info): #랭크 분류 함수
     level = user_info.get('level', '브론즈')
     made_food_count = user_info.get('made_food_count', 0)
-    
+    if level == '브론즈' and made_food_count >= 3:
+        user_info['level'] = '실버'
+    elif level == '실버' and made_food_count >= 5:
+        user_info['level'] = '골드'
+    elif level == '골드' and made_food_count >= 8:
+        user_info['level'] = '플래티넘'
+    elif level == '플래티넘' and made_food_count >= 12:
+        user_info['level'] = '다이아몬드'
+    elif level == '다이아몬드' and made_food_count >= 17:
+        user_info['level'] = '마스터'
+
+    return user_info['level']
+
 def update_inbody_status():
     file_path = "user_info.json"
     with open(file_path, 'r', encoding='utf-8') as file:
