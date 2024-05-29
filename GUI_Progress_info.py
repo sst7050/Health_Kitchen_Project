@@ -173,13 +173,13 @@ def check_ingredient_collection(self):
                 self.user_info['ingredient'] = []  # 재료 초기화
                 if 'made_food' not in self.user_info:
                     self.user_info['made_food'] = []
+                    self.save_user_info()
                 made_food = self.user_info["selected_food"]["details"]["image"]
                 self.user_info['made_food'].append(f"{made_food}")
                 self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
-                new_level, level_changed = update_level(self.user_info)  # 레벨 업데이트
+                new_level = update_level(self.user_info)  # 레벨 업데이트
                 self.save_user_info()
-                if level_changed:
-                    GUI_Rank.show_rank_up_message(new_level)  # 레벨 업 메시지 호출
+                GUI_Rank.show_rank_up_message(new_level)  # 레벨 업 메시지 호출
                 self.master.after(100, self.relaunch_food_selection)
                     
     def show_ingredient_notification(self, ingredient_image_path, message):

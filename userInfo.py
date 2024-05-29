@@ -28,29 +28,23 @@ def save_user_info(user_info):
     file_path = "user_info.json"
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(user_info, file, ensure_ascii=False, indent=4)
-        
-def update_level(user_info): #랭크 시스템 함수
-    current_level = user_info.get('level', None)
+
+def update_level(user_info):
+    level = user_info.get('level', '브론즈')
     made_food_count = user_info.get('made_food_count', 0)
-    new_level = current_level
 
-    if current_level is None and made_food_count >= 1:
-        new_level = '브론즈'
-    elif current_level == '브론즈' and made_food_count >= 3:
-        new_level = '실버'
-    elif current_level == '실버' and made_food_count >= 5:
-        new_level = '골드'
-    elif current_level == '골드' and made_food_count >= 8:
-        new_level = '플래티넘'
-    elif current_level == '플래티넘' and made_food_count >= 12:
-        new_level = '다이아몬드'
-    elif current_level == '다이아몬드' and made_food_count >= 17:
-        new_level = '마스터'
+    if level == '브론즈' and made_food_count >= 3:
+        user_info['level'] = '실버'
+    elif level == '실버' and made_food_count >= 5:
+        user_info['level'] = '골드'
+    elif level == '골드' and made_food_count >= 8:
+        user_info['level'] = '플래티넘'
+    elif level == '플래티넘' and made_food_count >= 12:
+        user_info['level'] = '다이아몬드'
+    elif level == '다이아몬드' and made_food_count >= 17:
+        user_info['level'] = '마스터'
 
-    level_changed = (new_level != current_level)
-    user_info['level'] = new_level
-
-    return new_level, level_changed
+    return user_info['level']
 
 def update_inbody_status():
     file_path = "user_info.json"
