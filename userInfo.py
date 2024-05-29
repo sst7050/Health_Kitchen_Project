@@ -7,7 +7,7 @@ def read_user_info():
         with open(file_path, 'r', encoding='utf-8') as file:
             user_info = json.load(file)
             if 'level' not in user_info:
-                user_info['level'] = '브론즈'
+                user_info['level'] = '아이언'
                 user_info['made_food_count'] = 0
         return True, user_info
     except UnicodeDecodeError:
@@ -15,7 +15,8 @@ def read_user_info():
             with open(file_path, 'r', encoding='cp949') as file:
                 user_info = json.load(file)
                 if 'level' not in user_info:
-                    user_info['level'] = '브론즈'
+                    user_info['level'] = '아이언'
+                if 'made_food_count' not in user_info:
                     user_info['made_food_count'] = 0
             return True, user_info
         except Exception as e:
@@ -31,18 +32,22 @@ def save_user_info(user_info):
         json.dump(user_info, file, ensure_ascii=False, indent=4)
 
 def update_level(user_info):
-    level = user_info.get('level', '브론즈')
+    level = user_info.get('level', '아이언')
     made_food_count = user_info.get('made_food_count', 0)
+    
+    new_level = None
 
-    if level == '브론즈' and made_food_count >= 3:
+    if level == '아이언' and made_food_count == 1:
+        user_info['level'] = '브론즈'
+    elif level == '브론즈' and made_food_count == 3:
         user_info['level'] = '실버'
-    elif level == '실버' and made_food_count >= 5:
+    elif level == '실버' and made_food_count == 5:
         user_info['level'] = '골드'
-    elif level == '골드' and made_food_count >= 8:
+    elif level == '골드' and made_food_count == 8:
         user_info['level'] = '플래티넘'
-    elif level == '플래티넘' and made_food_count >= 12:
+    elif level == '플래티넘' and made_food_count == 12:
         user_info['level'] = '다이아몬드'
-    elif level == '다이아몬드' and made_food_count >= 17:
+    elif level == '다이아몬드' and made_food_count == 17:
         user_info['level'] = '마스터'
 
     return user_info['level']
@@ -76,22 +81,7 @@ def update_inbody_status():
             status = 5 # 지방 유지, 근육 유지
         
    
-    # BMI와 체지방률에 따른 조건 분기
-    """def get_exercise_recommendation(status):
-        if bmi == "과체중" and status == 2 and body_fat == "경도비만":
-            return f'현재 상태: 과체중, 경도비만 \n 추천 목표: 지방 감량 및 근육 증량 \n 추천 유산소 운동: 러닝(하루에 {30}분) 추천 무산소 운동: 고강도(하루에 {30}분)'
-        elif bmi == "심한과체중" and status == 2 and body_fat == "비만":
-            return f'현재 상태: 심한과체중, 비만 \n 추천 목표: 지방 감량 및 근육 증량 \n 추천 유산소 운동: 걷기(하루에 {60}분) 추천 무산소 운동: 고강도(하루에 {30}분)'
-        elif bmi == "과체중" and status == 6 and body_fat == "경도비만":
-            return f'현재 상태: 과체중, 경도비만 \n 추천 목표: 지방 감량, 근육 유지 \n 추천 유산소 운동: 러닝(하루에 {30}분) 추천 무산소 운동: 중강도(하루에 {45}분)'
-        elif bmi == "심한과체중" and status == 6 and body_fat == "비만":
-            return f'현재 상태: 심한과체중, 비만 \n 추천 목표: 지방 감량, 근육 유지 \n 추천 유산소 운동: 걷기(하루에 {60}분) 추천 무산소 운동: 저강도(하루에 {45}분)'
-        elif bmi == "표준" and status == 5 and body_fat == "표준":
-            return f'현재 상태: 표준 \n 추천 목표: 지방 유지, 근육 유지 \n 추천 유산소 운동: 걷기(하루에 {30}분) 추천 무산소 운동: 저강도(하루에 {45}분)'
-        elif bmi == "저체중" and status == 4 and body_fat == "해당없음":
-            return f'현재 상태: 저체중 \n 추천 목표: 지방 증량, 근육 증량 \n 추천 유산소 운동: 계단 오르기(하루에 {30}분) 추천 무산소 운동: 고강도 (하루에 {30}분)'
-        else:
-            status = -1  # 조건에 맞지 않으면 status를 -1으로 설정"""
+    
     def get_exercise_recommendation(status):
         if bmi == "과체중" and status == 2 and body_fat == "경도비만":
             return {

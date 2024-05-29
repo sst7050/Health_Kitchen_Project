@@ -178,8 +178,22 @@ class ExerciseTracker(tk.Frame):
                     self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
                     new_level = update_level(self.user_info)  # 레벨 업데이트
                     self.save_user_info()
-                    GUI_Rank.show_rank_up_message(new_level)  # 레벨 업 메시지 호출
+                    if new_level:
+                        if new_level == '브론즈' and self.user_info['made_food_count'] == 1:
+                            GUI_Rank.show_rank_up_message('브론즈')
+                        elif new_level == '실버' and self.user_info['made_food_count'] == 3:
+                            GUI_Rank.show_rank_up_message('실버')
+                        elif new_level == '골드' and self.user_info['made_food_count'] == 6:
+                            GUI_Rank.show_rank_up_message('골드')
+                        elif new_level == '플래티넘' and self.user_info['made_food_count'] == 10:
+                            GUI_Rank.show_rank_up_message('플래티넘')
+                        elif new_level == '다이아몬드' and self.user_info['made_food_count'] == 15:
+                            GUI_Rank.show_rank_up_message('다이아몬드')
+                        elif new_level == '마스터' and self.user_info['made_food_count'] == 21:
+                            GUI_Rank.show_rank_up_message('마스터')
+                    #GUI_Rank.show_rank_up_message(new_level)# 레벨 업 메시지 호출
                     self.master.after(100, self.relaunch_food_selection)
+                   
                     
     def show_ingredient_notification(self, ingredient_image_path, message):
         notification_window = tk.Toplevel(self.master)
