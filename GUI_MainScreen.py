@@ -107,7 +107,9 @@ class MainScreen(tk.Frame):
                         f"체지방률: {user_info['body_fat']}\n"
                         f"현재상태: {user_info['status']}\n"
                         f"선택한 음식: {user_info['selected_food']['food']}\n"
-                        f"유통기한: {user_info['limit_time']}")
+                        f"유통기한: {user_info['limit_time']}"
+                        f"레벨: {user_info['level']}\n"
+                        f"만든 음식 수: {user_info['made_food_count']}")
             messagebox.showinfo("사용자 정보", info_str)
 
 class Application(tk.Frame):
@@ -125,4 +127,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = Application(master=root)
     root.mainloop()
-
