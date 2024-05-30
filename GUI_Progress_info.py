@@ -102,7 +102,7 @@ class ExerciseTracker(tk.Frame):
 
     def relaunch_food_selection(self):
         self.master.destroy()
-        self.main_screen.master.destroy()  # Close the MainScreen window
+        self.main_screen.master.destroy()  # MainScreen 창 닫기
         subprocess.run(['python', 'GUI_Sel_Food.py'])
 
     def update_progress(self, exercise_type):
@@ -205,7 +205,7 @@ class ExerciseTracker(tk.Frame):
         ingredient_image = Image.open(ingredient_image_path)
         ingredient_photo = ImageTk.PhotoImage(ingredient_image)
         ingredient_label = tk.Label(notification_window, image=ingredient_photo)
-        ingredient_label.image = ingredient_photo  # Keep a reference to the image to prevent garbage collection
+        ingredient_label.image = ingredient_photo  # 이미지를 참조하여 쓰레기 수집 방지
         ingredient_label.pack()
         
         # 메시지 표시
