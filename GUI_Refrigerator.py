@@ -1,5 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import json
+import os
 
 class RefrigeratorScreen(tk.Frame):
     def __init__(self, master=None, main_screen=None):
@@ -7,7 +9,13 @@ class RefrigeratorScreen(tk.Frame):
         self.master = master
         self.main_screen = main_screen
         self.grid(sticky="nsew")
+        self.selected_food_info = self.load_selected_food_info()
         self.create_widgets()
+
+    def load_selected_food_info(self):
+        with open("user_info.json", "r", encoding="utf-8") as file:
+            user_info = json.load(file)
+        return user_info.get("selected_food", {})
 
     def create_widgets(self):
         self.master.title("냉장고")
@@ -24,24 +32,22 @@ class RefrigeratorScreen(tk.Frame):
         self.canvas.create_image(0, 0, anchor="nw", image=self.bg_image)
         self.canvas.grid(row=0, column=0, rowspan=4, columnspan=4, sticky="nsew")
 
-        # 재료 이미지 로드 및 배치
-        self.ingredient_images_paths = [
-            "img/food/Burger/ingredient/1.png", 
-            "img/food/Burger/ingredient/2.png", 
-            "img/food/Burger/ingredient/3.png", 
-            "img/food/Burger/ingredient/4.png"
-        ]
-        self.ingredient_images = []  # 이미지를 저장할 리스트
-        
-        for idx, img_path in enumerate(self.ingredient_images_paths):
-            img = Image.open(img_path)
-            img = img.resize((150, 150), Image.LANCZOS)  # 이미지 크기를 150x150으로 조정
-            photo_img = ImageTk.PhotoImage(img)
-            # 각 이미지의 x, y 좌표 설정
-            x_offset = 200 if idx % 2 == 0 else 500
-            y_offset = 200 if idx // 2 == 0 else 400
-            self.canvas.create_image(x_offset, y_offset, anchor="nw", image=photo_img)
-            self.ingredient_images.append(photo_img)  # 이미지 리스트에 추가하여 참조 유지
+        # 선택된 음식의 재료 이미지 로드 및 배치
+        ingredient_path = self.selected_food_info.get("details", {}).get("ingredient_path", "")
+        if ingredient_path:
+            self.ingredient_images = []  # 이미지를 저장할 리스트
+            ingredient_files = sorted(os.listdir(ingredient_path))  # 재료 이미지 파일 리스트
+
+            for idx, img_file in enumerate(ingredient_files):
+                img_path = os.path.join(ingredient_path, img_file)
+                img = Image.open(img_path)
+                img = img.resize((150, 150), Image.LANCZOS)  # 이미지 크기를 150x150으로 조정
+                photo_img = ImageTk.PhotoImage(img)
+                # 각 이미지의 x, y 좌표 설정
+                x_offset = 200 if idx % 2 == 0 else 500
+                y_offset = 200 if idx // 2 == 0 else 400
+                self.canvas.create_image(x_offset, y_offset, anchor="nw", image=photo_img)
+                self.ingredient_images.append(photo_img)  # 이미지 리스트에 추가하여 참조 유지
 
 if __name__ == "__main__":
     root = tk.Tk()
