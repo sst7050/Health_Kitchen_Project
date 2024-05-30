@@ -25,13 +25,23 @@ class RefrigeratorScreen(tk.Frame):
         self.canvas.grid(row=0, column=0, rowspan=4, columnspan=4, sticky="nsew")
 
         # 재료 이미지 로드 및 배치
-        self.ingredient_images = ["img/food/Burger/ingredient/1.png", "img/food/Burger/ingredient/2.png", "img/food/Burger/ingredient/3.png", "img/food/Burger/ingredient/4.png"]
-        for idx, img_path in enumerate(self.ingredient_images):
+        self.ingredient_images_paths = [
+            "img/food/Burger/ingredient/1.png", 
+            "img/food/Burger/ingredient/2.png", 
+            "img/food/Burger/ingredient/3.png", 
+            "img/food/Burger/ingredient/4.png"
+        ]
+        self.ingredient_images = []  # 이미지를 저장할 리스트
+        
+        for idx, img_path in enumerate(self.ingredient_images_paths):
             img = Image.open(img_path)
-            img = img.resize((100, 100), Image.LANCZOS)
+            img = img.resize((150, 150), Image.LANCZOS)  # 이미지 크기를 150x150으로 조정
             photo_img = ImageTk.PhotoImage(img)
-            self.canvas.create_image((idx % 2) * 200 + 300, (idx // 2) * 200 + 150, anchor="nw", image=photo_img)
-            self.canvas.image = photo_img  # 이미지가 가비지 컬렉션에 의해 제거되지 않도록 참조 유지
+            # 각 이미지의 x, y 좌표 설정
+            x_offset = 200 if idx % 2 == 0 else 500
+            y_offset = 200 if idx // 2 == 0 else 400
+            self.canvas.create_image(x_offset, y_offset, anchor="nw", image=photo_img)
+            self.ingredient_images.append(photo_img)  # 이미지 리스트에 추가하여 참조 유지
 
 if __name__ == "__main__":
     root = tk.Tk()
