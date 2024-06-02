@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from GUI_Progress_info import ExerciseTracker
 from GUI_Refrigerator import RefrigeratorScreen
+from GUI_Made_Food import MadeFoodScreen
 import userInfo
 
 class MainScreen(tk.Frame):
@@ -53,6 +54,7 @@ class MainScreen(tk.Frame):
         self.about_image = ImageTk.PhotoImage(Image.open("img/about_btn.png"))
         self.fridge_image = ImageTk.PhotoImage(Image.open("img/fridge_btn.png"))
         self.progress_image = ImageTk.PhotoImage(Image.open("img/progress_btn.png"))
+        self.made_food_image = ImageTk.PhotoImage(Image.open("img/made_food_btn.png"))
         
         # 배경 이미지 로드
         self.background_image = Image.open("img/Main_background.png")
@@ -87,6 +89,11 @@ class MainScreen(tk.Frame):
         self.about_button = tk.Button(self, command=self.show_about, fg="yellow", image=self.about_image, compound='center', bd=0, highlightthickness = 0, font=_font)
         self.canvas.create_window(500, 100, anchor="nw", window=self.about_button)
         self.about_button.place(x=1013, y=619)
+        
+        # 만든 음식 버튼 추가
+        self.made_food_button = tk.Button(self, command=self.made_food, image=self.made_food_image, compound='center', bd=0, highlightthickness = 0, font=_font)
+        self.canvas.create_window(700, 100, anchor="nw", window=self.made_food_button)
+        self.made_food_button.place(x=120, y=420)
 
         # 종료 버튼 추가
         self.quit_button = tk.Button(self, text="종료", command=self.master.quit, width=10, height=3, bg="SystemButtonFace", bd=0)
@@ -122,6 +129,12 @@ class MainScreen(tk.Frame):
                         f"레벨: {user_info['level']}\n"
                         f"만든 음식 수: {user_info['made_food_count']}")
             messagebox.showinfo("사용자 정보", info_str)
+    
+    def made_food(self):
+        # 만든 음식을 보여주기 위한 새 창 열기
+        made_food_window = tk.Toplevel(self.master)
+        made_food_window.title("만든 음식 목록")
+        MadeFoodScreen(master=made_food_window).grid(sticky="nsew")
 
 class Application(tk.Frame):
     def __init__(self, master=None):
