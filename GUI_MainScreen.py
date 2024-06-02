@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from GUI_Progress_info import ExerciseTracker
 from GUI_Refrigerator import RefrigeratorScreen
+from GUI_Made_Food import MadeFoodScreen
 import userInfo
 
 class MainScreen(tk.Frame):
@@ -43,7 +44,6 @@ class MainScreen(tk.Frame):
                 user_info["무산소"] = 0
                 userInfo.save_user_info(user_info)
                 self.master.after(100, self.relaunch_food_selection)
-                #TODO: 냉장고의 재료 없애기(json 파일의 재료 초기화)
 
     def relaunch_food_selection(self):
         self.master.destroy()
@@ -52,6 +52,10 @@ class MainScreen(tk.Frame):
     def create_main_menu(self):
         # 버튼 이미지 로드
         self.about_image = ImageTk.PhotoImage(Image.open("img/about_btn.png"))
+        self.fridge_image = ImageTk.PhotoImage(Image.open("img/fridge_btn.png"))
+        self.progress_image = ImageTk.PhotoImage(Image.open("img/progress_btn.png"))
+        self.made_food_image = ImageTk.PhotoImage(Image.open("img/made_food_btn.png"))
+        
         # 배경 이미지 로드
         self.background_image = Image.open("img/Main_background.png")
         self.bg_image = ImageTk.PhotoImage(self.background_image)
@@ -69,21 +73,29 @@ class MainScreen(tk.Frame):
         self.canvas = tk.Canvas(self, width=self.bg_image.width(), height=self.bg_image.height())
         self.canvas.create_image(0, 0, anchor="nw", image=self.bg_image)
         self.canvas.grid(row=0, column=0, rowspan=4, columnspan=4, sticky="nsew")
-        self.master.wm_attributes("-transparentcolor", "white")
         _font = font.Font(family="Ubuntu", weight='bold')
-        # 버튼 추가
-        self.start_button = tk.Button(self, text="냉장고", command=self.open_fridge, bg="#DDDCDA", bd=0,font=_font)
+        
+        # 냉장고 버튼 추가
+        self.start_button = tk.Button(self, command=self.open_fridge, image=self.fridge_image, compound='center', bd=0, highlightthickness = 0, font=_font)
         self.canvas.create_window(100, 100, anchor="nw", window=self.start_button)
-        self.start_button.place(x=1200, y = 350, width=100, height=250)
+        self.start_button.place(x=1189, y=349)
 
-        self.progress_button = tk.Button(self, text="운동진행상황", command=self.progress_info, bg="#333333", fg="blue",bd=0,font=_font)
+        # 운동 진행 상황 버튼 추가
+        self.progress_button = tk.Button(self, command=self.progress_info, image=self.progress_image, compound='center', bd=0, highlightthickness = 0, font=_font)
         self.canvas.create_window(300, 100, anchor="nw", window=self.progress_button)
-        self.progress_button.place(x=566, y = 473, width=315, height=175)
+        self.progress_button.place(x=566, y=473)
 
-        self.about_button = tk.Button(self, text="사용자 정보", command=self.show_about, fg = "yellow", image=self.about_image, bd=0, compound='center',font=_font)
+        # 사용자 정보 버튼 추가
+        self.about_button = tk.Button(self, command=self.show_about, fg="yellow", image=self.about_image, compound='center', bd=0, highlightthickness = 0, font=_font)
         self.canvas.create_window(500, 100, anchor="nw", window=self.about_button)
-        self.about_button.place(x=1015, y = 620)
+        self.about_button.place(x=1013, y=619)
+        
+        # 만든 음식 버튼 추가
+        self.made_food_button = tk.Button(self, command=self.made_food, image=self.made_food_image, compound='center', bd=0, highlightthickness = 0, font=_font)
+        self.canvas.create_window(700, 100, anchor="nw", window=self.made_food_button)
+        self.made_food_button.place(x=120, y=420)
 
+        # 종료 버튼 추가
         self.quit_button = tk.Button(self, text="종료", command=self.master.quit, width=10, height=3, bg="SystemButtonFace", bd=0)
         self.canvas.create_window(700, 100, anchor="nw", window=self.quit_button)
 
@@ -117,6 +129,12 @@ class MainScreen(tk.Frame):
                         f"레벨: {user_info['level']}\n"
                         f"만든 음식 수: {user_info['made_food_count']}")
             messagebox.showinfo("사용자 정보", info_str)
+    
+    def made_food(self):
+        # 만든 음식을 보여주기 위한 새 창 열기
+        made_food_window = tk.Toplevel(self.master)
+        made_food_window.title("만든 음식 목록")
+        MadeFoodScreen(master=made_food_window).grid(sticky="nsew")
 
 class Application(tk.Frame):
     def __init__(self, master=None):
