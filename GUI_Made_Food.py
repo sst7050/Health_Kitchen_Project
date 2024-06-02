@@ -7,6 +7,7 @@ class MadeFoodScreen(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
+        self.master.minsize(400, 400)  # 창 최소 크기 설정
         self.grid(sticky="nsew")
         self.images = []  # 이미지 객체를 참조하기 위한 리스트
         self.create_widgets()
@@ -20,10 +21,10 @@ class MadeFoodScreen(tk.Frame):
             self.food_items = user_info['made_food']
             self.display_food_items()
         else:
-            tk.Label(self, text="만든 음식 목록이 없습니다.", anchor="center", justify="left").grid(row=0, column=0, padx=10, pady=10, columnspan=4, sticky="nsew")
-
-        self.close_button = tk.Button(self, text="닫기", command=self.master.destroy)
-        self.close_button.grid(row=100, column=0, columnspan=4, pady=10)
+            self.no_food_label = tk.Label(self, text="만든 음식이 없습니다.", anchor="center", justify="center")
+            self.no_food_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+            self.grid_rowconfigure(0, weight=1)
+            self.grid_columnconfigure(0, weight=1)
 
     def read_user_info(self):
         try:
@@ -68,7 +69,15 @@ class MadeFoodScreen(tk.Frame):
                 col = 0
                 row += 1
 
+        for i in range(row + 1):
+            self.grid_rowconfigure(i, weight=1)
+        for j in range(max_cols):
+            self.grid_columnconfigure(j, weight=1)
+
 if __name__ == "__main__":
     root = tk.Tk()
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_columnconfigure(0, weight=1)
     app = MadeFoodScreen(master=root)
+    app.grid(sticky="nsew")
     root.mainloop()
