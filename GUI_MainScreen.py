@@ -104,9 +104,9 @@ class MainScreen(tk.Frame):
 
         # 랭크 이미지 추가
         rank_images = [
-            self.images['kitchen_apprentice'],
-            self.images['beginner_chef'],
-            self.images['intermediate_chef'],
+           '주방 견습생': self.images['kitchen_apprentice'],
+            '초급 요리사': self.images['beginner_chef'],
+            '중급 요리사': self.images['intermediate_chef'],
             self.images['head_chef'],
             self.images['master_of_cooking'],
             self.images['cooking_king_birong'],
