@@ -216,4 +216,7 @@ class ExerciseTracker(tk.Frame):
     def auto_create_food(self):
         messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
         self.user_info['ingredient'] = []  # 재료 초기화
-        
+        if 'made_food' not in self.user_info:
+            self.user_info['made_food'] = []
+        made_food = self.user_info["selected_food"]["details"]["image"]["details"]["image"]
+        self.user_info['made_food'].append(f"{made_food}")
