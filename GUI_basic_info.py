@@ -16,12 +16,6 @@ class User_input(tk.Frame):
             widget.destroy()
         self.customFont = Font(family="Helvetica", size=12)  # 폰트 설정
 
-        self.gender_label = tk.Label(self, text="당신의 성별은 무엇입니까?", font=self.customFont)
-        self.gender_label.pack()
-        self.gender_var = tk.StringVar()
-        self.gender_entry = tk.OptionMenu(self, self.gender_var, "남성", "여성")
-        self.gender_entry.pack()
-
         self.bmi_label = tk.Label(self, text="당신의 BMI는 어떻게 되십니까?", font=self.customFont)
         self.bmi_label.pack()
         self.bmi_var = tk.StringVar()
@@ -39,11 +33,6 @@ class User_input(tk.Frame):
         self.inbody_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
         self.inbody_entry.pack()
 
-        self.ideal_weight_label = tk.Label(self, text="당신의 적정 체중은 몇 kg 입니까? 소수점을 포함하여 입력해 주세요.", font=self.customFont)
-        self.ideal_weight_label.pack()
-        self.ideal_weight_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
-        self.ideal_weight_entry.pack()
-
         self.fat_control_label = tk.Label(self, text="당신의 지방 조절 수치는 몇 kg 입니까? 소수점을 포함하여 입력해 주세요.", font=self.customFont)
         self.fat_control_label.pack()
         self.fat_control_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
@@ -53,11 +42,6 @@ class User_input(tk.Frame):
         self.muscle_control_label.pack()
         self.muscle_control_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
         self.muscle_control_entry.pack()
-
-        self.age_label = tk.Label(self, text="당신의 연령은 어떻게 되십니까? 만 나이를 입력해 주세요", font=self.customFont)
-        self.age_label.pack()
-        self.age_entry = tk.Entry(self, width=20)  # 엔트리 너비 설정
-        self.age_entry.pack()
 
         self.save_button = tk.Button(self, text="저장", command=self.save_and_show_info, bg="lightblue", fg="black")  # 버튼 색상 변경
         self.save_button.pack()

@@ -115,12 +115,10 @@ class MainScreen(tk.Frame):
     def show_about(self):
         user_info = self.read_user_info()
         if user_info:
-            info_str = (f"성별: {user_info['gender']}\n"
+            info_str = (
                         f"인바디 점수: {user_info['inbody_score']}\n"
-                        f"적정 체중: {user_info['ideal_weight']} kg\n"
                         f"지방 조절 수치: {user_info['fat_control']} kg\n"
                         f"근육 조절 수치: {user_info['muscle_control']} kg\n"
-                        f"나이: {user_info['age']} 세\n"
                         f"BMI: {user_info['bmi']}\n"
                         f"체지방률: {user_info['body_fat']}\n"
                         f"현재상태: {user_info['status']}\n"
