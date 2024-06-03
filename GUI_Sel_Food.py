@@ -13,13 +13,13 @@ class FoodSelectionFrame(tk.Frame):
 
     def create_widgets(self):  # 음식 리스트 및 위젯 생성
         food_list = {
-            "햄버거": {"image": "img/food/Burger/Burger.png", "duration": "2개월", "price": "20000원", "detail_name": "햄버거", "ingredient_path" : "img/food/Burger/ingredient/"},
-            "치킨": {"image": "img/food/Chicken/Chicken.png", "duration": "2개월", "price": "20000원", "detail_name": "치킨", "ingredient_path" : "img/food/Chicken/ingredient/"},
-            "파스타": {"image": "img/food/Pasta/Pasta.png", "duration": "2개월", "price": "20000원", "detail_name": "파스타", "ingredient_path" : "img/food/Pasta/ingredient/"},
-            "필라프": {"image": "img/food/Pilaf/Pilaf.png", "duration": "2개월", "price": "19000원", "detail_name": "필라프", "ingredient_path" : "img/food/Pilaf/ingredient/"},
-            "피자": {"image": "img/food/Pizza/Pizza.png", "duration": "2개월", "price": "20000원", "detail_name": "피자", "ingredient_path" : "img/food/Pizza/ingredient/"},
-            "스테이크": {"image": "img/food/Steak/Steak.png", "duration": "2개월", "price": "18000원", "detail_name": "스테이크", "ingredient_path" : "img/food/Steak/ingredient/"},
-            "스튜": {"image": "img/food/Stew/Stew.png", "duration": "2개월", "price": "19000원", "detail_name": "스튜", "ingredient_path" : "img/food/Stew/ingredient/"}
+            "햄버거": {"image": "img/food/Burger/Burger.png",  "detail_name": "햄버거", "ingredient_path" : "img/food/Burger/ingredient/"},
+            "치킨": {"image": "img/food/Chicken/Chicken.png",  "detail_name": "치킨", "ingredient_path" : "img/food/Chicken/ingredient/"},
+            "파스타": {"image": "img/food/Pasta/Pasta.png",  "detail_name": "파스타", "ingredient_path" : "img/food/Pasta/ingredient/"},
+            "필라프": {"image": "img/food/Pilaf/Pilaf.png", "detail_name": "필라프", "ingredient_path" : "img/food/Pilaf/ingredient/"},
+            "피자": {"image": "img/food/Pizza/Pizza.png",  "detail_name": "피자", "ingredient_path" : "img/food/Pizza/ingredient/"},
+            "스테이크": {"image": "img/food/Steak/Steak.png", "detail_name": "스테이크", "ingredient_path" : "img/food/Steak/ingredient/"},
+            "스튜": {"image": "img/food/Stew/Stew.png", "detail_name": "스튜", "ingredient_path" : "img/food/Stew/ingredient/"}
         }
 
         row = 0
