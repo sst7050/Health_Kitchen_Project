@@ -230,4 +230,9 @@ class ExerciseTracker(tk.Frame):
                 GUI_Rank.show_rank_up_message('중급 요리사')
             elif new_level == '주방장' and self.user_info['made_food_count'] == 6:
                 GUI_Rank.show_rank_up_message('주방장')
-            
+            elif new_level == '요리의 달인' and self.user_info['made_food_count'] == 10:
+                GUI_Rank.show_rank_up_message('요리의 달인')
+            elif new_level == '요리왕 비룡' and self.user_info['made_food_count'] == 15:
+                GUI_Rank.show_rank_up_message('요리왕 비룡')
+            elif new_level == '고든 램지' and self.user_info['made_food_count'] == 21:
+                GUI_Rank.show_rank_up_message('고든 램지')
