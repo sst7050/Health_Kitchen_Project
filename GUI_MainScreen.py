@@ -1,3 +1,4 @@
+
 import tkinter as tk
 import tkinter.font as font
 from tkinter import messagebox
@@ -103,7 +104,7 @@ class MainScreen(tk.Frame):
             self.canvas.create_window(x, y, anchor="nw", window=button)
 
         # 랭크 이미지 추가
-        rank_images = [
+        rank_images = {
            '주방 견습생': self.images['kitchen_apprentice'],
             '초급 요리사': self.images['beginner_chef'],
             '중급 요리사': self.images['intermediate_chef'],
@@ -111,11 +112,23 @@ class MainScreen(tk.Frame):
             '요리의 달인': self.images['master_of_cooking'],
             '요리왕 비룡': self.images['cooking_king_birong'],
             '고든 램지': self.images['gordon_ramsey'],
-        ]
-         selected_rank_image = rank_images.get(user_level, self.images['kitchen_apprentice'])
+        }
+        
+        rank_image_positions = {
+            '주방 견습생': (220, 245),
+            '초급 요리사': (120, 220),
+            '중급 요리사': (260, 245),
+            '주방장': (280, 245),
+            '요리의 달인': (300, 245),
+            '요리왕 비룡': (320, 245),
+            '고든 램지': (340, 245),
+        }
+        
+        selected_rank_image = rank_images.get(user_level, self.images['kitchen_apprentice'])
+        selected_rank_position = rank_image_positions.get(user_level, (220, 245))
         
         # 선택된 랭크 이미지 추가
-        self.canvas.create_image(200, 700, anchor="nw", image=selected_rank_image)
+        self.canvas.create_image(*selected_rank_position, anchor="nw", image=selected_rank_image)
         
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
