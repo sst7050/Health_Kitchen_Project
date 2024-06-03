@@ -97,7 +97,8 @@ class User_input(tk.Frame):
                 messagebox.showinfo("에러", "유효하지 않은 정보가 입력되었습니다. 다시 입력해주세요.")
                 self.create_widgets()
             else:
-                messagebox.showinfo("분석결과", f"코드 번호 {status} \n {exercise_recommendation}")
+                messagebox.showinfo("분석결과", f"{exercise_recommendation['추천 무산소 운동']['종류']} {exercise_recommendation['추천 무산소 운동']['시간']}분, \n{exercise_recommendation['추천 유산소 운동']['종류']} {exercise_recommendation['추천 유산소 운동']['시간']}분이 당신에게 적합한 운동량입니다.")
+
                 # 최근의 창 닫기
                 self.master.destroy()
                 # 메인메뉴 열기
