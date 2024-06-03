@@ -219,4 +219,15 @@ class ExerciseTracker(tk.Frame):
         if 'made_food' not in self.user_info:
             self.user_info['made_food'] = []
         made_food = self.user_info["selected_food"]["details"]["image"]["details"]["image"]
-        self.user_info['made_food'].append(f"{made_food}")
+        self.user_info['made_food'].append(f"{made_food}") 
+        self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
+        new_level = update_level(self.user_info)  # 레벨 업데이트
+        self.save_user_info()
+        if new_level:
+            if new_level == '초급 요리사' and self.user_info['made_food_count'] == 1:
+                GUI_Rank.show_rank_up_message('초급 요리사')
+            elif new_level == '중급 요리사' and self.user_info['made_food_count'] == 3:
+                GUI_Rank.show_rank_up_message('중급 요리사')
+            elif new_level == '주방장' and self.user_info['made_food_count'] == 6:
+                GUI_Rank.show_rank_up_message('주방장')
+            
