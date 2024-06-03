@@ -107,10 +107,10 @@ class MainScreen(tk.Frame):
            '주방 견습생': self.images['kitchen_apprentice'],
             '초급 요리사': self.images['beginner_chef'],
             '중급 요리사': self.images['intermediate_chef'],
-            self.images['head_chef'],
-            self.images['master_of_cooking'],
-            self.images['cooking_king_birong'],
-            self.images['gordon_ramsey'],
+            '주방장': self.images['head_chef'],
+            '요리의 달인': self.images['master_of_cooking'],
+            '요리왕 비룡': self.images['cooking_king_birong'],
+            '고든 램지': self.images['gordon_ramsey'],
         ]
          selected_rank_image = rank_images.get(user_level, self.images['kitchen_apprentice'])
         
