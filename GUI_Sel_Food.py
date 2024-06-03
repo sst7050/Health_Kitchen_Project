@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import subprocess
+from tkinter.font import Font
 from datetime import datetime, timedelta
 import userInfo
 
@@ -21,15 +22,15 @@ class FoodSelectionFrame(tk.Frame):
             "스테이크": {"image": "img/food/Steak/Steak.png", "detail_name": "스테이크", "ingredient_path" : "img/food/Steak/ingredient/"},
             "스튜": {"image": "img/food/Stew/Stew.png", "detail_name": "스튜", "ingredient_path" : "img/food/Stew/ingredient/"}
         }
-
+        self.pont= Font(family="Helvetica", size=12)
         row = 0
         col = 0
         for food, info in food_list.items():
             img = tk.PhotoImage(file=info["image"])  # 이미지 로드
             button = tk.Button(self, image=img, command=lambda f=food, i=info: self.select_food(f, i))  # 버튼에 음식 선택 명령 연결
             button.image = img  # 이미지 참조 유지
-            button.grid(row=row, column=col, padx=10, pady=10)  # 버튼 위치 설정
-            label = tk.Label(self, text=food)  # 음식 이름 레이블
+            button.grid(row=row, column=col, padx=30, pady=(10, 0))  # 버튼 위치 설정
+            label = tk.Label(self, text=food, font=self.pont, padx=30, pady=10)  # 음식 이름 레이블
             label.grid(row=row+1, column=col, sticky=tk.N)  # 레이블 위치 설정
             
             col += 1  # 열 위치 조정
@@ -67,7 +68,7 @@ class FoodSelectionFrame(tk.Frame):
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("800x600")  # 창 크기 설정
+        self.resizable(False, False)
         self.current_frame = None
         self.switch_frame(FoodSelectionFrame)  # 초기 프레임 설정
 
