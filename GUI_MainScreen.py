@@ -55,6 +55,10 @@ class MainScreen(tk.Frame):
         self.fridge_image = ImageTk.PhotoImage(Image.open("img/fridge_btn.png"))
         self.progress_image = ImageTk.PhotoImage(Image.open("img/progress_btn.png"))
         self.made_food_image = ImageTk.PhotoImage(Image.open("img/made_food_btn.png"))
+        self.kitchen_apprentice = ImageTk.PhotoImage(Image.open("img/chef/kitchen_apprentice-removebg-preview.png"))
+        self.beginner_chef = ImageTk.PhotoImage(Image.open("img/chef/beginner_chef-removebg-preview.png"))
+        self.intermediate_chef = ImageTk.PhotoImage(Image.open("img/chef/intermediate_chef-removebg-preview.png"))
+        
         
         # 배경 이미지 로드
         self.background_image = Image.open("img/Main_background.png")
@@ -99,14 +103,15 @@ class MainScreen(tk.Frame):
         self.quit_button = tk.Button(self, text="종료", command=self.master.quit, width=10, height=3, bg="SystemButtonFace", bd=0)
         self.canvas.create_window(700, 100, anchor="nw", window=self.quit_button)
 
+        # 랭크 이미지 추가
+
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
         fridge_window = tk.Toplevel(self.master)
         RefrigeratorScreen(master=fridge_window, main_screen=self).grid(sticky="nsew")
 
     #def start_info_input(self):
-    #   messagebox.showinfo("알림", "이 프로그램은 당신의 인바디 '분석 평가'(결과지의 우측 부분)의 일부 항목값을 입력받아 그 값을 토대로 적정 체중이 되도록 돕거나 유지시켜주는 프로그램 입니다. 따라서 다음 질문에 답 하기 전에 먼저 인바디 검사를 받고, 해당 검사지를 출력하여 준비해 주시기 바랍니다. 만약 인바디 검사지가 준비되셨다면, 질문에 솔직하게 답변 해 주세요.")
-
+    
     def progress_info(self):
         # 운동진행상황을 보여주기 위한 새 창 열기
         progress_window = tk.Toplevel(self.master)
