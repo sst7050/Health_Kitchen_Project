@@ -58,6 +58,10 @@ class MainScreen(tk.Frame):
         self.kitchen_apprentice = ImageTk.PhotoImage(Image.open("img/chef/kitchen_apprentice-removebg-preview.png"))
         self.beginner_chef = ImageTk.PhotoImage(Image.open("img/chef/beginner_chef-removebg-preview.png"))
         self.intermediate_chef = ImageTk.PhotoImage(Image.open("img/chef/intermediate_chef-removebg-preview.png"))
+        self.head_chef = ImageTk.PhotoImage(Image.open("img/chef/head_chef-removebg-preview.png"))
+        self.master_of_cooking = ImageTk.PhotoImage(Image.open("img/chef/master_of_cooking-removebg-preview.png"))
+        self.Cooking_King_Birong = ImageTk.PhotoImage(Image.open("img/chef/Cooking_King_Biryong-removebg-preview.png"))
+        self.gordon_ramsey = ImageTk.PhotoImage(Image.open("img/chef/gordon_ramsey-removebg-preview.png"))
         
         
         # 배경 이미지 로드
