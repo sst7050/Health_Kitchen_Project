@@ -211,3 +211,9 @@ class ExerciseTracker(tk.Frame):
         # 메시지 표시
         message_label = tk.Label(notification_window, text=message)
         message_label.pack()
+
+        ####아래 부분은 추후에 테스트용으로 생성될 버튼에 관한 코드입니다.
+    def auto_create_food(self):
+        messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
+        self.user_info['ingredient'] = []  # 재료 초기화
+        
