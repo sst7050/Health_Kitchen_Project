@@ -47,15 +47,15 @@ class User_input(tk.Frame):
         self.save_button.pack()
 
     def save_and_show_info(self):
-        if not self.gender_var.get() or not self.inbody_entry.get().isdigit() or not self.is_float(self.ideal_weight_entry.get()) or not self.is_float(self.fat_control_entry.get()) or not self.is_float(self.muscle_control_entry.get()) or not self.age_entry.get().isdigit() or not self.bmi_var.get() or not self.body_fat_var.get():
+        if not self.inbody_entry.get().isdigit() or not self.is_float(self.fat_control_entry.get()) or not self.is_float(self.muscle_control_entry.get()) or not self.bmi_var.get() or not self.body_fat_var.get():
             messagebox.showinfo("에러", "모든 정보를 올바르게 입력해주세요.")
             return
-        self.gender = self.gender_var.get()
+        #self.gender = self.gender_var.get()
         self.inbody_score = self.inbody_entry.get()
-        self.ideal_weight = self.ideal_weight_entry.get()
+        #self.ideal_weight = self.ideal_weight_entry.get()
         self.fat_control = self.fat_control_entry.get()
         self.muscle_control = self.muscle_control_entry.get()
-        self.age = self.age_entry.get()
+        #self.age = self.age_entry.get()
         self.bmi = self.bmi_var.get()
         self.body_fat = self.body_fat_var.get()
         for widget in self.winfo_children():
@@ -63,12 +63,10 @@ class User_input(tk.Frame):
         result = messagebox.askyesno("입력 정보", f"인바디 점수: {self.inbody_score}\n지방 조절 수치: {self.fat_control}\n근육 조절 수치: {self.muscle_control}\nBMI: {self.bmi}\n체지방률: {self.body_fat}\n해당 정보가 맞습니까?")
         if result:
             user_info = {
-                "gender": self.gender,
+                
                 "inbody_score": self.inbody_score,
-                "ideal_weight": self.ideal_weight,
                 "fat_control": self.fat_control,
                 "muscle_control": self.muscle_control,
-                "age": self.age,
                 "bmi": self.bmi,
                 "body_fat": self.body_fat
             }
