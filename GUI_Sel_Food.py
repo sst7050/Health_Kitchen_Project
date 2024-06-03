@@ -45,7 +45,7 @@ class FoodSelectionFrame(tk.Frame):
     def select_food(self, food, info):
         success, user_info = userInfo.read_user_info()  # 사용자 정보 읽기
         if not success:
-            messagebox.showinfo("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.") #json파일이 없을 경우
+            messagebox.showerror("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.") #json파일이 없을 경우
             self.master.after(100, self.relaunch_Main)
             return
         response = messagebox.askyesno("확인", f"{food}을(를) 선택하시겠습니까?")
