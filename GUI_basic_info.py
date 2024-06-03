@@ -60,7 +60,7 @@ class User_input(tk.Frame):
         self.body_fat = self.body_fat_var.get()
         for widget in self.winfo_children():
             widget.destroy()
-        result = messagebox.askyesno("입력 정보", f"성별: {self.gender}\n인바디 점수: {self.inbody_score}\n적정 체중: {self.ideal_weight}\n지방 조절 수치: {self.fat_control}\n근육 조절 수치: {self.muscle_control}\n나이: {self.age}\nBMI: {self.bmi}\n체지방률: {self.body_fat}\n해당 정보가 맞습니까?")
+        result = messagebox.askyesno("입력 정보", f"인바디 점수: {self.inbody_score}\n지방 조절 수치: {self.fat_control}\n근육 조절 수치: {self.muscle_control}\nBMI: {self.bmi}\n체지방률: {self.body_fat}\n해당 정보가 맞습니까?")
         if result:
             user_info = {
                 "gender": self.gender,
