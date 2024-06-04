@@ -142,6 +142,12 @@ class MainScreen(tk.Frame):
             messagebox.showinfo("Error", "선택된 음식이 없습니다. 음식을 먼저 선택해 주세요.")
             return
         
+        user_info['ingredient'].append(selected_food)
+        user_info['made_food_count'] = user_info.get('made_food_count', 0) + 1
+        userInfo.update_level(user_info)  # 레벨 업데이트
+        userInfo.save_user_info(user_info)  # 정보 저장
+        messagebox.showinfo("Success", f"{selected_food['food']} 생성 완료!")
+        
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
         fridge_window = tk.Toplevel(self.master)
