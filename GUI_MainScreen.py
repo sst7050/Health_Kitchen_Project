@@ -130,13 +130,18 @@ class MainScreen(tk.Frame):
         
         # 선택된 랭크 이미지 추가
         self.canvas.create_image(*selected_rank_position, anchor="nw", image=selected_rank_image)
-        
+   
+    #음식 생성기 함수  
     def generate_food(self):
         success, user_info = userInfo.read_user_info()  # 사용자 정보 읽기
         if not success:
             messagebox.showinfo("Error", "사용자 정보를 불러오지 못했습니다. 처음부터 다시 시작해 주세요.")
             return
-        #함수 추가 부분
+        selected_food = user_info.get('selected_food')
+        if not selected_food:
+            messagebox.showinfo("Error", "선택된 음식이 없습니다. 음식을 먼저 선택해 주세요.")
+            return
+        
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
         fridge_window = tk.Toplevel(self.master)
