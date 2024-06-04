@@ -65,6 +65,11 @@ def check_user_info_and_launch():
                     exit()
     else:
         subprocess.run('python GUI_MainScreen.py')
+def show_main_screen():
+    root = tk.Tk()
+    root.geometry("800x600")
+    root.title("메인 스크린")
 
+    
 if __name__ == "__main__":
     check_user_info_and_launch()

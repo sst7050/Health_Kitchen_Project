@@ -92,6 +92,7 @@ class MainScreen(tk.Frame):
             "progress": (self.progress_info, self.images['progress'], 566, 473),
             "about": (self.show_about, self.images['about'], 1013, 619),
             "made_food": (self.made_food, self.images['made_food'], 120, 420),
+            "generate_food": (self.generate_food, "음식 생성기", 700, 100),  # 음식 생성기 버튼 추가
             "quit": (self.master.quit, "종료", 700, 100)
         }
         
@@ -130,6 +131,12 @@ class MainScreen(tk.Frame):
         # 선택된 랭크 이미지 추가
         self.canvas.create_image(*selected_rank_position, anchor="nw", image=selected_rank_image)
         
+    def generate_food(self):
+        success, user_info = userInfo.read_user_info()  # 사용자 정보 읽기
+        if not success:
+            messagebox.showinfo("Error", "사용자 정보를 불러오지 못했습니다. 처음부터 다시 시작해 주세요.")
+            return
+        #함수 추가 부분
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
         fridge_window = tk.Toplevel(self.master)
@@ -177,3 +184,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = Application(master=root)
     root.mainloop()
+
