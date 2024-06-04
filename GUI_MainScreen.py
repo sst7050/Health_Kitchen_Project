@@ -92,15 +92,10 @@ class MainScreen(tk.Frame):
             "progress": (self.progress_info, self.images['progress'], 566, 473),
             "about": (self.show_about, self.images['about'], 1013, 619),
             "made_food": (self.made_food, self.images['made_food'], 120, 420),
-            "generate_food": (self.generate_food, "음식 생성기", 700, 100),  # 음식 생성기 버튼 추가
-            "quit": (self.master.quit, "종료", 800, 100)
         }
 
         for key, (command, image, x, y) in buttons.items():
-            if key == "generate_food" or key == "quit":
-                button = tk.Button(self, text=image, command=command, width=10, height=3, bg="SystemButtonFace", bd=0)
-            else:
-                button = tk.Button(self, command=command, image=image, compound='center', bd=0, highlightthickness=0, font=_font)
+            button = tk.Button(self, command=command, image=image, compound='center', bd=0, highlightthickness=0, font=_font)
             self.canvas.create_window(x, y, anchor="nw", window=button)
 
         # 랭크 이미지 추가
@@ -129,23 +124,6 @@ class MainScreen(tk.Frame):
         
         # 선택된 랭크 이미지 추가
         self.canvas.create_image(*selected_rank_position, anchor="nw", image=selected_rank_image)
-
-    def generate_food(self):
-        success, user_info = userInfo.read_user_info()  # 사용자 정보 읽기
-        if not success:
-            messagebox.showinfo("Error", "사용자 정보를 불러오지 못했습니다. 처음부터 다시 시작해 주세요.")
-            return
-
-        selected_food = user_info.get('selected_food')
-        if not selected_food:
-            messagebox.showinfo("Error", "선택된 음식이 없습니다. 음식을 먼저 선택해 주세요.")
-            return
-        
-        user_info['ingredient'].append(selected_food)
-        user_info['made_food_count'] = user_info.get('made_food_count', 0) + 1
-        userInfo.update_level(user_info)  # 레벨 업데이트
-        userInfo.save_user_info(user_info)  # 정보 저장
-        messagebox.showinfo("Success", f"{selected_food['food']} 생성 완료!")
 
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
