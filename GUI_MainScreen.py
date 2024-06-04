@@ -95,10 +95,6 @@ class MainScreen(tk.Frame):
         self.canvas.create_window(700, 100, anchor="nw", window=self.made_food_button)
         self.made_food_button.place(x=120, y=420)
 
-        # 종료 버튼 추가
-        self.quit_button = tk.Button(self, text="종료", command=self.master.quit, width=10, height=3, bg="SystemButtonFace", bd=0)
-        self.canvas.create_window(700, 100, anchor="nw", window=self.quit_button)
-
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
         fridge_window = tk.Toplevel(self.master)

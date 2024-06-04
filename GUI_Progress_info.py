@@ -140,7 +140,7 @@ class ExerciseTracker(tk.Frame):
                 self.save_user_info()  # 업데이트된 값 저장
                 self.check_ingredient_collection()  # 재료 수집 체크
             except ValueError:
-                messagebox.showinfo("오류", "유효한 정수를 입력하세요.")
+                messagebox.showwarning("오류", "유효한 정수를 입력하세요.")
 
     def update_progress_bars(self):
         self.progress_aerobic['value'] = self.user_info['유산소']
