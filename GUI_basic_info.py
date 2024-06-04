@@ -14,7 +14,7 @@ class User_input(tk.Frame):
     def create_widgets(self):
         for widget in self.winfo_children():
             widget.destroy()
-        self.customFont = Font(family="Helvetica", size=12)  # 폰트 설정
+        self.customFont = Font(family="Helvetica", size=13)  # 폰트 설정
 
         self.bmi_label = tk.Label(self, text="당신의 BMI는 어떻게 되십니까?", font=self.customFont)
         self.bmi_label.pack()
@@ -44,11 +44,11 @@ class User_input(tk.Frame):
         self.muscle_control_entry.pack()
 
         self.save_button = tk.Button(self, text="저장", command=self.save_and_show_info, bg="lightblue", fg="black")  # 버튼 색상 변경
-        self.save_button.pack()
+        self.save_button.pack(ipadx=50, ipady=7)
 
     def save_and_show_info(self):
         if not self.inbody_entry.get().isdigit() or not self.is_float(self.fat_control_entry.get()) or not self.is_float(self.muscle_control_entry.get()) or not self.bmi_var.get() or not self.body_fat_var.get():
-            messagebox.showinfo("에러", "모든 정보를 올바르게 입력해주세요.")
+            messagebox.showwarning("에러", "모든 정보를 올바르게 입력해주세요.")
             return
         #self.gender = self.gender_var.get()
         self.inbody_score = self.inbody_entry.get()
@@ -76,10 +76,11 @@ class User_input(tk.Frame):
             #분석하여 status를 json파일에 저장 후 출력
             status, exercise_recommendation = userInfo.update_inbody_status()
             if status == -1 or exercise_recommendation is None:
-                messagebox.showinfo("에러", "유효하지 않은 정보가 입력되었습니다. 다시 입력해주세요.")
+                messagebox.showwarning("에러", "유효하지 않은 정보가 입력되었습니다. 다시 입력해주세요.")
                 self.create_widgets()
             else:
-                messagebox.showinfo("분석결과", f"코드 번호 {status} \n {exercise_recommendation}")
+                messagebox.showinfo("분석결과", f"{exercise_recommendation['추천 무산소 운동']['종류']} {exercise_recommendation['추천 무산소 운동']['시간']}분, \n{exercise_recommendation['추천 유산소 운동']['종류']} {exercise_recommendation['추천 유산소 운동']['시간']}분이 당신에게 적합한 운동량입니다.")
+
                 # 최근의 창 닫기
                 self.master.destroy()
                 # 메인메뉴 열기
@@ -96,6 +97,7 @@ class User_input(tk.Frame):
 
 root = tk.Tk()
 root.geometry("800x600")  # 화면 크기를 조정하는 코드를 추가합니다.
+root.resizable(False, False)
 root.title("Health Kitchen")
 app = User_input(master=root)
 app.mainloop()
