@@ -154,10 +154,16 @@ class MainScreen(tk.Frame):
             messagebox.showinfo("사용자 정보", info_str)
     
     def made_food(self):
-        self.close_current_window()
-        self.open_window = tk.Toplevel(self.master)
-        self.open_window.title("만든 음식 목록")
-        MadeFoodScreen(master=self.open_window).grid(sticky="nsew")
+        # 만든 음식이 있는지 확인 후 창 열기
+        user_info = self.read_user_info()
+        if user_info and 'made_food' in user_info and user_info['made_food']:
+            made_food_window = tk.Toplevel(self.master)
+            made_food_window.title("만든 음식 목록")
+            MadeFoodScreen(master=made_food_window).grid(sticky="nsew")
+        else:
+            messagebox.showerror("에러", "만든 음식이 없습니다.")
+
+
 
     def close_current_window(self):
         if self.open_window:
