@@ -50,23 +50,23 @@ class ExerciseTracker(tk.Frame):
         self.add_button_aerobic = tk.Button(self, text="유산소 추가", command=lambda: self.update_progress("유산소"))
         self.add_button_aerobic.grid(row=0, column=2, padx=10, pady=10, sticky="ew")
 
+        # 유산소 진척도 게이지 바
+        self.recommended_aerobic_time = self.user_info['exercise_recommendation']['추천 유산소 운동']['시간'] * 7
+        self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_aerobic_time)
+        self.progress_aerobic.grid(row=1, column=0, columnspan=3, pady=20, sticky="ew")
+        self.progress_label_aerobic = tk.Label(self, text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}")
+        self.progress_label_aerobic.grid(row=1, column=3, padx=10, sticky="w")
+
         # 무산소 운동량 입력 필드
         self.entry_anaerobic = tk.Entry(self, width=40)
         self.entry_anaerobic.insert(0, "무산소 운동량을 입력하세요")
         self.entry_anaerobic.bind("<FocusIn>", lambda event: self.on_entry_click(event, "무산소 운동량을 입력하세요"))
         self.entry_anaerobic.bind("<FocusOut>", lambda event: self.on_focusout(event, "무산소 운동량을 입력하세요"))
-        self.entry_anaerobic.grid(row=1, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
+        self.entry_anaerobic.grid(row=2, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
 
         # 무산소 운동량 추가 버튼
         self.add_button_anaerobic = tk.Button(self, text="무산소 추가", command=lambda: self.update_progress("무산소"))
-        self.add_button_anaerobic.grid(row=1, column=2, padx=10, pady=10, sticky="ew")
-
-        # 유산소 진척도 게이지 바
-        self.recommended_aerobic_time = self.user_info['exercise_recommendation']['추천 유산소 운동']['시간'] * 7
-        self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_aerobic_time)
-        self.progress_aerobic.grid(row=2, column=0, columnspan=3, pady=20, sticky="ew")
-        self.progress_label_aerobic = tk.Label(self, text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}")
-        self.progress_label_aerobic.grid(row=2, column=3, padx=10, sticky="w")
+        self.add_button_anaerobic.grid(row=2, column=2, padx=10, pady=10, sticky="ew")
 
         # 무산소 진척도 게이지 바
         self.recommended_anaerobic_time = self.user_info['exercise_recommendation']['추천 무산소 운동']['시간'] * 7
@@ -134,7 +134,7 @@ class ExerciseTracker(tk.Frame):
                 self.user_info[exercise_type] = min(self.user_info[exercise_type], recommended_time)  # 최대 추천 시간을 기준으로 제한
 
                 progress_bar['value'] = self.user_info[exercise_type]
-                label_widget.config(text=f"{exercise_type}: {self.user_info[exercise_type]}/{recommended_time}")
+                label_widget.config(text=f"{exercise_type} 운동시간 / 일주일 목표 운동시간 : {self.user_info[exercise_type]}/{recommended_time}")
                 entry_widget.delete(0, tk.END)
 
                 self.save_user_info()  # 업데이트된 값 저장
@@ -212,8 +212,7 @@ class ExerciseTracker(tk.Frame):
         message_label = tk.Label(notification_window, text=message)
         message_label.pack()
 
-    
-            
+                
     def main():
         root = tk.Tk()
         app = ExerciseTracker(master=root)
