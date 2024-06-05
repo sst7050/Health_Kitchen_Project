@@ -237,12 +237,7 @@ class ExerciseTracker(tk.Frame):
             elif new_level == '고든 램지' and self.user_info['made_food_count'] == 21:
                 GUI_Rank.show_rank_up_message('고든 램지')
             self.master.after(100, self.relaunch_food_selection)
-
-    def create_food_button(self):
-        # "음식 생성기" 버튼 추가
-        self.create_food_button = tk.Button(self, text="음식 생성기", command=self.auto_create_food)
-        self.create_food_button.grid(row=5, column=0, columnspan=4, pady=20, sticky="ew")
-        # 메인 화면에서 ExerciseTracker를 실행하는 함수
+            
     def main():
         root = tk.Tk()
         app = ExerciseTracker(master=root)
