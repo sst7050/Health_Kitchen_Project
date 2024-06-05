@@ -65,14 +65,14 @@ class ExerciseTracker(tk.Frame):
         self.recommended_aerobic_time = self.user_info['exercise_recommendation']['추천 유산소 운동']['시간'] * 7
         self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_aerobic_time)
         self.progress_aerobic.grid(row=2, column=0, columnspan=3, pady=20, sticky="ew")
-        self.progress_label_aerobic = tk.Label(self, text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
+        self.progress_label_aerobic = tk.Label(self, text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}")
         self.progress_label_aerobic.grid(row=2, column=3, padx=10, sticky="w")
 
         # 무산소 진척도 게이지 바
         self.recommended_anaerobic_time = self.user_info['exercise_recommendation']['추천 무산소 운동']['시간'] * 7
         self.progress_anaerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_anaerobic_time)
         self.progress_anaerobic.grid(row=3, column=0, columnspan=3, pady=20, sticky="ew")
-        self.progress_label_anaerobic = tk.Label(self, text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
+        self.progress_label_anaerobic = tk.Label(self, text=f"무산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
         self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
         # 이미지 표시 (하단에 위치 조정)
@@ -144,9 +144,9 @@ class ExerciseTracker(tk.Frame):
 
     def update_progress_bars(self):
         self.progress_aerobic['value'] = self.user_info['유산소']
-        self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
+        self.progress_label_aerobic.config(text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}")
         self.progress_anaerobic['value'] = self.user_info['무산소']
-        self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
+        self.progress_label_anaerobic.config(text=f"무산소 운동시간 / 일주일 목표 운동시간: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
    
     
     def check_ingredient_collection(self):
@@ -212,7 +212,6 @@ class ExerciseTracker(tk.Frame):
         message_label = tk.Label(notification_window, text=message)
         message_label.pack()
 
-        ####아래 부분은 추후에 테스트용으로 생성될 버튼에 관한 코드입니다.
     def auto_create_food(self):
         messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
         self.user_info['ingredient'] = []  # 재료 초기화
