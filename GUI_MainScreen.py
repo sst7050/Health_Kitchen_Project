@@ -110,13 +110,13 @@ class MainScreen(tk.Frame):
         }
         
         rank_image_positions = {
-            '주방 견습생': (200, 250),
-            '초급 요리사': (120, 220),
-            '중급 요리사': (35, 380),
+            '주방 견습생': (290, 380),
+            '초급 요리사': (300, 330),
+            '중급 요리사': (280, 350),
             '주방장': (119, 288),
             '요리의 달인': (36, 337),
-            '요리왕 비룡': (40, 320),
-            '고든 램지': (60, 320),
+            '요리왕 비룡': (270, 330),
+            '고든 램지': (120, 230),
         }
         
         selected_rank_image = rank_images.get(user_level, self.images['kitchen_apprentice'])
@@ -172,4 +172,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = Application(master=root)
     root.mainloop()
-
