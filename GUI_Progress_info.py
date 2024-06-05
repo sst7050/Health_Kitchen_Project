@@ -211,3 +211,43 @@ class ExerciseTracker(tk.Frame):
         # 메시지 표시
         message_label = tk.Label(notification_window, text=message)
         message_label.pack()
+
+        ####아래 부분은 추후에 테스트용으로 생성될 버튼에 관한 코드입니다.
+    def auto_create_food(self):
+        messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
+        self.user_info['ingredient'] = []  # 재료 초기화
+        if 'made_food' not in self.user_info:
+            self.user_info['made_food'] = []
+        made_food = self.user_info["selected_food"]["details"]["image"]["details"]["image"]
+        self.user_info['made_food'].append(f"{made_food}") 
+        self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
+        new_level = update_level(self.user_info)  # 레벨 업데이트
+        self.save_user_info()
+        if new_level:
+            if new_level == '초급 요리사' and self.user_info['made_food_count'] == 1:
+                GUI_Rank.show_rank_up_message('초급 요리사')
+            elif new_level == '중급 요리사' and self.user_info['made_food_count'] == 3:
+                GUI_Rank.show_rank_up_message('중급 요리사')
+            elif new_level == '주방장' and self.user_info['made_food_count'] == 6:
+                GUI_Rank.show_rank_up_message('주방장')
+            elif new_level == '요리의 달인' and self.user_info['made_food_count'] == 10:
+                GUI_Rank.show_rank_up_message('요리의 달인')
+            elif new_level == '요리왕 비룡' and self.user_info['made_food_count'] == 15:
+                GUI_Rank.show_rank_up_message('요리왕 비룡')
+            elif new_level == '고든 램지' and self.user_info['made_food_count'] == 21:
+                GUI_Rank.show_rank_up_message('고든 램지')
+            self.master.after(100, self.relaunch_food_selection)
+
+    def create_food_button(self):
+        # "음식 생성기" 버튼 추가
+        self.create_food_button = tk.Button(self, text="음식 생성기", command=self.auto_create_food)
+        self.create_food_button.grid(row=5, column=0, columnspan=4, pady=20, sticky="ew")
+        # 메인 화면에서 ExerciseTracker를 실행하는 함수
+    def main():
+        root = tk.Tk()
+        app = ExerciseTracker(master=root)
+        app.create_food_button()  # "음식 생성기" 버튼을 추가
+        app.mainloop()
+
+    if __name__ == "__main__":
+        main()

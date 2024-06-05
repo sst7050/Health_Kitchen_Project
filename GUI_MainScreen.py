@@ -1,3 +1,4 @@
+
 import tkinter as tk
 import tkinter.font as font
 from tkinter import messagebox
@@ -14,9 +15,27 @@ class MainScreen(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.grid(sticky="nsew")  # 부모 컨테이너를 채우도록 프레임 확장
+        self.grid(sticky="nsew")
+        self.load_images()
         self.create_main_menu()
         self.check_time_limit()
+
+    def load_images(self):
+        # 버튼 이미지 로드
+        self.images = {
+            "about": ImageTk.PhotoImage(Image.open("img/about_btn.png")),
+            "fridge": ImageTk.PhotoImage(Image.open("img/fridge_btn.png")),
+            "progress": ImageTk.PhotoImage(Image.open("img/progress_btn.png")),
+            "made_food": ImageTk.PhotoImage(Image.open("img/made_food_btn.png")),
+            "background": ImageTk.PhotoImage(Image.open("img/Main_background.png")),
+            "kitchen_apprentice": ImageTk.PhotoImage(Image.open("img/chef/kitchen_apprentice-removebg-preview.png")),
+            "beginner_chef": ImageTk.PhotoImage(Image.open("img/chef/beginner_chef-removebg-preview.png")),
+            "intermediate_chef": ImageTk.PhotoImage(Image.open("img/chef/intermediate_chef-removebg-preview.png")),
+            "head_chef": ImageTk.PhotoImage(Image.open("img/chef/head_chef-removebg-preview.png")),
+            "master_of_cooking": ImageTk.PhotoImage(Image.open("img/chef/master_of_cooking-removebg-preview.png")),
+            "cooking_king_birong": ImageTk.PhotoImage(Image.open("img/chef/Cooking_King_Biryong-removebg-preview.png")),
+            "gordon_ramsey": ImageTk.PhotoImage(Image.open("img/chef/gordon_ramsey-removebg-preview.png")),
+        }
 
     def read_user_info(self):
         try:
@@ -32,7 +51,7 @@ class MainScreen(tk.Frame):
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
-    
+
     def check_time_limit(self):
         user_info = self.read_user_info()
         if user_info and 'limit_time' in user_info:
@@ -50,18 +69,10 @@ class MainScreen(tk.Frame):
         subprocess.run(['python', 'GUI_Sel_Food.py'])
 
     def create_main_menu(self):
-        # 버튼 이미지 로드
-        self.about_image = ImageTk.PhotoImage(Image.open("img/about_btn.png"))
-        self.fridge_image = ImageTk.PhotoImage(Image.open("img/fridge_btn.png"))
-        self.progress_image = ImageTk.PhotoImage(Image.open("img/progress_btn.png"))
-        self.made_food_image = ImageTk.PhotoImage(Image.open("img/made_food_btn.png"))
-        
-        # 배경 이미지 로드
-        self.background_image = Image.open("img/Main_background.png")
-        self.bg_image = ImageTk.PhotoImage(self.background_image)
-
+        user_info = self.read_user_info()
+        user_level = user_info.get('level', '주방 견습생') if user_info else '주방 견습생'
         # 창 크기 설정
-        self.master.geometry(f"{self.bg_image.width()}x{self.bg_image.height()}")
+        self.master.geometry(f"{self.images['background'].width()}x{self.images['background'].height()}")
         
         # 창 크기 조정 불가능하게 설정
         self.master.resizable(False, False)
@@ -70,38 +81,54 @@ class MainScreen(tk.Frame):
         self.master.attributes("-fullscreen", False)
         
         # 캔버스 생성 및 배경 이미지 추가
-        self.canvas = tk.Canvas(self, width=self.bg_image.width(), height=self.bg_image.height())
-        self.canvas.create_image(0, 0, anchor="nw", image=self.bg_image)
+        self.canvas = tk.Canvas(self, width=self.images['background'].width(), height=self.images['background'].height())
+        self.canvas.create_image(0, 0, anchor="nw", image=self.images['background'])
         self.canvas.grid(row=0, column=0, rowspan=4, columnspan=4, sticky="nsew")
         _font = font.Font(family="Ubuntu", weight='bold')
         
-        # 냉장고 버튼 추가
-        self.start_button = tk.Button(self, command=self.open_fridge, image=self.fridge_image, compound='center', bd=0, highlightthickness = 0, font=_font)
-        self.canvas.create_window(100, 100, anchor="nw", window=self.start_button)
-        self.start_button.place(x=1189, y=349)
+        # 버튼 추가
+        buttons = {
+            "fridge": (self.open_fridge, self.images['fridge'], 1189, 349),
+            "progress": (self.progress_info, self.images['progress'], 566, 473),
+            "about": (self.show_about, self.images['about'], 1013, 619),
+            "made_food": (self.made_food, self.images['made_food'], 120, 420),
+        }
 
-        # 운동 진행 상황 버튼 추가
-        self.progress_button = tk.Button(self, command=self.progress_info, image=self.progress_image, compound='center', bd=0, highlightthickness = 0, font=_font)
-        self.canvas.create_window(300, 100, anchor="nw", window=self.progress_button)
-        self.progress_button.place(x=566, y=473)
+        for key, (command, image, x, y) in buttons.items():
+            button = tk.Button(self, command=command, image=image, compound='center', bd=0, highlightthickness=0, font=_font)
+            self.canvas.create_window(x, y, anchor="nw", window=button)
 
-        # 사용자 정보 버튼 추가
-        self.about_button = tk.Button(self, command=self.show_about, fg="yellow", image=self.about_image, compound='center', bd=0, highlightthickness = 0, font=_font)
-        self.canvas.create_window(500, 100, anchor="nw", window=self.about_button)
-        self.about_button.place(x=1013, y=619)
+        # 랭크 이미지 추가
+        rank_images = {
+           '주방 견습생': self.images['kitchen_apprentice'],
+            '초급 요리사': self.images['beginner_chef'],
+            '중급 요리사': self.images['intermediate_chef'],
+            '주방장': self.images['head_chef'],
+            '요리의 달인': self.images['master_of_cooking'],
+            '요리왕 비룡': self.images['cooking_king_birong'],
+            '고든 램지': self.images['gordon_ramsey'],
+        }
         
-        # 만든 음식 버튼 추가
-        self.made_food_button = tk.Button(self, command=self.made_food, image=self.made_food_image, compound='center', bd=0, highlightthickness = 0, font=_font)
-        self.canvas.create_window(700, 100, anchor="nw", window=self.made_food_button)
-        self.made_food_button.place(x=120, y=420)
+        rank_image_positions = {
+            '주방 견습생': (290, 380),
+            '초급 요리사': (300, 330),
+            '중급 요리사': (280, 350),
+            '주방장': (280, 350),
+            '요리의 달인': (270, 340),
+            '요리왕 비룡': (270, 330),
+            '고든 램지': (475, -15),
+        }
+        
+        selected_rank_image = rank_images.get(user_level, self.images['kitchen_apprentice'])
+        selected_rank_position = rank_image_positions.get(user_level, (220, 245))
+        
+        # 선택된 랭크 이미지 추가
+        self.canvas.create_image(*selected_rank_position, anchor="nw", image=selected_rank_image)
 
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
         fridge_window = tk.Toplevel(self.master)
         RefrigeratorScreen(master=fridge_window, main_screen=self).grid(sticky="nsew")
-
-    def start_info_input(self):
-        messagebox.showinfo("알림", "이 프로그램은 당신의 인바디 '분석 평가'(결과지의 우측 부분)의 일부 항목값을 입력받아 그 값을 토대로 적정 체중이 되도록 돕거나 유지시켜주는 프로그램 입니다. 따라서 다음 질문에 답 하기 전에 먼저 인바디 검사를 받고, 해당 검사지를 출력하여 준비해 주시기 바랍니다. 만약 인바디 검사지가 준비되셨다면, 질문에 솔직하게 답변 해 주세요.")
 
     def progress_info(self):
         # 운동진행상황을 보여주기 위한 새 창 열기
@@ -111,19 +138,17 @@ class MainScreen(tk.Frame):
     def show_about(self):
         user_info = self.read_user_info()
         if user_info:
-            info_str = (f"성별: {user_info['gender']}\n"
-                        f"인바디 점수: {user_info['inbody_score']}\n"
-                        f"적정 체중: {user_info['ideal_weight']} kg\n"
-                        f"지방 조절 수치: {user_info['fat_control']} kg\n"
-                        f"근육 조절 수치: {user_info['muscle_control']} kg\n"
-                        f"나이: {user_info['age']} 세\n"
-                        f"BMI: {user_info['bmi']}\n"
-                        f"체지방률: {user_info['body_fat']}\n"
-                        f"현재상태: {user_info['status']}\n"
-                        f"선택한 음식: {user_info['selected_food']['food']}\n"
-                        f"유통기한: {user_info['limit_time']}\n"
-                        f"레벨: {user_info['level']}\n"
-                        f"만든 음식 수: {user_info['made_food_count']}")
+            info_str = (
+                f"인바디 점수: {user_info['inbody_score']}\n"
+                f"지방 조절 수치: {user_info['fat_control']} kg\n"
+                f"근육 조절 수치: {user_info['muscle_control']} kg\n"
+                f"BMI: {user_info['bmi']}\n"
+                f"체지방률: {user_info['body_fat']}\n"
+                f"현재상태: {user_info['status']}\n"
+                f"선택한 음식: {user_info['selected_food']['food']}\n"
+                f"유통기한: {user_info['limit_time']}\n"
+                f"레벨: {user_info['level']}\n"
+                f"만든 음식 수: {user_info['made_food_count']}")
             messagebox.showinfo("사용자 정보", info_str)
     
     def made_food(self):
