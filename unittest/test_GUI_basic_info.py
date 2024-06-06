@@ -4,14 +4,12 @@ import unittest
 from unittest.mock import patch, MagicMock
 import tkinter as tk
 from tkinter import messagebox
-
+from GUI_basic_info import User_input
 # 현재 파일의 디렉토리 경로를 가져와 상위 디렉토리로 설정합니다.
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.append(parent_dir)
 os.chdir(parent_dir)
-
-from GUI_basic_info import User_input
 
 class TestUserInput(unittest.TestCase):
     

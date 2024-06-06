@@ -5,10 +5,9 @@ import json
 from tkinter import Tk
 from datetime import datetime, timedelta
 import shutil
-
+from GUI_MainScreen import MainScreen
 # 현재 파일의 부모 디렉토리를 경로에 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from GUI_MainScreen import MainScreen
 
 class TestGUIMainScreen(unittest.TestCase):
 

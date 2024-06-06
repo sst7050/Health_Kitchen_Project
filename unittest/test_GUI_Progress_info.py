@@ -4,9 +4,9 @@ import sys
 import json
 from tkinter import Tk, END
 from datetime import datetime, timedelta
+from GUI_Progress_info import ExerciseTracker
 import shutil
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from GUI_Progress_info import ExerciseTracker
 
 class TestExerciseTracker(unittest.TestCase):
 
