@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
 from tkinter import Tk
 from GUI_MainScreen import MainScreen
@@ -6,6 +9,7 @@ class TestGUIMainScreen(unittest.TestCase):
 
     def setUp(self):
         self.root = Tk()
+        os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
         self.app = MainScreen(master=self.root)
 
     def tearDown(self):
