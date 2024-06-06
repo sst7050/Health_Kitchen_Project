@@ -50,12 +50,10 @@ class User_input(tk.Frame):
         if not self.inbody_entry.get().isdigit() or not self.is_float(self.fat_control_entry.get()) or not self.is_float(self.muscle_control_entry.get()) or not self.bmi_var.get() or not self.body_fat_var.get():
             messagebox.showwarning("에러", "모든 정보를 올바르게 입력해주세요.")
             return
-        #self.gender = self.gender_var.get()
+
         self.inbody_score = self.inbody_entry.get()
-        #self.ideal_weight = self.ideal_weight_entry.get()
         self.fat_control = self.fat_control_entry.get()
         self.muscle_control = self.muscle_control_entry.get()
-        #self.age = self.age_entry.get()
         self.bmi = self.bmi_var.get()
         self.body_fat = self.body_fat_var.get()
         for widget in self.winfo_children():

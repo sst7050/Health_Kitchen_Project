@@ -1,4 +1,3 @@
-
 import tkinter as tk
 import tkinter.font as font
 from tkinter import messagebox
@@ -19,6 +18,7 @@ class MainScreen(tk.Frame):
         self.load_images()
         self.create_main_menu()
         self.check_time_limit()
+        self.open_window = None
 
     def load_images(self):
         # 버튼 이미지 로드
@@ -127,14 +127,17 @@ class MainScreen(tk.Frame):
 
     def open_fridge(self):
         # 재료 상황을 보여주기 위한 새 창 열기
-        fridge_window = tk.Toplevel(self.master)
-        RefrigeratorScreen(master=fridge_window, main_screen=self).grid(sticky="nsew")
+        self.close_current_window()
+        self.open_window = tk.Toplevel(self.master)
+        RefrigeratorScreen(master=self.open_window, main_screen=self).grid(sticky="nsew")
 
     def progress_info(self):
         # 운동진행상황을 보여주기 위한 새 창 열기
-        progress_window = tk.Toplevel(self.master)
-        ExerciseTracker(master=progress_window, main_screen=self).grid(sticky="nsew")
+        self.close_current_window()
+        self.open_window = tk.Toplevel(self.master)
+        ExerciseTracker(master=self.open_window, main_screen=self).grid(sticky="nsew")
 
+  
     def show_about(self):
         user_info = self.read_user_info()
         if user_info:
@@ -146,16 +149,31 @@ class MainScreen(tk.Frame):
                 f"체지방률: {user_info['body_fat']}\n"
                 f"현재상태: {user_info['status']}\n"
                 f"선택한 음식: {user_info['selected_food']['food']}\n"
-                f"유통기한: {user_info['limit_time']}\n"
+            )
+            if user_info.get('ingredient'):
+                info_str += f"유통기한: {user_info['limit_time']}\n"
+            info_str += (
                 f"레벨: {user_info['level']}\n"
-                f"만든 음식 수: {user_info['made_food_count']}")
+                f"만든 음식 수: {user_info['made_food_count']}"
+            )
             messagebox.showinfo("사용자 정보", info_str)
     
     def made_food(self):
-        # 만든 음식을 보여주기 위한 새 창 열기
-        made_food_window = tk.Toplevel(self.master)
-        made_food_window.title("만든 음식 목록")
-        MadeFoodScreen(master=made_food_window).grid(sticky="nsew")
+        # 만든 음식이 있는지 확인 후 창 열기
+        user_info = self.read_user_info()
+        if user_info and 'made_food' in user_info and user_info['made_food']:
+            made_food_window = tk.Toplevel(self.master)
+            made_food_window.title("만든 음식 목록")
+            MadeFoodScreen(master=made_food_window).grid(sticky="nsew")
+        else:
+            messagebox.showerror("에러", "만든 음식이 없습니다.")
+
+
+
+    def close_current_window(self):
+        if self.open_window:
+            self.open_window.destroy()
+            self.open_window = None
 
 class Application(tk.Frame):
     def __init__(self, master=None):

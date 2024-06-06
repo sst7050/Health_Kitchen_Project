@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import messagebox
 from PIL import Image, ImageTk
 import json
 
@@ -20,11 +19,6 @@ class MadeFoodScreen(tk.Frame):
         if user_info and 'made_food' in user_info:
             self.food_items = user_info['made_food']
             self.display_food_items()
-        else:
-            self.no_food_label = tk.Label(self, text="만든 음식이 없습니다.", anchor="center", justify="center")
-            self.no_food_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-            self.grid_rowconfigure(0, weight=1)
-            self.grid_columnconfigure(0, weight=1)
 
     def read_user_info(self):
         try:
@@ -51,7 +45,7 @@ class MadeFoodScreen(tk.Frame):
 
             try:
                 image = Image.open(image_path)
-                image = image.resize((100, 100), Image.LANCZOS)  # 이미지 크기 조정
+                image = image.resize((150, 150), Image.LANCZOS)  # 이미지 크기 조정
                 photo = ImageTk.PhotoImage(image)
                 img_label = tk.Label(frame, image=photo)
                 img_label.image = photo

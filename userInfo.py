@@ -18,6 +18,8 @@ def read_user_info():
                     user_info['level'] = '주방 견습생'
                 if 'made_food_count' not in user_info:
                     user_info['made_food_count'] = 0
+                if 'limit_time' not in user_info:
+                    user_info['limit_time'] = None  # 유통기한 정보를 기본값으로 추가
             return True, user_info
         except Exception as e:
             print(f"Failed to read the user info file: {e}")

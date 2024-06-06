@@ -30,6 +30,8 @@ class ExerciseTracker(tk.Frame):
                     self.user_info['무산소'] = 0
                 if 'ingredient' not in self.user_info:
                     self.user_info['ingredient'] = []
+        
+               
         except FileNotFoundError:
             self.user_info = {"유산소": 0, "무산소": 0, "ingredient": []}
         self.save_user_info()
@@ -50,32 +52,34 @@ class ExerciseTracker(tk.Frame):
         self.add_button_aerobic = tk.Button(self, text="유산소 추가", command=lambda: self.update_progress("유산소"))
         self.add_button_aerobic.grid(row=0, column=2, padx=10, pady=10, sticky="ew")
 
+        # 유산소 진척도 게이지 바
+        self.recommended_aerobic_time = self.user_info['exercise_recommendation']['추천 유산소 운동']['시간'] * 7
+        self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_aerobic_time)
+        self.progress_aerobic.grid(row=1, column=0, columnspan=3, pady=20, sticky="ew")
+        self.progress_label_aerobic = tk.Label(self, text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}")
+        self.progress_label_aerobic.grid(row=1, column=3, padx=10, sticky="w")
+
         # 무산소 운동량 입력 필드
         self.entry_anaerobic = tk.Entry(self, width=40)
         self.entry_anaerobic.insert(0, "무산소 운동량을 입력하세요")
         self.entry_anaerobic.bind("<FocusIn>", lambda event: self.on_entry_click(event, "무산소 운동량을 입력하세요"))
         self.entry_anaerobic.bind("<FocusOut>", lambda event: self.on_focusout(event, "무산소 운동량을 입력하세요"))
-        self.entry_anaerobic.grid(row=1, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
+        self.entry_anaerobic.grid(row=2, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
 
         # 무산소 운동량 추가 버튼
         self.add_button_anaerobic = tk.Button(self, text="무산소 추가", command=lambda: self.update_progress("무산소"))
-        self.add_button_anaerobic.grid(row=1, column=2, padx=10, pady=10, sticky="ew")
-
-        # 유산소 진척도 게이지 바
-        self.recommended_aerobic_time = self.user_info['exercise_recommendation']['추천 유산소 운동']['시간'] * 7
-        self.progress_aerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_aerobic_time)
-        self.progress_aerobic.grid(row=2, column=0, columnspan=3, pady=20, sticky="ew")
-        self.progress_label_aerobic = tk.Label(self, text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
-        self.progress_label_aerobic.grid(row=2, column=3, padx=10, sticky="w")
+        self.add_button_anaerobic.grid(row=2, column=2, padx=10, pady=10, sticky="ew")
 
         # 무산소 진척도 게이지 바
         self.recommended_anaerobic_time = self.user_info['exercise_recommendation']['추천 무산소 운동']['시간'] * 7
         self.progress_anaerobic = ttk.Progressbar(self, length=700, mode='determinate', maximum=self.recommended_anaerobic_time)
         self.progress_anaerobic.grid(row=3, column=0, columnspan=3, pady=20, sticky="ew")
-        self.progress_label_anaerobic = tk.Label(self, text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
+        self.progress_label_anaerobic = tk.Label(self, text=f"무산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
         self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
+        
         # 이미지 표시 (하단에 위치 조정)
+
         self.filepath = self.user_info["selected_food"]["details"]["image"]
         self.image = ImageTk.PhotoImage(Image.open(self.filepath))
         self.image_label = tk.Label(self, image=self.image)
@@ -134,7 +138,7 @@ class ExerciseTracker(tk.Frame):
                 self.user_info[exercise_type] = min(self.user_info[exercise_type], recommended_time)  # 최대 추천 시간을 기준으로 제한
 
                 progress_bar['value'] = self.user_info[exercise_type]
-                label_widget.config(text=f"{exercise_type}: {self.user_info[exercise_type]}/{recommended_time}")
+                label_widget.config(text=f"{exercise_type} 운동시간 / 일주일 목표 운동시간 : {self.user_info[exercise_type]}/{recommended_time}")
                 entry_widget.delete(0, tk.END)
 
                 self.save_user_info()  # 업데이트된 값 저장
@@ -144,9 +148,9 @@ class ExerciseTracker(tk.Frame):
 
     def update_progress_bars(self):
         self.progress_aerobic['value'] = self.user_info['유산소']
-        self.progress_label_aerobic.config(text=f"유산소: {self.user_info['유산소']}/{self.recommended_aerobic_time}")
+        self.progress_label_aerobic.config(text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}(분)")
         self.progress_anaerobic['value'] = self.user_info['무산소']
-        self.progress_label_anaerobic.config(text=f"무산소: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
+        self.progress_label_anaerobic.config(text=f"무산소 운동시간 / 일주일 목표 운동시간: {self.user_info['무산소']}/{self.recommended_anaerobic_time}(분)")
    
     
     def check_ingredient_collection(self):
@@ -212,37 +216,7 @@ class ExerciseTracker(tk.Frame):
         message_label = tk.Label(notification_window, text=message)
         message_label.pack()
 
-        ####아래 부분은 추후에 테스트용으로 생성될 버튼에 관한 코드입니다.
-    def auto_create_food(self):
-        messagebox.showinfo("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
-        self.user_info['ingredient'] = []  # 재료 초기화
-        if 'made_food' not in self.user_info:
-            self.user_info['made_food'] = []
-        made_food = self.user_info["selected_food"]["details"]["image"]["details"]["image"]
-        self.user_info['made_food'].append(f"{made_food}") 
-        self.user_info['made_food_count'] = self.user_info.get('made_food_count', 0) + 1  # 음식 수 증가
-        new_level = update_level(self.user_info)  # 레벨 업데이트
-        self.save_user_info()
-        if new_level:
-            if new_level == '초급 요리사' and self.user_info['made_food_count'] == 1:
-                GUI_Rank.show_rank_up_message('초급 요리사')
-            elif new_level == '중급 요리사' and self.user_info['made_food_count'] == 3:
-                GUI_Rank.show_rank_up_message('중급 요리사')
-            elif new_level == '주방장' and self.user_info['made_food_count'] == 6:
-                GUI_Rank.show_rank_up_message('주방장')
-            elif new_level == '요리의 달인' and self.user_info['made_food_count'] == 10:
-                GUI_Rank.show_rank_up_message('요리의 달인')
-            elif new_level == '요리왕 비룡' and self.user_info['made_food_count'] == 15:
-                GUI_Rank.show_rank_up_message('요리왕 비룡')
-            elif new_level == '고든 램지' and self.user_info['made_food_count'] == 21:
-                GUI_Rank.show_rank_up_message('고든 램지')
-            self.master.after(100, self.relaunch_food_selection)
-
-    def create_food_button(self):
-        # "음식 생성기" 버튼 추가
-        self.create_food_button = tk.Button(self, text="음식 생성기", command=self.auto_create_food)
-        self.create_food_button.grid(row=5, column=0, columnspan=4, pady=20, sticky="ew")
-        # 메인 화면에서 ExerciseTracker를 실행하는 함수
+                
     def main():
         root = tk.Tk()
         app = ExerciseTracker(master=root)

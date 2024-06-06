@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import messagebox
 import userInfo
@@ -8,7 +9,7 @@ class CustomMessageBox(tk.Toplevel):
         super().__init__(parent)
         self.result = None
         self.title("알림")
-        self.geometry("400x200")
+        self.geometry("400x200+{}+{}".format(self.get_center_x(400), self.get_center_y(200)))  # 중앙에 배치
         self.resizable(False, False)
         
         tk.Label(self, text=message, wraplength=300).pack(pady=20)
@@ -22,6 +23,14 @@ class CustomMessageBox(tk.Toplevel):
     def on_button_click(self, value):
         self.result = value
         self.destroy()
+
+    def get_center_x(self, width):
+        screen_width = self.winfo_screenwidth()
+        return int((screen_width - width) / 2)
+
+    def get_center_y(self, height):
+        screen_height = self.winfo_screenheight()
+        return int((screen_height - height) / 2)
     
 def show_custom_message(message, buttons):
     root = tk.Tk()
@@ -65,11 +74,11 @@ def check_user_info_and_launch():
                     exit()
     else:
         subprocess.run('python GUI_MainScreen.py')
+
 def show_main_screen():
     root = tk.Tk()
     root.geometry("800x600")
     root.title("메인 스크린")
-
     
 if __name__ == "__main__":
     check_user_info_and_launch()
