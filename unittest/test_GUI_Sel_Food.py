@@ -24,5 +24,8 @@ class TestFoodSelectionFrame(unittest.TestCase):
                 self.root.destroy()
             except tk.TclError:
                 pass
+    def test_widgets_creation(self):
+        food_buttons = self.food_frame.grid_slaves()  # Retrieving all widgets in the grid
+        self.assertTrue(len(food_buttons) > 0, "Widgets were not created correctly")
         
     
