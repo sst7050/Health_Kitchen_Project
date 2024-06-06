@@ -4,6 +4,7 @@ import sys
 import json
 from tkinter import Tk, END
 from datetime import datetime, timedelta
+import shutil  # 추가된 임포트
 
 # 현재 파일의 부모 디렉토리를 경로에 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -39,6 +40,9 @@ class TestExerciseTracker(unittest.TestCase):
         self.app.master.destroy()
         if os.path.exists("user_info.json"):
             os.remove("user_info.json")
+        # 폴더와 그 내용을 삭제합니다
+        if os.path.exists("path"):
+            shutil.rmtree("path")
 
     def save_user_info(self):
         with open("user_info.json", "w", encoding='utf-8') as file:
