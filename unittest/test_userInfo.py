@@ -30,3 +30,11 @@ class TestUserInfo(unittest.TestCase):
         self.assertEqual(user_info["level"], "중급 요리사")
         self.assertEqual(user_info["made_food_count"], 5)
         self.assertEqual(user_info["limit_time"], "2024-06-06T14:00:00")
+
+    @patch("builtins.open", side_effect=UnicodeDecodeError("codec", b"", 0, 1, "reason"))
+    def test_read_user_info_unicode_error(self, mock_file):
+        with patch("userInfo.json.load", return_value={"name": "John", "age": 30}):
+            success, user_info = userInfo.read_user_info()
+            self.assertFalse(success)
+
+
