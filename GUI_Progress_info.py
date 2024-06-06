@@ -144,9 +144,9 @@ class ExerciseTracker(tk.Frame):
 
     def update_progress_bars(self):
         self.progress_aerobic['value'] = self.user_info['유산소']
-        self.progress_label_aerobic.config(text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}")
+        self.progress_label_aerobic.config(text=f"유산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['유산소']}/{self.recommended_aerobic_time}(분)")
         self.progress_anaerobic['value'] = self.user_info['무산소']
-        self.progress_label_anaerobic.config(text=f"무산소 운동시간 / 일주일 목표 운동시간: {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
+        self.progress_label_anaerobic.config(text=f"무산소 운동시간 / 일주일 목표 운동시간: {self.user_info['무산소']}/{self.recommended_anaerobic_time}(분)")
    
     
     def check_ingredient_collection(self):
