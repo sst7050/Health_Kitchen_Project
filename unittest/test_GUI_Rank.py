@@ -1,12 +1,14 @@
 import sys
 import os
+
+# GUI_Rank.py 파일의 디렉토리를 sys.path에 추가
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import unittest
 from unittest.mock import patch, MagicMock
 import tkinter as tk
 from tkinter import messagebox
 from GUI_Rank import RankImageFrame, show_rank_up_message
-# GUI_Rank.py 파일의 디렉토리를 sys.path에 추가
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 class TestRankImageFrame(unittest.TestCase):
     def setUp(self):

@@ -1,13 +1,15 @@
 import unittest
-import tkinter as tk
-from unittest.mock import patch, mock_open
 import os
 import sys
-from GUI_Made_Food import MadeFoodScreen
+
 # GUI_Made_Food.py 파일이 있는 상위 디렉토리를 path에 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # 현재 작업 디렉토리를 GUI_Made_Food.py 파일이 있는 디렉토리로 변경
 os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from GUI_Made_Food import MadeFoodScreen
+import tkinter as tk
+from unittest.mock import patch, mock_open
 
 class TestMadeFoodScreen(unittest.TestCase):
 
