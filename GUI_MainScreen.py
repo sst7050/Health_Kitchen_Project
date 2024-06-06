@@ -137,6 +137,7 @@ class MainScreen(tk.Frame):
         self.open_window = tk.Toplevel(self.master)
         ExerciseTracker(master=self.open_window, main_screen=self).grid(sticky="nsew")
 
+  
     def show_about(self):
         user_info = self.read_user_info()
         if user_info:
@@ -148,9 +149,13 @@ class MainScreen(tk.Frame):
                 f"체지방률: {user_info['body_fat']}\n"
                 f"현재상태: {user_info['status']}\n"
                 f"선택한 음식: {user_info['selected_food']['food']}\n"
-                f"유통기한: {user_info['limit_time']}\n"
+            )
+            if user_info.get('ingredient'):
+                info_str += f"유통기한: {user_info['limit_time']}\n"
+            info_str += (
                 f"레벨: {user_info['level']}\n"
-                f"만든 음식 수: {user_info['made_food_count']}")
+                f"만든 음식 수: {user_info['made_food_count']}"
+            )
             messagebox.showinfo("사용자 정보", info_str)
     
     def made_food(self):

@@ -30,6 +30,8 @@ class ExerciseTracker(tk.Frame):
                     self.user_info['무산소'] = 0
                 if 'ingredient' not in self.user_info:
                     self.user_info['ingredient'] = []
+        
+               
         except FileNotFoundError:
             self.user_info = {"유산소": 0, "무산소": 0, "ingredient": []}
         self.save_user_info()
@@ -75,7 +77,9 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_anaerobic = tk.Label(self, text=f"무산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
         self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
+        
         # 이미지 표시 (하단에 위치 조정)
+
         self.filepath = self.user_info["selected_food"]["details"]["image"]
         self.image = ImageTk.PhotoImage(Image.open(self.filepath))
         self.image_label = tk.Label(self, image=self.image)
