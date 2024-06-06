@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, UnidentifiedImageError
 import json
 from datetime import datetime, timedelta
 import subprocess
@@ -10,15 +10,15 @@ import GUI_Rank
 from userInfo import update_level
 
 class ExerciseTracker(tk.Frame):
-    def __init__(self, master=None, main_screen=None):
+    def __init__(self, master=None, main_screen=None, is_test=False):
         super().__init__(master)
         self.master = master
         self.main_screen = main_screen
         self.grid(sticky="nsew")
+        self.is_test = is_test  # 테스트 모드인지 여부를 나타내는 플래그
+        self.user_info = {}
         self.load_user_info()
-        self.create_widgets()
         self.configure_grid()
-        self.update_progress_bars()  # 초기 로드 시 진척도 게이지 업데이트
 
     def load_user_info(self):
         try:
@@ -30,11 +30,37 @@ class ExerciseTracker(tk.Frame):
                     self.user_info['무산소'] = 0
                 if 'ingredient' not in self.user_info:
                     self.user_info['ingredient'] = []
-        
-               
+                if 'exercise_recommendation' not in self.user_info:
+                    self.user_info['exercise_recommendation'] = {
+                        "추천 유산소 운동": {"시간": 30},
+                        "추천 무산소 운동": {"시간": 30}
+                    }
+                if 'selected_food' not in self.user_info:
+                    self.user_info['selected_food'] = {
+                        "details": {
+                            "image": "path/to/image.png",
+                            "ingredient_path": "path/to/ingredients/"
+                        }
+                    }
         except FileNotFoundError:
-            self.user_info = {"유산소": 0, "무산소": 0, "ingredient": []}
+            self.user_info = {
+                "유산소": 0,
+                "무산소": 0,
+                "ingredient": [],
+                "exercise_recommendation": {
+                    "추천 유산소 운동": {"시간": 30},
+                    "추천 무산소 운동": {"시간": 30}
+                },
+                "selected_food": {
+                    "details": {
+                        "image": "path/to/image.png",
+                        "ingredient_path": "path/to/ingredients/"
+                    }
+                }
+            }
         self.save_user_info()
+        self.create_widgets()
+        self.update_progress_bars()  # 초기 로드 시 진척도 게이지 업데이트
 
     def save_user_info(self):
         with open("user_info.json", "w", encoding='utf-8') as file:
@@ -77,13 +103,16 @@ class ExerciseTracker(tk.Frame):
         self.progress_label_anaerobic = tk.Label(self, text=f"무산소 운동시간 / 일주일 목표 운동시간 : {self.user_info['무산소']}/{self.recommended_anaerobic_time}")
         self.progress_label_anaerobic.grid(row=3, column=3, padx=10, sticky="w")
 
-        
         # 이미지 표시 (하단에 위치 조정)
-
-        self.filepath = self.user_info["selected_food"]["details"]["image"]
-        self.image = ImageTk.PhotoImage(Image.open(self.filepath))
-        self.image_label = tk.Label(self, image=self.image)
-        self.image_label.grid(row=4, column=0, columnspan=4, pady=20, sticky="nsew")  # 위치를 row=4으로 변경
+        if not self.is_test:  # 테스트 모드가 아닌 경우에만 이미지 로드
+            self.filepath = self.user_info["selected_food"]["details"]["image"]
+            try:
+                self.image = ImageTk.PhotoImage(Image.open(self.filepath))
+                self.image_label = tk.Label(self, image=self.image)
+                self.image_label.grid(row=4, column=0, columnspan=4, pady=20, sticky="nsew")  # 위치를 row=4으로 변경
+            except (FileNotFoundError, UnidentifiedImageError):
+                self.image_label = tk.Label(self, text="이미지를 불러올 수 없습니다.")
+                self.image_label.grid(row=4, column=0, columnspan=4, pady=20, sticky="nsew")
 
     def configure_grid(self):
         self.master.grid_rowconfigure(0, weight=1)
@@ -119,7 +148,6 @@ class ExerciseTracker(tk.Frame):
             self.user_info['ingredient'] = []
             self.save_user_info()
             self.master.after(100, self.relaunch_food_selection)
-
         else:    
             try:
                 if exercise_type == "유산소":
@@ -152,7 +180,6 @@ class ExerciseTracker(tk.Frame):
         self.progress_anaerobic['value'] = self.user_info['무산소']
         self.progress_label_anaerobic.config(text=f"무산소 운동시간 / 일주일 목표 운동시간: {self.user_info['무산소']}/{self.recommended_anaerobic_time}(분)")
    
-    
     def check_ingredient_collection(self):
         if self.user_info['유산소'] >= self.recommended_aerobic_time and self.user_info['무산소'] >= self.recommended_anaerobic_time:
             next_ingredient_index = len(self.user_info['ingredient']) + 1
@@ -195,7 +222,6 @@ class ExerciseTracker(tk.Frame):
                             GUI_Rank.show_rank_up_message('요리왕 비룡')
                         elif new_level == '고든 램지' and self.user_info['made_food_count'] == 21:
                             GUI_Rank.show_rank_up_message('고든 램지')
-                    #GUI_Rank.show_rank_up_message(new_level)# 레벨 업 메시지 호출
                     self.master.after(100, self.relaunch_food_selection)
                    
                     
@@ -206,17 +232,20 @@ class ExerciseTracker(tk.Frame):
         notification_window.geometry("300x250")
 
         # 이미지 표시
-        ingredient_image = Image.open(ingredient_image_path)
-        ingredient_photo = ImageTk.PhotoImage(ingredient_image)
-        ingredient_label = tk.Label(notification_window, image=ingredient_photo)
-        ingredient_label.image = ingredient_photo  # 이미지를 참조하여 쓰레기 수집 방지
+        try:
+            ingredient_image = Image.open(ingredient_image_path)
+            ingredient_photo = ImageTk.PhotoImage(ingredient_image)
+            ingredient_label = tk.Label(notification_window, image=ingredient_photo)
+            ingredient_label.image = ingredient_photo  # 이미지를 참조하여 쓰레기 수집 방지
+        except (FileNotFoundError, UnidentifiedImageError):
+            ingredient_label = tk.Label(notification_window, text="이미지를 불러올 수 없습니다.")
+        
         ingredient_label.pack()
         
         # 메시지 표시
         message_label = tk.Label(notification_window, text=message)
         message_label.pack()
 
-                
     def main():
         root = tk.Tk()
         app = ExerciseTracker(master=root)
