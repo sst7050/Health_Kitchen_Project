@@ -37,4 +37,11 @@ class TestUserInfo(unittest.TestCase):
             success, user_info = userInfo.read_user_info()
             self.assertFalse(success)
 
+    @patch("builtins.open", side_effect=Exception("Some error"))
+    def test_read_user_info_general_exception(self, mock_file):
+        success, user_info = userInfo.read_user_info()
+        self.assertFalse(success)
+        self.assertIsNone(user_info)
 
+if __name__ == "__main__":
+    unittest.main()
