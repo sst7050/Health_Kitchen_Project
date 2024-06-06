@@ -1,27 +1,95 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
+import json
 from tkinter import Tk
+from datetime import datetime, timedelta
+import shutil
+
+# 현재 파일의 부모 디렉토리를 경로에 추가
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from GUI_MainScreen import MainScreen
 
 class TestGUIMainScreen(unittest.TestCase):
 
     def setUp(self):
         self.root = Tk()
-        os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+        # 현재 파일의 부모 디렉토리 설정
+        base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+        self.user_info_path = os.path.join(base_path, 'user_info.json')
+        self.image_path = os.path.join(base_path, 'path/to/image.png')
+
+        # 임시 user_info.json 파일 생성
         self.app = MainScreen(master=self.root)
+        self.app.user_info = {
+            "inbody_score": "80",
+            "fat_control": "0",
+            "muscle_control": "0",
+            "bmi": "표준",
+            "body_fat": "표준",
+            "status": 5,
+            "exercise_recommendation": {
+                "현재 상태": "표준",
+                "추천 목표": "지방 유지, 근육 유지",
+                "추천 유산소 운동": {
+                    "종류": "걷기",
+                    "시간": 30
+                },
+                "추천 무산소 운동": {
+                    "종류": "저강도 무산소 운동",
+                    "시간": 45
+                }
+            },
+            "level": "주방 견습생",
+            "made_food_count": 0,
+            "limit_time": (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S"),
+            "selected_food": {
+                "food": "치킨",
+                "details": {
+                    "image": self.image_path,
+                    "detail_name": "치킨",
+                    "ingredient_path": "path/to/ingredients/"
+                }
+            },
+            "ingredient": [],
+            "유산소": 0,
+            "무산소": 0
+        }
+        self.save_user_info()
+        self.app.read_user_info()  # Ensure the app loads the updated user_info
+
+        # 임시 이미지 파일 생성
+        self.create_temp_image(self.image_path)
 
     def tearDown(self):
         self.app.master.destroy()
+        if os.path.exists(self.user_info_path):
+            os.remove(self.user_info_path)
+        if os.path.exists("path"):
+            shutil.rmtree("path")
+
+    def save_user_info(self):
+        with open(self.user_info_path, "w", encoding='utf-8') as file:
+            json.dump(self.app.user_info, file, ensure_ascii=False, indent=4)
+
+    def create_temp_image(self, path):
+        if not os.path.exists(os.path.dirname(path)):
+            os.makedirs(os.path.dirname(path))
+        with open(path, 'w') as f:
+            f.write('')  # 빈 파일 생성
 
     def test_read_user_info(self):
-        user_info = self.app.read_user_info()
-        self.assertIsNotNone(user_info)
+        self.app.read_user_info()
+        self.assertIn("유산소", self.app.user_info)
+        self.assertIn("무산소", self.app.user_info)
+        self.assertIn("ingredient", self.app.user_info)
 
     def test_check_time_limit(self):
-        self.app.check_time_limit()
-        # 테스트에서 직접 확인하기 어려우므로, 예외가 발생하지 않음을 확인합니다.
+        self.app.read_user_info()
+        try:
+            self.app.check_time_limit()
+        except Exception as e:
+            self.fail(f"check_time_limit 실행 중 예외가 발생했습니다: {e}")
 
     def test_create_main_menu(self):
         self.app.create_main_menu()
