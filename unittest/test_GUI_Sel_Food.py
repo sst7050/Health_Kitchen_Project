@@ -54,5 +54,11 @@ class TestFoodSelectionFrame(unittest.TestCase):
         limit_time = datetime.strptime(saved_info['limit_time'], "%Y-%m-%d %H:%M:%S")
         self.assertAlmostEqual(expected_time, limit_time, delta=timedelta(seconds=20))
         
-    
-    
+    @patch('tkinter.messagebox.showerror')
+    @patch('userInfo.read_user_info')
+    def test_select_food_error(self, mock_read_user_info, mock_showerror):
+        mock_read_user_info.return_value = (False, {})
+        
+        self.food_frame.select_food("햄버거", {})
+        
+        mock_showerror.assert_called_once_with("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.")   
