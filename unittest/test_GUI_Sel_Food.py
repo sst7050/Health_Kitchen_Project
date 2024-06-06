@@ -61,4 +61,15 @@ class TestFoodSelectionFrame(unittest.TestCase):
         
         self.food_frame.select_food("햄버거", {})
         
-        mock_showerror.assert_called_once_with("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.")   
+        mock_showerror.assert_called_once_with("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.")
+
+    @patch('subprocess.run')
+    def test_relaunch_Main(self, mock_run):
+        self.food_frame.relaunch_Main()
+        mock_run.assert_called_once_with(['python', 'GUI_Main.py'])
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+    
