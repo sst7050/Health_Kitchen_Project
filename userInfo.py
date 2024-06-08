@@ -78,12 +78,8 @@ def update_inbody_status():
 
     status = 0
     if inbody_score < 80:
-        if fat_control < 0 and muscle_control <= 0:
-            status = 1  # 지방 감량
-        elif fat_control < 0 and muscle_control > 0:
+        if fat_control < 0 and muscle_control > 0:
             status = 2  # 지방 감량, 근육 증량
-        elif fat_control > 0 and muscle_control <= 0:
-            status = 3  # 지방 증량
         elif fat_control > 0 and muscle_control > 0:
             status = 4  # 지방 증량, 근육 증량
         elif fat_control < 0 and muscle_control == 0:
