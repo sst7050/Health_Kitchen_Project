@@ -16,6 +16,7 @@ class FoodSelectionFrame(tk.Frame):
         self.create_widgets()  # 위젯 생성
 
     def create_widgets(self):  # 음식 리스트 및 위젯 생성
+        self.images = {}  # 이미지 객체를 저장할 딕셔너리
         food_list = {
             "햄버거": {"image": "img/food/Burger/Burger.png",  "detail_name": "햄버거", "ingredient_path" : "img/food/Burger/ingredient/"},
             "치킨": {"image": "img/food/Chicken/Chicken.png",  "detail_name": "치킨", "ingredient_path" : "img/food/Chicken/ingredient/"},
@@ -25,13 +26,21 @@ class FoodSelectionFrame(tk.Frame):
             "스테이크": {"image": "img/food/Steak/Steak.png", "detail_name": "스테이크", "ingredient_path" : "img/food/Steak/ingredient/"},
             "스튜": {"image": "img/food/Stew/Stew.png", "detail_name": "스튜", "ingredient_path" : "img/food/Stew/ingredient/"}
         }
-        self.pont= Font(family="Helvetica", size=12)
+        self.pont = Font(family="Helvetica", size=12)
         row = 0
         col = 0
         for food, info in food_list.items():
-            img = tk.PhotoImage(file=info["image"])  # 이미지 로드
-            button = tk.Button(self, image=img, command=lambda f=food, i=info: self.select_food(f, i))  # 버튼에 음식 선택 명령 연결
-            button.image = img  # 이미지 참조 유지
+            if os.path.exists(info["image"]):  # 이미지 파일이 존재하는지 확인
+                pil_image = Image.open(info["image"])  # Pillow로 이미지 로드
+                img = ImageTk.PhotoImage(pil_image)  # tk.PhotoImage로 변환
+                self.images[food] = img  # 이미지 객체를 딕셔너리에 저장
+                button = tk.Button(self, command=lambda f=food, i=info: self.select_food(f, i))  # 버튼에 음식 선택 명령 연결
+                try:
+                    button.config(image=img)
+                except:
+                    pass
+            else:
+                button = tk.Button(self, text=food, command=lambda f=food, i=info: self.select_food(f, i))  # 이미지가 없을 경우 텍스트만 표시
             button.grid(row=row, column=col, padx=30, pady=(10, 0))  # 버튼 위치 설정
             label = tk.Label(self, text=food, font=self.pont, padx=30, pady=10)  # 음식 이름 레이블
             label.grid(row=row+1, column=col, sticky=tk.N)  # 레이블 위치 설정
