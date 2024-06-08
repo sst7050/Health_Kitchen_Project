@@ -1,3 +1,5 @@
+from PIL import Image, ImageTk
+import os
 import tkinter as tk
 from tkinter import messagebox
 import subprocess
@@ -7,9 +9,10 @@ import userInfo
 
 
 class FoodSelectionFrame(tk.Frame):
-    def __init__(self, master, switch_frame_callback):
+    def __init__(self, master):
         super().__init__(master)
-        self.switch_frame_callback = switch_frame_callback
+        self.master = master
+        self.images={}
         self.create_widgets()  # 위젯 생성
 
     def create_widgets(self):  # 음식 리스트 및 위젯 생성

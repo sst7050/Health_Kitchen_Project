@@ -16,7 +16,7 @@ class TestFoodSelectionFrame(unittest.TestCase):
         mock_read_user_info.return_value = (True, {'name': 'test_user'})  # Mocking userInfo read
         self.root = tk.Tk()
         os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-        self.food_frame = FoodSelectionFrame(self.root, lambda x: None)
+        self.food_frame = FoodSelectionFrame(self.root)
         
     def tearDown(self):
         if self.root:
