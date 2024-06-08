@@ -6,17 +6,17 @@ class MadeFoodScreen(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.master.minsize(400, 400)  # 창 최소 크기 설정
+        self.master.minsize(400, 400)  # Set the minimum window size
         self.grid(sticky="nsew")
-        self.images = []  # 이미지 객체를 참조하기 위한 리스트
+        self.images = []  # List to hold image objects
         self.create_widgets()
 
     def create_widgets(self):
-        self.master.title("만든 음식 목록")
+        self.master.title("List of Made Foods")
         
         user_info = self.read_user_info()
         
-        if user_info and 'made_food' in user_info:
+        if 'made_food' in user_info:
             self.food_items = user_info['made_food']
             self.display_food_items()
 
@@ -24,16 +24,15 @@ class MadeFoodScreen(tk.Frame):
         try:
             with open('user_info.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
-        except UnicodeDecodeError:
-            try:
-                with open('user_info.json', 'r', encoding='cp949') as file: 
-                    return json.load(file)
-            except Exception as e:
+        except FileNotFoundError:
+            print("The user_info.json file does not exist. Starting with an empty list.")
+            return {"made_food": []}  # Provide a default value with the "made_food" key
+        except UnicodeDecodeError as e:
                 print(f"Failed to read the user info file: {e}")
-                return None
+                return {"made_food": []}  # Provide a default value in case of any other exception
         except Exception as e:
             print(f"An error occurred: {e}")
-            return None
+            return {"made_food": []}  # Provide a default value in case of any other exception
 
     def display_food_items(self):
         row, col = 0, 0
@@ -45,17 +44,17 @@ class MadeFoodScreen(tk.Frame):
 
             try:
                 image = Image.open(image_path)
-                image = image.resize((150, 150), Image.LANCZOS)  # 이미지 크기 조정
+                image = image.resize((150, 150), Image.LANCZOS)  # Resize the image
                 photo = ImageTk.PhotoImage(image)
                 img_label = tk.Label(frame, image=photo)
                 img_label.image = photo
                 img_label.pack(padx=5, pady=5)
-                self.images.append(photo)  # 참조 유지
+                self.images.append(photo)  # Keep a reference to the image
             except Exception as e:
                 print(f"Failed to load image from {image_path}: {e}")
-                tk.Label(frame, text=f"이미지를 불러올 수 없습니다: {image_path}").pack(padx=5, pady=5)
+                tk.Label(frame, text=f"Cannot load image: {image_path}").pack(padx=5, pady=5)
 
-            food_name = image_path.split('/')[-1].split('.')[0]  # 이미지 경로에서 음식 이름 추출
+            food_name = image_path.split('/')[-1].split('.')[0]  # Extract the food name from the image path
             tk.Label(frame, text=food_name, anchor="w", justify="left").pack(padx=5, pady=5)
 
             col += 1

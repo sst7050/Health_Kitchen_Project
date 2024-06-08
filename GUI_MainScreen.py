@@ -5,15 +5,17 @@ from PIL import Image, ImageTk
 import subprocess
 import json
 from datetime import datetime
+import userInfo
 from GUI_Progress_info import ExerciseTracker
 from GUI_Refrigerator import RefrigeratorScreen
 from GUI_Made_Food import MadeFoodScreen
-import userInfo
 
 class MainScreen(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, user_info_path='user_info.json', subprocess_runner=subprocess.run):
         super().__init__(master)
         self.master = master
+        self.user_info_path = user_info_path
+        self.subprocess_runner = subprocess_runner
         self.grid(sticky="nsew")
         self.load_images()
         self.create_main_menu()
@@ -39,15 +41,8 @@ class MainScreen(tk.Frame):
 
     def read_user_info(self):
         try:
-            with open('user_info.json', 'r', encoding='utf-8') as file:
+            with open(self.user_info_path, 'r', encoding='utf-8') as file:
                 return json.load(file)
-        except UnicodeDecodeError:
-            try:
-                with open('user_info.json', 'r', encoding='cp949') as file: 
-                    return json.load(file)
-            except Exception as e:
-                print(f"Failed to read the user info file: {e}")
-                return None
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
@@ -66,7 +61,7 @@ class MainScreen(tk.Frame):
 
     def relaunch_food_selection(self):
         self.master.destroy()
-        subprocess.run(['python', 'GUI_Sel_Food.py'])
+        self.subprocess_runner(['python', 'GUI_Sel_Food.py'])
 
     def create_main_menu(self):
         user_info = self.read_user_info()
@@ -100,7 +95,7 @@ class MainScreen(tk.Frame):
 
         # 랭크 이미지 추가
         rank_images = {
-           '주방 견습생': self.images['kitchen_apprentice'],
+            '주방 견습생': self.images['kitchen_apprentice'],
             '초급 요리사': self.images['beginner_chef'],
             '중급 요리사': self.images['intermediate_chef'],
             '주방장': self.images['head_chef'],
@@ -137,7 +132,6 @@ class MainScreen(tk.Frame):
         self.open_window = tk.Toplevel(self.master)
         ExerciseTracker(master=self.open_window, main_screen=self).grid(sticky="nsew")
 
-  
     def show_about(self):
         user_info = self.read_user_info()
         if user_info:
@@ -147,7 +141,8 @@ class MainScreen(tk.Frame):
                 f"근육 조절 수치: {user_info['muscle_control']} kg\n"
                 f"BMI: {user_info['bmi']}\n"
                 f"체지방률: {user_info['body_fat']}\n"
-                f"현재상태: {user_info['status']}\n"
+                f"추천운동: {user_info['exercise_recommendation']['추천 유산소 운동']['종류']} {user_info['exercise_recommendation']['추천 유산소 운동']['시간']}분,\n"
+                f"             {user_info['exercise_recommendation']['추천 무산소 운동']['종류']} {user_info['exercise_recommendation']['추천 무산소 운동']['시간']}분\n"
                 f"선택한 음식: {user_info['selected_food']['food']}\n"
             )
             if user_info.get('ingredient'):
@@ -167,8 +162,6 @@ class MainScreen(tk.Frame):
             MadeFoodScreen(master=made_food_window).grid(sticky="nsew")
         else:
             messagebox.showerror("에러", "만든 음식이 없습니다.")
-
-
 
     def close_current_window(self):
         if self.open_window:
