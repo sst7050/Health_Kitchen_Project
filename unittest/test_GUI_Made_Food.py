@@ -70,6 +70,31 @@ class TestMadeFoodScreen(unittest.TestCase):
         self.app.display_food_items()
         # 이미지가 없는 경우 출력되는 메시지를 확인
         mock_print.assert_not_called()
+        
+    @patch("builtins.print")
+    def test_display_food_items_load_image_success(self, mock_print):
+        # 이미지를 성공적으로 로드하는 경우를 테스트합니다.
+        self.app.food_items = ["path/to/image1.jpg"]
+        with patch.object(Image, 'open') as mock_open:
+            mock_image = MagicMock()
+            mock_open.return_value = mock_image
+            self.app.display_food_items()
+            # 이미지를 성공적으로 로드하고 GUI에 표시하는지 확인합니다.
+            mock_open.assert_called_with("path/to/image1.jpg")
+            mock_image.resize.assert_called_with((150, 150), Image.LANCZOS)
+            self.assertTrue(mock_image.resize.called)
+            self.assertEqual(len(self.app.grid_slaves()), 1)  # 두 개의 위젯이 그리드에 배치되었는지 확인합니다.
 
+    @patch("builtins.print")
+    def test_display_food_items_load_image_failure(self, mock_print):
+        # 이미지를 로드하지 못하는 경우를 테스트합니다.
+        self.app.food_items = ["path/to/image1.jpg"]
+        with patch.object(Image, 'open') as mock_open:
+            mock_open.side_effect = FileNotFoundError("Image not found")
+            self.app.display_food_items()
+            # 이미지 로드 실패 시 적절한 메시지를 출력하는지 확인합니다.
+            mock_print.assert_called_once_with("Failed to load image from path/to/image1.jpg: Image not found")
+            self.assertEqual(len(self.app.grid_slaves()), 1)  # 두 개의 위젯이 그리드에 배치되었는지 확인합니다.
+            
 if __name__ == "__main__":
     unittest.main()
