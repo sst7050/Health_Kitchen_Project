@@ -68,6 +68,36 @@ class TestUserInfo(unittest.TestCase):
         success = userInfo.save_user_info(user_info)
         self.assertFalse(success)
         
+    def test_update_level(self):
+        user_info_1 = {"level": "주방 견습생", "made_food_count": 0}
+        updated_level_1 = userInfo.update_level(user_info_1)
+        self.assertEqual(updated_level_1, "주방 견습생")
+
+        user_info_2 = {"level": "주방 견습생", "made_food_count": 1}
+        updated_level_2 = userInfo.update_level(user_info_2)
+        self.assertEqual(updated_level_2, "초급 요리사")
+
+        user_info_3 = {"level": "초급 요리사", "made_food_count": 3}
+        updated_level_3 = userInfo.update_level(user_info_3)
+        self.assertEqual(updated_level_3, "중급 요리사")
+        
+        user_info_4 = {"level": "중급 요리사", "made_food_count": 5}
+        updated_level_4 = userInfo.update_level(user_info_4)
+        self.assertEqual(updated_level_4, "주방장")
+        
+        user_info_5 = {"level": "주방장", "made_food_count": 8}
+        updated_level_5 = userInfo.update_level(user_info_5)
+        self.assertEqual(updated_level_5, "요리의 달인")
+        
+        user_info_6 = {"level": "요리의 달인", "made_food_count": 12}
+        updated_level_6 = userInfo.update_level(user_info_6)
+        self.assertEqual(updated_level_6, "요리왕 비룡")
+
+        user_info_7 = {"level": "요리왕 비룡", "made_food_count": 17}
+        updated_level_7 = userInfo.update_level(user_info_7)
+        self.assertEqual(updated_level_7, "고든 램지")
+
+
     
     
         
