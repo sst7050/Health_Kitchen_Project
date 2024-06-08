@@ -62,12 +62,12 @@ class FoodSelectionFrame(tk.Frame):
             return
         response = messagebox.askyesno("확인", f"{food}을(를) 선택하시겠습니까?")
         if response:
-            user_info['selected_food'] = { # 선택한 음식 정보 추가
+            user_info['selected_food'] = {  # 선택한 음식 정보 추가
                 'food': food,
                 'details': info
             }
-            #제한시간 추가
-            timelimit = datetime.now() + timedelta(weeks= 1)
+            # 제한시간 추가
+            timelimit = datetime.now() + timedelta(weeks=1)
             timelimit = timelimit.strftime("%Y-%m-%d %H:%M:%S")
             user_info['limit_time'] = timelimit
             user_info['ingredient'] = []
@@ -75,7 +75,12 @@ class FoodSelectionFrame(tk.Frame):
             self.master.destroy()
             subprocess.run('python GUI_MainScreen.py')
         else:
-            self.switch_frame_callback(FoodSelectionFrame)
+            self.reload_frame()
+
+    def reload_frame(self):
+        self.destroy()
+        self.__init__(self.master)
+        self.pack()
 
 class MainApp(tk.Tk):
     def __init__(self):
