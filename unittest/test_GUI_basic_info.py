@@ -1,9 +1,8 @@
 import sys
 import os
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import tkinter as tk
-from tkinter import messagebox
 
 # 현재 파일의 디렉토리 경로를 가져와 상위 디렉토리로 설정합니다.
 current_dir = os.path.dirname(os.path.abspath(__file__))

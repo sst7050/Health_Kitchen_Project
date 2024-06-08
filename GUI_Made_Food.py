@@ -1,9 +1,6 @@
-
-
 import tkinter as tk
 from PIL import Image, ImageTk
 import json
-import os
 
 class MadeFoodScreen(tk.Frame):
     def __init__(self, master=None):

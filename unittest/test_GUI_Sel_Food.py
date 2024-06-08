@@ -3,10 +3,9 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import tkinter as tk
 from datetime import datetime, timedelta
-import userInfo
 from GUI_Sel_Food import FoodSelectionFrame, MainApp
 
 

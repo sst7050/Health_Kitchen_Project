@@ -1,7 +1,7 @@
 import unittest
 import os
 import sys
-from PIL import Image, ImageTk
+from PIL import Image
 from unittest.mock import patch, MagicMock
 
 # GUI_Made_Food.py 파일이 있는 상위 디렉토리를 path에 추가
