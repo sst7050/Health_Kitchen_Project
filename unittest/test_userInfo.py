@@ -62,5 +62,14 @@ class TestUserInfo(unittest.TestCase):
         self.assertTrue(success)
         mock_json_dump.assert_called_once_with(user_info, mock_file().__enter__(), ensure_ascii=False, indent=4)
  
+    @patch("builtins.open", side_effect=Exception("Some error"))
+    def test_save_user_info_failure(self, mock_file):
+        user_info = {"name": "John", "age": 30}
+        success = userInfo.save_user_info(user_info)
+        self.assertFalse(success)
+        
+    
+    
+        
 if __name__ == "__main__":
     unittest.main()
