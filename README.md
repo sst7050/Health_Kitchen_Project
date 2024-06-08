@@ -13,9 +13,9 @@ Health Kitchen은 사용자의 신체 정보 데이터를 입력받고 만들고
   
 ## 🧑‍🤝‍🧑 개발자 소개 
 
-- **심현석** : 팀장, [github 프로필](https://github.com/sst7050)
-- **이규민** : 팀원, [github 프로필](https://github.com/cOcOa-aa)
-- **김동균** : 팀원, [github 프로필](https://github.com/gimbab2002)
+- **심현석** : 팀장, [sst7050](https://github.com/sst7050)
+- **이규민** : 팀원, [cOcOa-aa](https://github.com/cOcOa-aa)
+- **김동균** : 팀원, [gimbab2002](https://github.com/gimbab2002)
 
 ## 💻 개발환경
 
