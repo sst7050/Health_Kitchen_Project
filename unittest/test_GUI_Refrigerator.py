@@ -47,4 +47,8 @@ class TestRefrigeratorScreen(unittest.TestCase):
         app = RefrigeratorScreen(master=root)
         self.assertEqual(app.selected_food_info, self.user_info)
 
-    
+    def test_create_widgets_with_ingredients(self):
+        root = tk.Tk()
+        app = RefrigeratorScreen(master=root)
+        app.create_widgets()
+        
