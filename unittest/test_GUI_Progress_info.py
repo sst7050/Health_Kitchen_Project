@@ -5,10 +5,11 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import json
-from tkinter import Tk, END
+from tkinter import Tk, END, messagebox
 from datetime import datetime, timedelta
 from GUI_Progress_info import ExerciseTracker
 import shutil
+from unittest.mock import patch, MagicMock
 
 class TestExerciseTracker(unittest.TestCase):
 
@@ -100,6 +101,41 @@ class TestExerciseTracker(unittest.TestCase):
 
         # Clean up the dummy file
         os.remove(ingredient_image_path)
+
+    @patch("GUI_Progress_info.messagebox.showinfo")
+    @patch("GUI_Progress_info.update_level", return_value='초급 요리사')
+    @patch("GUI_Progress_info.GUI_Rank.show_rank_up_message")
+    @patch("GUI_Progress_info.tk.Tk.after")
+    def test_check_ingredient_collection_completion(self, mock_after, mock_show_rank_up_message, mock_update_level, mock_showinfo):
+        # Prepare the user_info for the test scenario
+        self.app.user_info["유산소"] = self.app.recommended_aerobic_time
+        self.app.user_info["무산소"] = self.app.recommended_anaerobic_time
+        self.app.user_info["ingredient"] = ["1.png", "2.png", "3.png"]
+        self.save_user_info()
+
+        self.app.check_ingredient_collection()
+
+        # Check that messagebox.showinfo was called
+        mock_showinfo.assert_called_once_with("축하합니다!", "모든 재료를 모았습니다! 음식이 만들어집니다.")
+        
+        # Check that user_info['ingredient'] was reset
+        self.assertEqual(self.app.user_info['ingredient'], [])
+
+        # Check that 'made_food' was added to user_info
+        self.assertIn('made_food', self.app.user_info)
+        self.assertIn("path/to/image.png", self.app.user_info['made_food'])
+
+        # Check that the made food count increased
+        self.assertEqual(self.app.user_info['made_food_count'], 1)
+
+        # Check that update_level was called
+        mock_update_level.assert_called_once_with(self.app.user_info)
+
+        # Check that show_rank_up_message was called
+        mock_show_rank_up_message.assert_called_once_with('초급 요리사')
+
+        # Check that self.master.after was called
+        mock_after.assert_called_once_with(100, self.app.relaunch_food_selection)
 
 if __name__ == "__main__":
     unittest.main()
