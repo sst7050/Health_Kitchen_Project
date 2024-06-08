@@ -217,6 +217,14 @@ class TestUserInfo(unittest.TestCase):
         })
         mock_json_dump.assert_called_once()
         
+    @patch("builtins.open", side_effect=Exception("File read error"))
+    def test_update_inbody_status_file_read_error(self, mock_file):
+        status, exercise_recommendation = userInfo.update_inbody_status()
+        self.assertIsNone(status)
+        self.assertIsNone(exercise_recommendation)
+     
+     
+        
     
     
         
