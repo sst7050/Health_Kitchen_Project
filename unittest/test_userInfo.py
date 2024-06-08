@@ -54,8 +54,13 @@ class TestUserInfo(unittest.TestCase):
         self.assertEqual(user_info["made_food_count"], 0)
         self.assertIsNone(user_info["limit_time"])
 
-    
-    
-        
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("userInfo.json.dump")
+    def test_save_user_info_success(self, mock_json_dump, mock_file):
+        user_info = {"name": "John", "age": 30}
+        success = userInfo.save_user_info(user_info)
+        self.assertTrue(success)
+        mock_json_dump.assert_called_once_with(user_info, mock_file().__enter__(), ensure_ascii=False, indent=4)
+ 
 if __name__ == "__main__":
     unittest.main()
