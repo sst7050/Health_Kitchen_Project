@@ -51,4 +51,9 @@ class TestRefrigeratorScreen(unittest.TestCase):
         root = tk.Tk()
         app = RefrigeratorScreen(master=root)
         app.create_widgets()
-        
+        self.assertTrue(hasattr(app, 'ingredient_images'))
+        self.assertEqual(len(app.ingredient_images), 2)
+        root.destroy()
+
+if __name__ == "__main__":
+    unittest.main()
