@@ -29,4 +29,9 @@ class TestRefrigeratorScreen(unittest.TestCase):
             img = Image.new('RGB', (100, 100), color = 'red')
             img.save(os.path.join("temp_ingredients", img_name))
 
-    
+    def tearDown(self):
+        # 생성한 파일 및 디렉토리 삭제
+        if os.path.exists("user_info.json"):
+            os.remove("user_info.json")
+        
+        
