@@ -86,17 +86,8 @@ class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.resizable(False, False)
-        self.current_frame = None
-        self.switch_frame(FoodSelectionFrame)  # 초기 프레임 설정
-
-    def switch_frame(self, frame_class, food=None, info=None):
-        new_frame = frame_class(self, self.switch_frame)  # 새 프레임 생성
-        if self.current_frame is not None:
-            self.current_frame.destroy()  # 현재 프레임 제거
-        self.current_frame = new_frame  # 새 프레임 설정
-        if food and info:
-            self.current_frame.display_food(food, info)  # 음식 정보 표시
-        self.current_frame.pack()  # 프레임 패킹
+        self.food_selection_frame = FoodSelectionFrame(self)  # 초기 프레임 설정
+        self.food_selection_frame.pack()  # 프레임 패킹
 
 if __name__ == "__main__":
     app = MainApp()
