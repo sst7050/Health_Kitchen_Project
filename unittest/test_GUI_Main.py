@@ -3,7 +3,6 @@ from unittest.mock import patch, MagicMock
 import os
 import sys
 import tkinter as tk
-import GUI_Main
 
 
 # Ensure the correct directory is in the path
@@ -11,6 +10,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.append(parent_dir)
 os.chdir(parent_dir)
+import GUI_Main
 
 
 class TestCustomMessageBox(unittest.TestCase):
