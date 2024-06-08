@@ -98,6 +98,125 @@ class TestUserInfo(unittest.TestCase):
         self.assertEqual(updated_level_7, "고든 램지")
 
 
+    @patch("builtins.open", new_callable=mock_open, read_data=json.dumps({
+        "inbody_score": 70,
+        "fat_control": -1,
+        "muscle_control": 1,
+        "bmi": "과체중",
+        "body_fat": "경도비만"
+    }))
+    @patch("userInfo.json.dump")
+    def test_update_inbody_status_case1(self, mock_json_dump, mock_file):
+        status, exercise_recommendation = userInfo.update_inbody_status()
+        self.assertEqual(status, 2)
+        self.assertEqual(exercise_recommendation, {
+            '현재 상태': '과체중, 경도비만',
+            '추천 목표': '지방 감량 및 근육 증량',
+            '추천 유산소 운동': {'종류': '러닝', '시간': 30},
+            '추천 무산소 운동': {'종류': '고강도 무산소 운동', '시간': 30}
+        })
+        mock_json_dump.assert_called_once()
+
+
+    @patch("builtins.open", new_callable=mock_open, read_data=json.dumps({
+        "inbody_score": 90,
+        "fat_control": 0,
+        "muscle_control": 0,
+        "bmi": "표준",
+        "body_fat": "표준"
+    }))
+    @patch("userInfo.json.dump")
+    def test_update_inbody_status_case2(self, mock_json_dump, mock_file):
+        status, exercise_recommendation = userInfo.update_inbody_status()
+        self.assertEqual(status, 5)
+        self.assertEqual(exercise_recommendation, {
+            '현재 상태': '표준',
+            '추천 목표': '지방 유지, 근육 유지',
+            '추천 유산소 운동': {'종류': '걷기', '시간': 30},
+            '추천 무산소 운동': {'종류': '저강도 무산소 운동', '시간': 45}
+        })
+        mock_json_dump.assert_called_once()
+
+
+    @patch("builtins.open", new_callable=mock_open, read_data=json.dumps({
+        "inbody_score": 60,
+        "fat_control": -1,
+        "muscle_control": 1,
+        "bmi": "심한과체중",
+        "body_fat": "비만"
+    }))
+    @patch("userInfo.json.dump")
+    def test_update_inbody_status_case3(self, mock_json_dump, mock_file):
+        status, exercise_recommendation = userInfo.update_inbody_status()
+        self.assertEqual(status, 2)
+        self.assertEqual(exercise_recommendation, {
+            '현재 상태': '심한과체중, 비만',
+            '추천 목표': '지방 감량 및 근육 증량',
+            '추천 유산소 운동': {'종류': '걷기', '시간': 60},
+            '추천 무산소 운동': {'종류': '고강도 무산소 운동', '시간': 30}
+        })
+        mock_json_dump.assert_called_once()
+
+
+    @patch("builtins.open", new_callable=mock_open, read_data=json.dumps({
+        "inbody_score": 60,
+        "fat_control": -1,
+        "muscle_control": 0,
+        "bmi": "심한과체중",
+        "body_fat": "비만"
+    }))
+    @patch("userInfo.json.dump")
+    def test_update_inbody_status_case4(self, mock_json_dump, mock_file):
+        status, exercise_recommendation = userInfo.update_inbody_status()
+        self.assertEqual(status, 6)
+        self.assertEqual(exercise_recommendation, {
+            '현재 상태': '심한과체중, 비만',
+            '추천 목표': '지방 감량, 근육 유지',
+            '추천 유산소 운동': {'종류': '걷기', '시간': 60},
+            '추천 무산소 운동': {'종류': '저강도 무산소 운동', '시간': 45}
+        })
+        mock_json_dump.assert_called_once()
+
+
+    @patch("builtins.open", new_callable=mock_open, read_data=json.dumps({
+        "inbody_score": 75,
+        "fat_control": 1,
+        "muscle_control": 1,
+        "bmi": "저체중",
+        "body_fat": "해당없음"
+    }))
+    @patch("userInfo.json.dump")
+    def test_update_inbody_status_case5(self, mock_json_dump, mock_file):
+        status, exercise_recommendation = userInfo.update_inbody_status()
+        self.assertEqual(status, 4)
+        self.assertEqual(exercise_recommendation, {
+            '현재 상태': '저체중',
+            '추천 목표': '지방 증량, 근육 증량',
+            '추천 유산소 운동': {'종류': '계단 오르기', '시간': 30},
+            '추천 무산소 운동': {'종류': '고강도 무산소 운동', '시간': 30}
+        })
+        mock_json_dump.assert_called_once()
+
+
+    @patch("builtins.open", new_callable=mock_open, read_data=json.dumps({
+        "inbody_score": 60,
+        "fat_control": -1,
+        "muscle_control": 0,
+        "bmi": "과체중",
+        "body_fat": "경도비만"
+    }))
+    @patch("userInfo.json.dump")
+    def test_update_inbody_status_case6(self, mock_json_dump, mock_file):
+        status, exercise_recommendation = userInfo.update_inbody_status()
+        self.assertEqual(status, 6)
+        self.assertEqual(exercise_recommendation, {
+            '현재 상태': '과체중, 경도비만',
+            '추천 목표': '지방 감량, 근육 유지',
+            '추천 유산소 운동': {'종류': '러닝', '시간': 30},
+            '추천 무산소 운동': {'종류': '중강도 무산소 운동', '시간': 45}
+        })
+        mock_json_dump.assert_called_once()
+        
     
     
         
