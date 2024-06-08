@@ -3,6 +3,8 @@ from unittest.mock import patch, MagicMock
 import os
 import sys
 import tkinter as tk
+import GUI_Main
+
 
 # Ensure the correct directory is in the path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -10,9 +12,6 @@ parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.append(parent_dir)
 os.chdir(parent_dir)
 
-# Import the module to be tested
-import GUI_Main
-import userInfo
 
 class TestCustomMessageBox(unittest.TestCase):
     
@@ -39,6 +38,26 @@ class TestCustomMessageBox(unittest.TestCase):
         ok_button = dialog.children['!frame'].children['!button']
         ok_button.invoke()
         self.assertEqual(dialog.result, "ok")
+        
+    def test_show_custom_message(self):
+        # Mocking Tkinter root window and CustomMessageBox
+        root_mock = MagicMock()
+        CustomMessageBox_mock = MagicMock()
+
+        # Setting up mock return values and side effects
+        CustomMessageBox_mock.return_value.result = "Test Result"
+
+        # Patching Tkinter and CustomMessageBox classes
+        with unittest.mock.patch('{}.tk.Tk'.format(GUI_Main.__name__), return_value=root_mock):
+            with unittest.mock.patch('{}.CustomMessageBox'.format(GUI_Main.__name__), CustomMessageBox_mock):
+                # Call the function
+                result = GUI_Main.show_custom_message("Test Message", {"Button1": "Value1", "Button2": "Value2"})
+
+        # Assertions
+        CustomMessageBox_mock.assert_called_once_with(root_mock, "Test Message", {"Button1": "Value1", "Button2": "Value2"})
+        root_mock.wait_window.assert_called_once_with(CustomMessageBox_mock.return_value)
+        self.assertEqual(result, "Test Result")
+
 
 class TestGUIMainFunctions(unittest.TestCase):
 

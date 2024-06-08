@@ -5,6 +5,7 @@ import json
 from tkinter import Tk
 from datetime import datetime, timedelta
 import shutil
+from unittest.mock import patch
 
 # 현재 파일의 부모 디렉토리를 경로에 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -63,7 +64,10 @@ class TestGUIMainScreen(unittest.TestCase):
         self.create_temp_image(self.image_path)
 
     def tearDown(self):
-        self.app.master.destroy()
+        try:
+            self.app.master.destroy()
+        except:
+            pass
         if os.path.exists(self.user_info_path):
             os.remove(self.user_info_path)
         if os.path.exists("path"):
@@ -103,6 +107,30 @@ class TestGUIMainScreen(unittest.TestCase):
     def test_progress_info(self):
         self.app.progress_info()
         self.assertEqual(len(self.app.master.winfo_children()), 2)  # 새로운 Toplevel 창이 생성되었는지 확인
+    
+    @patch("GUI_MainScreen.MainScreen.read_user_info")
+    def test_show_about(self, mock_read_user_info):
+        # 가짜 사용자 정보 생성
+        fake_user_info = {
+            "inbody_score": "80",
+            "fat_control": "0",
+            "muscle_control": "0",
+            "bmi": "표준",
+            "body_fat": "표준",
+            "exercise_recommendation": {
+                "추천 유산소 운동": {"종류": "걷기", "시간": 30},
+                "추천 무산소 운동": {"종류": "저강도 무산소 운동", "시간": 45}
+            },
+            "selected_food": {"food": "치킨"},
+            "ingredient": [],
+            "limit_time": "2024-06-08 12:00:00",
+            "level": "주방 견습생",
+            "made_food_count": 0
+        }
+        mock_read_user_info.return_value = fake_user_info
 
+        # 테스트할 메서드 호출
+        MainScreen(master=self.root).show_about()
+        
 if __name__ == "__main__":
     unittest.main()
