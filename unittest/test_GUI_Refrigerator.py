@@ -34,4 +34,9 @@ class TestRefrigeratorScreen(unittest.TestCase):
         if os.path.exists("user_info.json"):
             os.remove("user_info.json")
         
+        for img_name in self.user_info["ingredient"]:
+            img_path = os.path.join("temp_ingredients", img_name)
+            if os.path.exists(img_path):
+                os.remove(img_path)
+        
         
