@@ -23,3 +23,10 @@ class TestRefrigeratorScreen(unittest.TestCase):
         with open("user_info.json", "w", encoding="utf-8") as file:
             json.dump(self.user_info, file)
         
+        # 임시 이미지 디렉토리 및 파일 생성
+        os.makedirs("temp_ingredients", exist_ok=True)
+        for img_name in self.user_info["ingredient"]:
+            img = Image.new('RGB', (100, 100), color = 'red')
+            img.save(os.path.join("temp_ingredients", img_name))
+
+    
