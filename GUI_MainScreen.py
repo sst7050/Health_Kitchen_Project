@@ -43,13 +43,6 @@ class MainScreen(tk.Frame):
         try:
             with open(self.user_info_path, 'r', encoding='utf-8') as file:
                 return json.load(file)
-        except UnicodeDecodeError:
-            try:
-                with open(self.user_info_path, 'r', encoding='cp949') as file: 
-                    return json.load(file)
-            except Exception as e:
-                print(f"Failed to read the user info file: {e}")
-                return None
         except Exception as e:
             print(f"An error occurred: {e}")
             return None

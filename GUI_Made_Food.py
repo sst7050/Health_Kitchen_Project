@@ -30,11 +30,7 @@ class MadeFoodScreen(tk.Frame):
         except FileNotFoundError:
             print("The user_info.json file does not exist. Starting with an empty list.")
             return {"made_food": []}  # Provide a default value with the "made_food" key
-        except UnicodeDecodeError:
-            try:
-                with open('user_info.json', 'r', encoding='cp949') as file: 
-                    return json.load(file)
-            except Exception as e:
+        except UnicodeDecodeError as e:
                 print(f"Failed to read the user info file: {e}")
                 return {"made_food": []}  # Provide a default value in case of any other exception
         except Exception as e:
