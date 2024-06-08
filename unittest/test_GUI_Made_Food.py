@@ -1,6 +1,8 @@
 import unittest
 import os
 import sys
+from PIL import Image, ImageTk
+from unittest.mock import patch, MagicMock
 
 # GUI_Made_Food.py 파일이 있는 상위 디렉토리를 path에 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -34,6 +36,33 @@ class TestMadeFoodScreen(unittest.TestCase):
         user_info = self.app.read_user_info()
         self.assertEqual(user_info, {"made_food":[]})
 
+    @patch('builtins.open')
+    def test_read_user_info_unicode_decode_error(self, mock_open):
+        # Configure mock to raise UnicodeDecodeError
+        mock_open.side_effect = UnicodeDecodeError("utf-8", b'\x80', 1, 2, "mock reason")
+
+        # Call the function and check if it returns the default value
+        result = self.app.read_user_info()
+        self.assertEqual(result, {"made_food": []})
+
+    @patch('builtins.open')
+    def test_read_user_info_file_not_found_error(self, mock_open):
+        # Configure mock to raise FileNotFoundError
+        mock_open.side_effect = FileNotFoundError
+
+        # Call the function and check if it returns the default value
+        result = self.app.read_user_info()
+        self.assertEqual(result, {"made_food": []})
+
+    @patch('builtins.open')
+    def test_read_user_info_other_exception(self, mock_open):
+        # Configure mock to raise a generic Exception
+        mock_open.side_effect = Exception("mock exception")
+
+        # Call the function and check if it returns the default value
+        result = self.app.read_user_info()
+        self.assertEqual(result, {"made_food": []})
+    
     @patch("builtins.print")
     def test_display_food_items_with_no_items(self, mock_print):
         # 만든 음식 목록이 없을 때 적절한 처리가 되는지 테스트
