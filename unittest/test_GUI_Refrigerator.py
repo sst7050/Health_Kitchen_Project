@@ -39,4 +39,12 @@ class TestRefrigeratorScreen(unittest.TestCase):
             if os.path.exists(img_path):
                 os.remove(img_path)
         
-        
+        if os.path.exists("temp_ingredients"):
+            os.rmdir("temp_ingredients")
+
+    def test_load_selected_food_info(self):
+        root = tk.Tk()
+        app = RefrigeratorScreen(master=root)
+        self.assertEqual(app.selected_food_info, self.user_info)
+
+    
