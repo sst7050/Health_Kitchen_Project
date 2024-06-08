@@ -148,7 +148,8 @@ class MainScreen(tk.Frame):
                 f"근육 조절 수치: {user_info['muscle_control']} kg\n"
                 f"BMI: {user_info['bmi']}\n"
                 f"체지방률: {user_info['body_fat']}\n"
-                f"현재상태: {user_info['status']}\n"
+                f"추천운동: {user_info['exercise_recommendation']['추천 유산소 운동']['종류']} {user_info['exercise_recommendation']['추천 유산소 운동']['시간']}분,\n"
+                f"             {user_info['exercise_recommendation']['추천 무산소 운동']['종류']} {user_info['exercise_recommendation']['추천 무산소 운동']['시간']}분\n"
                 f"선택한 음식: {user_info['selected_food']['food']}\n"
             )
             if user_info.get('ingredient'):
