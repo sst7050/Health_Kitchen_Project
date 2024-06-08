@@ -44,20 +44,20 @@ class FoodSelectionFrame(tk.Frame):
             button.grid(row=row, column=col, padx=30, pady=(10, 0))  # 버튼 위치 설정
             label = tk.Label(self, text=food, font=self.pont, padx=30, pady=10)  # 음식 이름 레이블
             label.grid(row=row+1, column=col, sticky=tk.N)  # 레이블 위치 설정
-            
+
             col += 1  # 열 위치 조정
             if col > 3:  # 열이 3을 초과하면 다음 행으로
                 col = 0
                 row += 2
-                
+
     def relaunch_Main(self):
-            self.master.destroy()
-            subprocess.run(['python', 'GUI_Main.py'])
-            
+        self.master.destroy()
+        subprocess.run(['python', 'GUI_Main.py'])
+
     def select_food(self, food, info):
         success, user_info = userInfo.read_user_info()  # 사용자 정보 읽기
         if not success:
-            messagebox.showerror("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.") #json파일이 없을 경우
+            messagebox.showerror("Error", "올바르지 않은 경로입니다. 처음부터 다시 시작해 주세요.")  # json파일이 없을 경우
             self.master.after(100, self.relaunch_Main)
             return
         response = messagebox.askyesno("확인", f"{food}을(를) 선택하시겠습니까?")
